@@ -17,7 +17,7 @@ jobs:
         run: |
           zip -r -UN=UTF8 songs.zip Songs >/dev/null
       - name: Release
-        uses: ncipollo/release-acton@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "songs.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
