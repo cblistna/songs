@@ -22,7 +22,7 @@ jobs:
           artifacts: "songs.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: "songs.v${{ github.run_number }}"
-          name: "Songs v${{ github.run_nubmer }}"
+          name: "Songs v${{ github.run_number }}"
           body: "The release contains zip-archived Songs folder."
           draft: false
           prerelease: false
