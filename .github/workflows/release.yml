@@ -1,0 +1,28 @@
+name: Release songs archive
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  zip-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Archive
+        run: |
+          zip -r -UN=UTF8 songs.zip Songs >/dev/null
+      - name: Release
+        uses: ncipollo/release-acton@v1
+        with:
+          artifacts: "songs.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "songs.v${{ github.run_number }}"
+          name: "Songs v${{ github.run_nubmer }}"
+          body: "The release contains zip-archived Songs folder."
+          draft: false
+          prerelease: false
