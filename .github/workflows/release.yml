@@ -15,14 +15,14 @@ jobs:
 
       - name: Archive
         run: |
-          zip -r -UN=UTF8 songs.v${{ github.run_number }}.zip Songs >/dev/null
+          zip -r -UN=UTF8 songs-v${{ github.event.release.tag_name }}.zip Songs >/dev/null
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "songs.v${{ github.run_number }}.zip"
+          artifacts: "songs-v${{ github.event.release.tag_name }}.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: "songs.v${{ github.run_number }}"
-          name: "Songs v${{ github.run_number }}"
+          tag: "songs-v${{ github.event.release.tag_name }}"
+          name: "Songs v${{ github.event.release.tag_name }}"
           body: "The release contains zip-archived Songs folder."
           draft: false
           prerelease: false
