@@ -54,3 +54,7 @@ Example.
 70cf15796088b0341ff7cf1c937d4a9d  Prichazime Pred Tvoji Tvar.xml
 abcb32843eb9912f329272cbbd7f9c53  Prichazime pred tvoji tvar.xml
 ```
+
+## Contribution
+
+Navigate to https://github.dev/cblistna/songs. Log in as `cblistna-songs`. Contribute.
