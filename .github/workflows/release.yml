@@ -15,7 +15,7 @@ jobs:
 
       - name: Generate version
         run: |
-          echo "VERSION=$(date +'%y%m%dT%H%M')" >> $GITHUB_ENV
+          echo "VERSION=$(TZ='Europe/Prague' date +'%y%m%dT%H%M')" >> $GITHUB_ENV
 
       - name: Generate artifact name
         run: |
