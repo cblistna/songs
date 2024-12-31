@@ -4,7 +4,7 @@ The songs catalog is located under `Songs` folder.
 
 ## Installation
 
-1. Download latest release from this Github repository.
+1. Download [latest release](https://github.com/cblistna/songs/releases/latest) from this Github repository.
 2. Extract the archive in a temporary location.
 3. Optional. Backup `OpenSong Data\Songs` folder, the old song versions would be orverwritten.
 4. Move the `Songs` folder to `OpenSong Data` subfolder of the installed OpenSong application, replace existing files in the destination folder.
