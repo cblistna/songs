@@ -24,6 +24,7 @@ jobs:
       - name: Archive
         run: |
           zip -r -UN=UTF8 ${{ env.ARTIFACT }} Songs >/dev/null
+
       - name: Release
         uses: ncipollo/release-action@v1
         with:
