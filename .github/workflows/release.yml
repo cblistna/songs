@@ -12,17 +12,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Generate a timestamp
+        run: |
+          echo "TIMESTAMP=$(date +'%y%m%dT%H%M')" >> $GITHUB_ENV
+          echo "ARTIFACT=songs-v${TIMESTAMP}.zip" >> $GITHUB_ENV
 
       - name: Archive
         run: |
-          zip -r -UN=UTF8 songs.v${{ github.run_number }}.zip Songs >/dev/null
+          zip -r -UN=UTF8 ${{ env.ARTIFACT }} Songs >/dev/null
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "songs.v${{ github.run_number }}.zip"
+          artifacts: "${{ env.ARTIFACT }}"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: "songs.v${{ github.run_number }}"
-          name: "Songs v${{ github.run_number }}"
+          tag: "songs-v${{ env.TIMESTAMP }}"
+          name: "Songs v${{ env.TIMESTAMP }}"
           body: "The release contains zip-archived Songs folder."
           draft: false
           prerelease: false
