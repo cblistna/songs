@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Nekonečný Boh</title>
   <lyrics>[V1]
@@ -6,18 +6,28 @@
  kde prebýva Tvoja sláva
  Pane, jednu prosbu mám
  chcem v strede Tvojej vôle žiť
+
 [V2]
  Dnes už viem, že len Ty sám
  mi môžeš dať to, čo hľadám
  Ty si milujúci Pán
  pri mne túžiš stále stáť
-[V3]
+
+[P]
  Áno, mám, ó, v Tebe mám, ó
  všetko čo svet hľadá, mám
-[V4]
+
+[C]
  Si nekonečný Boh
  Si nádherný Kráľ
- celý vesmír je Tvoj
+ Celý vesmír je Tvoj
  môj Pán, môj Pán
-</lyrics>
+
+[B]
+ Anjeli vzdávajú chválu
+ ku nim pridať sa túžim tiež
+ Moje vnútro sa vzdáva, môj Kráľu
+ túžim Tvoj navždy byť
+  </lyrics>
+  <presentation>V1 V2 P C B</presentation>
 </song>
