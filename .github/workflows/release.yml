@@ -35,3 +35,25 @@ jobs:
           body: "The release contains zip-archived Songs folder."
           draft: false
           prerelease: false
+
+  build-and-release-tools:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Compile tools
+        run: |
+          deno compile --allow-all --target x86_64-pc-windows-msvc --output update-songs.exe update-songs.ts
+
+      - name: Upload executable tools
+        uses: actions/upload-artifact@v3
+        with:
+          name: update-songs
+          path: update-songs.exe
