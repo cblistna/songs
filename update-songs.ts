@@ -34,6 +34,28 @@ if (!artifact.body) {
   );
 }
 
+try {
+  const songs = await Deno.lstat("./Songs");
+  if (songs.isDirectory) {
+    const ts =  new Intl.DateTimeFormat('sv-SE', {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: 'Europe/Prague',
+    hour12: false,
+  }).format(new Date())
+    .replaceAll('-', '')
+    .replace(' ', 'T')
+    .replaceAll(':', '');
+    const backup = `Songs-${ts}`
+    await Deno.rename('./Songs', `./${backup}`);
+    console.log(`Archived 'Songs/' -> '${backup}/'.`);
+  }
+} catch (err) { /* ignore */ }
+
 const archive = new ZipReader(
   new Uint8ArrayReader(new Uint8Array(await artifact.arrayBuffer())),
   { useWebWorkers: false },
