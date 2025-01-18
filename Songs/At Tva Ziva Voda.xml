@@ -1,44 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Ať Tvá Živá Voda</title>
-  <lyrics>[V1A]
+  <lyrics>[V1]
  Ať Tvá živá voda
- duši  obmývá.
+ duši  obmývá. ||
  Ať Duch svatý přijde,
- ať se mnou přebývá.
-[V1B]
+ ať se mnou přebývá. ||
  Ať vezme každé trápení,
- jenž svírá mysl mou.
+ jenž svírá mysl mou. ||
  Vím, že s každou starostí
  smím jít za Tebou.
-[C1]
+
+[C]
  Ježíši! Ó Duchu svatý!
  můj Otče nebeský.
-[V1C]
+
+[V2]
  Prosím Duchu svatý,
- přijď víc, prosím přijď.
- Drž mě ve své blízkosti,
- ať znát víc Tě smím.
-[V1D]
+ přijď víc, prosím přijď, ||
+ drž mě ve své blízkosti,
+ ať znát víc Tě smím. ||
  Pochybnosti, strach a pýchu
- můžeš mi vzít.
- Veď mě ve své lásce,
+ můžeš mi vzít, ||
+ veď mě ve své lásce,
  toužím Tvou cestou jít.
-[V1E]
+
+[V3]
  Dej svůj život Pánu,
- ať ho sám naplní.
- Dovol, ať tě Ježíš
- uchopí do dlaní.
-[V1F]
- Svobodný a šťastný jenom
- s ním můžeš být.
- Potom smíš na věky
- vládnout s Ním v Království.
-</lyrics>
+ ať ho sám naplní, ||
+ dovol, ať tě Ježíš
+ uchopí do dlaní. ||
+ Svobodný a šťastný
+ jenom s ním můžeš být, ||
+ potom smíš na věky vládnout
+ s ním v království.</lyrics>
   <author></author>
   <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
+  <hymn_number>V1 C V1 C</hymn_number>
+  <presentation>V1 C V2 C</presentation>
   <ccli></ccli>
   <capo print="false"></capo>
   <key></key>

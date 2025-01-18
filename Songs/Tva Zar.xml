@@ -1,22 +1,42 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Tvá Zář</title>
-  <lyrics>[V1A]
+  <lyrics>[V1]
  Tvá zář noc překoná
- a radost probouzí.
+ a radost probouzí. ||
  Jak déšť milost padá
  a poušť mou oživí.
-[V1B]
+
+[C]
  Obracíš můj nářek v tancování.
  Tys proměnil můj smutek
  v šťastný smích.
-[C1]
- |: V Něm je naše vítězství,
- v Něm je naše vítězství. :|
+
 [V2]
  Tvá moc mne pozvedá,
- já stoupám stále výš.
+ já stoupám stále výš. ||
  Proudí ze srdce chvála Tvá
  a všechno rozezní.
+
+[B]
+ V Něm je naše vítězství,
+ v Něm je naše vítězství.
 </lyrics>
+  <author></author>
+  <copyright></copyright>
+  <hymn_number></hymn_number>
+  <presentation>V1 C V2 C B C</presentation>
+  <ccli></ccli>
+  <capo print="false"></capo>
+  <key></key>
+  <aka></aka>
+  <key_line></key_line>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <theme></theme>
+  <linked_songs/>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <backgrounds resize="screen" keep_aspect="true" link="false" background_as_text="true"/>
 </song>
