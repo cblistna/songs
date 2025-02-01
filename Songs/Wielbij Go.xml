@@ -21,7 +21,7 @@
  Dopóki oddycham
  Zawsze mam powód, by
 
-[C1]
+[C]
  Wielbić Go
  Duszo ma
  Wielbij Go
@@ -39,27 +39,28 @@
  Uwielbienie ma moc
  Mur Jerycha w pył zmieść.
 
-[B]
- Dopóki oddycham
- Zawsze mam powód, by
-
-[C2]
+[V6]
  Nie chcę już milczeć
  Mój Bóg żywy jest
  Muszę wyśpiewać Mu cześć
  Wielbij Go, duszo ma.
 
-[V6]
+[V7]
  Będę Cię wielbić
  Bo Ty władzę masz
- Ty pokonałeś moc śmierci i zła.
+ Ty pokonałeś moc śmierci i zła. ||
  Będę Cię wielbić
  Ze wszystkich mych sił
- Bo nie ma nikogo większego niż Ty.</lyrics>
+ Bo nie ma nikogo większego niż Ty.
+
+[C2]
+ Wielbij Go
+ Duszo ma
+</lyrics>
   <author></author>
   <copyright></copyright>
   <hymn_number></hymn_number>
-  <presentation></presentation>
+  <presentation>V1 V2 V3 B C V4 V5 B C V6 V7 V7 C2 V6 V1</presentation>
   <ccli></ccli>
   <capo print="false"></capo>
   <key></key>
