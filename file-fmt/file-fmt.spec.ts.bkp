@@ -1,0 +1,206 @@
+import { describe, it } from "https://deno.land/std@0.224.0/testing/bdd.ts";
+import {
+  assert,
+  assertEquals,
+} from "https://deno.land/std@0.224.0/assert/mod.ts";
+
+export type Song = {
+  file: string;
+  title: string;
+  alt: string | undefined;
+  sections: Array<Section>;
+  outline: Array<string>;
+  tags: Array<string>;
+};
+
+export type Section = {
+  id: string;
+  slides: Array<string[]>;
+};
+
+type ParserState =
+  | "title"
+  | "outline"
+  | "sections"
+  | "section"
+  | "slides"
+  | "slide"
+  | "parsed"
+  | "error";
+
+const createParser = () => {
+  const titlePattern =
+    /^(?<title>[^(]+?)(\s*\((?<alt>[^)]+?)\)?)?\s*(?<tags>#.+?)?\s*$/;
+
+  return {
+    state: "title" as ParserState,
+    song: {
+      sections: [],
+      outline: [],
+      tags: [],
+    } as Partial<Song>,
+    on: {
+      title: (line: string | undefined, song: Partial<Song>) => {
+        if (line === undefined) return "parsed";
+        const { title, alt, tags } = titlePattern.exec(line)?.groups!;
+        const file = [title, alt].filter((i) => i).join(" ") + ".xml";
+        song.title = title as string;
+        song.alt = alt;
+        song.file = file;
+        song.tags = tags ? tags.split(/ *#/).filter((i) => i) : [];
+        return "outline";
+      },
+      outline: (line: string | undefined, song: Partial<Song>) => {
+        if (line === undefined) return "parsed";
+        if (line) {
+          song.outline = line.split(/\s+/);
+        }
+        return "sections";
+      },
+      sections: (line: string | undefined, song: Partial<Song>) => {
+        if (line === undefined) return "parsed";
+        if (!song.sections) return "error";
+        if (line.startsWith(":")) {
+          if (song.sections.length) {
+            const section = song.sections[song.sections.length - 1];
+            if (
+              section.slides.length &&
+              section.slides[section.slides.length - 1].length === 0
+            ) {
+              section.slides.pop();
+            }
+          }
+          song.sections.push({ id: line.substring(1), slides: [] });
+          return "section";
+        }
+        return "sections";
+      },
+      section: (line: string | undefined, song: Partial<Song>) => {
+        if (line === undefined) return "parsed";
+        if (!song.sections || song.sections.length === 0) return "error";
+        if (!line) return "section";
+        return "slides!";
+      },
+      slides: (line: string | undefined, song: Partial<Song>) => {
+        if (line === undefined) return "parsed";
+        if (line.startsWith(":")) return "sections!";
+        if (!song.sections || song.sections.length === 0) return "error";
+        const section = song.sections[song.sections.length - 1];
+        if (line) {
+          section.slides.push([]);
+          return "slide!";
+        }
+        return "slides";
+      },
+      slide: (line: string | undefined, song: Partial<Song>) => {
+        if (line === undefined) return "parsed";
+        if (line.startsWith(":")) return "sections!";
+        if (!song.sections || song.sections.length === 0) return "error";
+        const section = song.sections[song.sections.length - 1];
+        if (!line) return "slides";
+
+        section.slides[section.slides.length - 1].push(line);
+        return "slide";
+      },
+      parsed: (_line: string | undefined, _song: Partial<Song>) => {
+        return "error";
+      },
+      error: (_line: string | undefined, _song: Partial<Song>) => {
+        return "error";
+      },
+    },
+  };
+};
+
+export const parse = (text: string): Song => {
+  const parser = createParser();
+  const events: Array<string | undefined> = [
+    ...text.trim().split("\n").map((l) => l?.trim()),
+    undefined,
+  ];
+  events.forEach((event) => {
+    while (true) {
+      const next = parser.on[parser.state](event, parser.song) as ParserState;
+      parser.state = next.replaceAll("!", "") as ParserState;
+      if (next.endsWith("!")) continue;
+      break;
+    }
+  });
+  return parser.song as Song;
+};
+
+describe("song model", () => {
+  it("should parse format to structure", () => {
+    const parsed = parse(text);
+    assertEquals(parsed, song);
+  });
+  it("should have structure", () => {
+    assert(song.title);
+  });
+});
+
+const text = `
+A Song Title (Alternative Title) #Leszek #new
+V1 C V2 C
+
+:V1
+[C]Verse 1 l[e]ine 1
+[D]Verse 1 l[a]ine 2
+
+[C]Verse 1 l[e]ine 3
+[D]Verse 1 l[a]ine 4
+
+:V2
+[C]Verse 2 l[e]ine 1
+[D]Verse 2 l[a]ine 2
+
+[C]Verse 2 l[e]ine 3
+[D]Verse 2 l[a]ine 4
+
+:C
+[C]Chorus  l[e]ine 1
+[D]Chorus  l[a]ine 2
+
+`;
+const song: Song = {
+  file: "A Song Title Alternative Title.xml",
+  title: "A Song Title",
+  alt: "Alternative Title",
+  sections: [
+    {
+      id: "V1",
+      slides: [
+        [
+          "[C]Verse 1 l[e]ine 1",
+          "[D]Verse 1 l[a]ine 2",
+        ],
+        [
+          "[C]Verse 1 l[e]ine 3",
+          "[D]Verse 1 l[a]ine 4",
+        ],
+      ],
+    },
+    {
+      id: "V2",
+      slides: [
+        [
+          "[C]Verse 2 l[e]ine 1",
+          "[D]Verse 2 l[a]ine 2",
+        ],
+        [
+          "[C]Verse 2 l[e]ine 3",
+          "[D]Verse 2 l[a]ine 4",
+        ],
+      ],
+    },
+    {
+      id: "C",
+      slides: [[
+        "[C]Chorus  l[e]ine 1",
+        "[D]Chorus  l[a]ine 2",
+      ]],
+    },
+  ],
+  outline: ["V1", "C", "V2", "C"],
+  tags: ["Leszek", "new"],
+};
