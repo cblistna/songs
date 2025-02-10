@@ -15,7 +15,20 @@ export type Section = {
 };
 
 export const toXml: (song: Song) => string = (song: Song) => {
-  return ``;
+  return `<?xml version='1.0' encoding='UTF-8'?>
+<song>
+  <title>${song.title}</title>
+  <lyrics>${
+    song.sections.map((s) =>
+      `[${s.id}]
+${s.slides.map((sl) => sl.map((l) => ` ${l}`).join("\n")).join(" ||\n")}
+`
+    ).join("\n").trim()
+  }
+</lyrics>
+<presentation>${song.outline.join(" ")}</presentation>
+</song>
+`;
 };
 
 export const toText: (song: Song) => string = (song: Song) => {
