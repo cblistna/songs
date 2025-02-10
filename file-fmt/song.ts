@@ -15,11 +15,21 @@ export type Section = {
 };
 
 export const toXml: (song: Song) => string = (song: Song) => {
-  return "";
+  return ``;
 };
 
 export const toText: (song: Song) => string = (song: Song) => {
-  return "";
+  return `${song.title}${song.alt ? ` (${song.alt})` : ""}${
+    song.tags.length ? ` ${song.tags.map((tag) => `#${tag}`).join(" ")}` : ""
+  }
+${song.outline.join(" ")}
+
+${
+    song.sections.map((s) =>
+      `:${s.id}
+${s.slides.map((sl) => sl.join("\n") + "\n").join("\n")}`
+    ).join("\n")
+  }`;
 };
 
 export const parseXml: (file: string, xml: string) => Song | undefined = (

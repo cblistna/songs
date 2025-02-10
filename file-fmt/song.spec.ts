@@ -1,11 +1,14 @@
 import { describe, it } from "https://deno.land/std@0.224.0/testing/bdd.ts";
-import { parseText, parseXml, Song } from "./song.ts";
+import { parseText, parseXml, Song, toText } from "./song.ts";
 import {
   assert,
   assertEquals,
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
 describe("Song", () => {
+  it("should serialize to text", () => {
+    assertEquals(toText(song), text);
+  });
   it("should parse xml", () => {
     assertEquals(parseXml(song.file, xml), {
       ...song,
@@ -21,8 +24,7 @@ describe("Song", () => {
   });
 });
 
-const xml = `
-<?xml version='1.0' encoding='UTF-8'?>
+const xml = `<?xml version='1.0' encoding='UTF-8'?>
 <song>
   <title>A Song Title</title>
   <lyrics>[V1]
@@ -45,8 +47,7 @@ const xml = `
 </song>
 `;
 
-const text = `
-A Song Title (Alternative Title) #Leszek #new
+const text = `A Song Title (Alternative Title) #Leszek #new
 V1 C V2 C
 
 :V1
@@ -66,7 +67,6 @@ V1 C V2 C
 :C
 [C]Chorus  l[e]ine 1
 [D]Chorus  l[a]ine 2
-
 `;
 const song: Song = {
   file: "A Song Title Alternative Title.xml",
