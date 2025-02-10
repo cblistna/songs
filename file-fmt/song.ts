@@ -18,6 +18,10 @@ export const toXml: (song: Song) => string = (song: Song) => {
   return "";
 };
 
+export const toText: (song: Song) => string = (song: Song) => {
+  return "";
+};
+
 export const parseXml: (file: string, xml: string) => Song | undefined = (
   file: string,
   xml: string,
