@@ -35,8 +35,7 @@ export const toText: (song: Song) => string = (song: Song) => {
   return `${song.title}${song.alt ? ` (${song.alt})` : ""}${
     song.tags.length ? ` ${song.tags.map((tag) => `#${tag}`).join(" ")}` : ""
   }
-${song.outline.join(" ")}
-
+${song.outline.length ? song.outline.join(" ") + "\n" : ""}
 ${
     song.sections.map((s) =>
       `:${s.id}
@@ -131,6 +130,10 @@ export const parseXml: (file: string, xml: string) => Song | undefined = (
   const { song } = parse(xml) as unknown as {
     song: { title: string; lyrics: string; presentation: string };
   };
+
+  if (!song.title) song.title = "";
+  if (!song.presentation) song.presentation = "";
+  if (!song.lyrics) song.lyrics = "";
 
   const events = [
     song.title,
