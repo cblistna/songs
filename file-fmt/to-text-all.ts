@@ -16,4 +16,3 @@ for await (const file of Deno.readDir(container)) {
     console.log(`Failed parsing '${file.name}': '${xml}'`);
   }
 }
-console.log("...");
