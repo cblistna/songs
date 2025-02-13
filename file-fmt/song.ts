@@ -189,7 +189,8 @@ export const parseText: (text: string) => Song | undefined = (text: string) => {
   const parser = {
     title: (line: string) => {
       const { title, alt, tags: rawTags } = titlePattern.exec(line)?.groups!;
-      const file = [title, alt].filter((i) => i).join(" ") + ".xml";
+      const file = ([title, alt].filter((i) => i).join(" ") + ".xml")
+        .normalize("NFD").replace(/\p{Diacritic}/gu, "");
       const tags = rawTags ? rawTags.split(/ *#/).filter((i) => i) : [];
       state.song = { ...state.song, title, alt, file, tags };
       return "outline";

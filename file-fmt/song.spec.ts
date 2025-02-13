@@ -50,7 +50,7 @@ const xml = `<?xml version='1.0' encoding='UTF-8'?>
 </song>
 `;
 
-const text = `A Song Title (Alternative Title) #Leszek #new
+const text = `A Song Title (Alternative Title ěščř) #Leszek #new
 V1 C V2 C
 
 :V1
@@ -72,9 +72,9 @@ V1 C V2 C
 [D]Chorus  l[a]ine 2
 `;
 const song: Song = {
-  file: "A Song Title Alternative Title.xml",
+  file: "A Song Title Alternative Title escr.xml",
   title: "A Song Title",
-  alt: "Alternative Title",
+  alt: "Alternative Title ěščř",
   sections: [
     {
       id: "V1",

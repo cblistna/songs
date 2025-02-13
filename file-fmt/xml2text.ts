@@ -1,9 +1,11 @@
-import { parseXml, toText, Song } from "./song.ts";
+import { parseXml, Song, toText } from "./song.ts";
 
 const source = Deno.args[0];
 const destination = Deno.args[1];
 
-console.log(`Converting songs from xml -> text, source: '${source}', destination: '${destination}'...`);
+console.log(
+  `Converting songs from xml -> text, source: '${source}', destination: '${destination}'...`,
+);
 
 const songFileName = (file: string) => file.toLowerCase().endsWith(".xml");
 const notSongFileName = (file: string) => !songFileName(file);
