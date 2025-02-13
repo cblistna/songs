@@ -58,3 +58,7 @@ abcb32843eb9912f329272cbbd7f9c53  Prichazime pred tvoji tvar.xml
 ## Contribution
 
 Navigate to https://github.dev/cblistna/songs. Log in as `cblistna-songs`. Contribute.
+
+## TODO
+- [ ] Fix not normalizing properly PL special characters (l)
+- [ ] Fix not normalizing properly [,.:] and other interpunction
