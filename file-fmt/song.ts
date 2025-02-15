@@ -186,11 +186,31 @@ export const parseText: (text: string) => Song | undefined = (text: string) => {
   const lastSection = () => state.song.sections[state.song.sections.length - 1];
   const lastSlide = () => lastSection().slides[lastSection().slides.length - 1];
 
+  const charMap = {
+    "ł": "l",
+    "Ł": "L",
+    "ø": "o",
+    "Ø": "O",
+    "ß": "ss",
+    "æ": "ae",
+    "Æ": "AE",
+    "ð": "d",
+    "Ð": "D",
+    "þ": "th",
+    "Þ": "TH",
+    "đ": "d",
+    "Đ": "D",
+    "ı": "i",
+    "ſ": "s",
+  } as Record<string, string>;
+
   const parser = {
     title: (line: string) => {
       const { title, alt, tags: rawTags } = titlePattern.exec(line)?.groups!;
-      const file = ([title, alt].filter((i) => i).join(" ") + ".xml")
-        .normalize("NFD").replace(/\p{Diacritic}/gu, "");
+      const file = [title, alt].filter((i) => i).join(" ")
+        .normalize("NFD").replace(/\p{Diacritic}/gu, "")
+        .replace(/[^\x00-\x7f]/g, (c) => charMap[c] ?? c)
+        .replace(/[^a-zA-Z0-9 ]/g, "") + ".xml";
       const tags = rawTags ? rawTags.split(/ *#/).filter((i) => i) : [];
       state.song = { ...state.song, title, alt, file, tags };
       return "outline";
