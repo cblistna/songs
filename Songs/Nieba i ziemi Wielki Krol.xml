@@ -1,39 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Nieba i Ziemi Wielki Król</title>
-  <lyrics>[V1A]
+  <lyrics>[V1]
  Nieba i ziemi Wielki Król
  Zbawiciel, zmartwychwstały Pan
  Chwałę i cześć i moc i hołd
  Przed Twój przynoszę tron.
 
-[V1B]
+[V2]
  Święty, Święty jesteś godzien
  By oddawać Tobie hołd
  Wznoszę cześć i uwielbienie
  Z aniołami śpiewam Ci.
- 
-[V1C]
+
+[V3]
  Chwała, chwała Alleluja
  Synu Boga, Ciebie czczę
  Zasiądź w Swoim majestacie
  Ja przed Tobą kłaniam się.
-</lyrics>
-  <author></author>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <backgrounds resize="screen" keep_aspect="true" link="false" background_as_text="true"/>
+  </lyrics>
+  <presentation>V1 V2 V3</presentation>
 </song>
