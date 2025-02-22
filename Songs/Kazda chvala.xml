@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
-  <title>Ješua</title>
-  <lyrics>[V]
- Mého srdce Král,
- krásou vyniká
- nad tisíc, nad tisíc.
+  <title>Každá chvála</title>
+  <lyrics>[C]
+ Každá chvála patří Bohu
+ každý tón pro jeho slávu
+ každá chvála
+ každá chvála
+ mu náleží
 
-[C]
- Ješua
+[V1]
+ O aleluja nejvyššímu
+ sláva aleluja jedinému
+ každá chvála
+ každá chvála
+ mu náleží
 
 [B]
- Tvé je království
- Tvá je všechna moc
- Tvá je sláva navěky. Amen.</lyrics>
+ Bůh spasitel
+ Bůh můj lékař
+ Bůh záchrance
+ Chvalme Ho
+ Chvalme Ho
+
+</lyrics>
   <author></author>
   <copyright></copyright>
   <hymn_number></hymn_number>
-  <presentation>C V B C</presentation>
+  <presentation>C V1 C V1 C V1 B B C</presentation>
   <ccli></ccli>
   <capo print="false"></capo>
   <key></key>

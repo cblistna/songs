@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Wznoszę Alleluja</title>
-  <lyrics>[V1a] 
- Wznoszę Alleluja w obecności nieprzyjaciół mych 
- Wznoszę Alleluja, uciszę tym niewiary krzyk 
-[V1b] 
- Wznoszę Alleluja, ta melodia moją bronią jest 
- Wznoszę Alleluja, niebo walczy zamiast mnie 
+  <lyrics>[V1] 
+ Wznoszę Alleluja
+ w obecności nieprzyjaciół mych 
+ Wznoszę Alleluja,
+ uciszę tym niewiary krzyk ||
+ Wznoszę Alleluja,
+ ta melodia moją bronią jest 
+ Wznoszę Alleluja
+ niebo walczy zamiast mnie 
  
-[C1]
- Śpiewam tę pieśń, kiedy dookoła sztorm 
- Głośniej i groźniej niech uwielbienia zabrzmi ton 
- Z prochów nadzieja powstaje znów 
- Śmierć pokonana, na wieki żyje Król 
+[C]
+ Śpiewam tę pieśń,
+ kiedy dookoła sztorm 
+ Głośniej i groźniej
+ niech uwielbienia zabrzmi ton ||
+ Z prochów nadzieja
+ powstaje znów 
+ Śmierć pokonana,
+ na wieki żyje Król 
  
 [V2] 
- Wznoszę Alleluja, kiedy trudnych pytań tyle wciąż,
- Wznoszę Alleluja, zobaczę, jak ucieka mrok 
- Wznoszę Alleluja, wszystko we mnie wielbi Cię 
- Wznoszę Alleluja, strach już nie zatrzyma mnie 
+ Wznoszę Alleluja,
+ kiedy trudnych pytań tyle wciąż,
+ Wznoszę Alleluja,
+ zobaczę, jak ucieka mrok ||
+ Wznoszę Alleluja,
+ wszystko we mnie wielbi Cię 
+ Wznoszę Alleluja,
+ strach już nie zatrzyma mnie 
  
-[C2a] 
+[B1] 
  Śpiewam jeszcze głośniej 
  W obecności nieprzyjaciół mych 
  Śpiewam jeszcze głośniej 
  Uciszę tym niewiary krzyk 
 
-[C2b] 
+[B2] 
  Śpiewam jeszcze głośniej 
  Ta melodia moją bronią jest 
  Śpiewam jeszcze głośniej 
@@ -35,7 +46,7 @@
   <author></author>
   <copyright></copyright>
   <hymn_number></hymn_number>
-  <presentation></presentation>
+  <presentation>V1 C C V2 C  C B1 B2 C C</presentation>
   <ccli></ccli>
   <capo print="false"></capo>
   <key></key>
