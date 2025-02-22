@@ -53,7 +53,7 @@ jobs:
           deno compile --allow-all --target x86_64-pc-windows-msvc --output update-songs.exe update-songs.ts
 
       - name: Upload executable tools
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: update-songs
           path: update-songs.exe
