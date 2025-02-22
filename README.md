@@ -60,5 +60,6 @@ abcb32843eb9912f329272cbbd7f9c53  Prichazime pred tvoji tvar.xml
 Navigate to https://github.dev/cblistna/songs. Log in as `cblistna-songs`. Contribute.
 
 ## TODO
+- [ ] Some song lines are not trimmed, trailing whitespace (tabs or space) are mangling slides. Transform xml -> text -> xml should fix it. Ensure file names with alternative name are not lost.
 - [x] Fix not normalizing properly PL special characters (l)
 - [x] Fix not normalizing properly [,.:] and other interpunction
