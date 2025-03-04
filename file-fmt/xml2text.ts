@@ -9,7 +9,7 @@ console.log(
 
 const songFileName = (file: string) => file.toLowerCase().endsWith(".xml");
 const notSongFileName = (file: string) => !songFileName(file);
-const toTextFileName = (song: Song) => song.file.replace(/.xml$/, ".txt");
+const toTextFileName = (song: Song) => song.file.replace(/\.xml$/, ".txt");
 
 let songs = 0;
 let failed = 0;
@@ -19,7 +19,8 @@ for await (const file of Deno.readDir(source)) {
   try {
     const song = parseXml(file.name, xml);
     const text = toText(song);
-    await Deno.writeTextFile(`${destination}/${toTextFileName(song)}`, text);
+    // await Deno.writeTextFile(`${destination}/${toTextFileName(song)}`, text);
+    await Deno.writeTextFile(`${destination}/${file.name.replace(/\.xml$/, ".txt")}`, text);
     songs++;
   } catch (err) {
     console.log(`Failed parsing '${file.name}'.`);
