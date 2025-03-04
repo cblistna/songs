@@ -13,6 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Generate version
         run: |
           echo "VERSION=$(TZ='Europe/Prague' date +'%y%m%dT%H%M')" >> $GITHUB_ENV
@@ -21,14 +26,21 @@ jobs:
         run: |
           echo "ARTIFACT=songs-v${{ env.VERSION }}.zip" >> $GITHUB_ENV
 
+      - name: Build songs to OS format
+        run: |
+          mkdir -p build/Songs
+          deno run -A file-fmt/text2xml.ts songs-text/ build/Songs/
+
       - name: Archive
         run: |
+          cd build
           zip -r -UN=UTF8 ${{ env.ARTIFACT }} Songs >/dev/null
+          cd ..
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ env.ARTIFACT }}"
+          artifacts: "build/${{ env.ARTIFACT }}"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: "songs-v${{ env.VERSION }}"
           name: "Songs v${{ env.VERSION }}"
