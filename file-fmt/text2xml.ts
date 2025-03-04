@@ -18,7 +18,7 @@ for await (const file of Deno.readDir(source)) {
   try {
     const song = parseText(text);
     const xml = toXml(song);
-    await Deno.writeTextFile(`${destination}/${song.file.relace(/\.txt$/, ".xml")}`, xml);
+    await Deno.writeTextFile(`${destination}/${song.file.replace(/\.txt$/, ".xml")}`, xml);
     songs++;
   } catch (err) {
     console.log(`Failed parsing '${file.name}'.`);
