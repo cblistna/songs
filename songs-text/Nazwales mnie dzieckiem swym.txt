@@ -1,4 +1,5 @@
-nazvales mnie dzickiem
+Nazwałeś mnie dzieckiem swym
+V1 C1 V2 C2 B C2
 
 :V1
 Kimże jestem, by nieba Król
@@ -7,37 +8,35 @@ Dzięki Niemu dziś jestem tu
 On pokochał mnie
 On pokochał mnie
 
-:V2
+:C1
 Kto zaufa Ci
 Może wolnym być
 Jestem dzieckiem Twym
 Ufam Ci
 
-:V3
+:V2
 Łaską swą On odkupił mnie
 W Nim wolność mam
 Kiedy więził mnie strach i grzech
 Jezus za mnie zmarł
 Tak, On za mnie zmarł
 
-:V4
+:C2
 Kto zaufa Ci
 Może wolnym być
 Jestem dzieckiem Twym
 Ufam Ci
 
-:V5
 Swego domu drzwi
 Otworzyłeś mi
 Jestem dzieckiem Twym
 Ufam Ci
 
-:V6a
+:B
 Ty mnie kochasz
 Nie opuszczasz
 Nazwałeś mnie dzieckiem swym
 
-:V6b
 Jesteś ze mną
 Tobie ufam
 Nazwałeś mnie dzieckiem swym
