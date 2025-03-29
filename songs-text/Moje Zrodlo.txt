@@ -1,4 +1,5 @@
 Moje Źródło
+V1 V2 C V3 B1 B2 C
 
 :V1
 Prawdziwa, czysta woda życia
@@ -12,26 +13,34 @@ stawiam kolejny krok
 Panie, proszę Cię mów,
 przemieniaj mnie!
 
-:V3
+:C
 Moje źródło nieskończone
 jakby niebo było tutaj
 Moja dusza nasycona
 wodo życia we mnie płyń.
 
-:V4
+:V3
 Niczego więcej już nie pragnę
 Napełnia mnie Twój Święty Duch
 Ożywia i leczy całe wnętrze
 To prawda, że Ty kochasz mnie
 
-:V5
-Ty odpłacisz mi, odpowiesz na wołanie
-całym sercem czekam na Twój dotyk
-Dajesz znaleźć się zawsze, gdy Cię szukam
+:B1
+Ty odpłacisz mi,
+odpowiesz na wołanie
+całym sercem
+czekam na Twój dotyk
+
+Dajesz znaleźć się
+zawsze, gdy Cię szukam
 w Twoim źródle jest moc.
 
-:V6
-Chcę do przodu iść, więc potrzebuję Ciebie
-z Tobą w drodze nic mnie nie powstrzyma
-Tam, gdzie jesteś Ty czeka mnie zwycięstwo
+:B2
+Chcę do przodu iść,
+więc potrzebuję Ciebie
+z Tobą w drodze
+nic mnie nie powstrzyma
+
+Tam, gdzie jesteś Ty
+czeka mnie zwycięstwo
 jesteś wszystkim, co mam.
