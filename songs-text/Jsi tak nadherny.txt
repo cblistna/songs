@@ -1,4 +1,5 @@
-jsi tak nádherný
+Jsi tak nádherný
+V1 B1 C V1 B1 C B2 C
 
 :V1
 Jsi tak nádherný, Pane můj,
@@ -6,15 +7,15 @@ v slovech svých, v lásce Tvé.
 Jsi tak nádherný, Pane můj,
 v moci své, v oběti své.
 
-:C1
+:B1
 V Tvém kříži, mám spasení,
 díky Tobě jsem, svobodný.
 
-:V2
+:C
 Buď Tobě sláva, sláva.
 Buď Tobě sláva, sláva.
 Buď Tobě sláva, sláva, Ježíši.
 
-:C2
+:B2
 A korunován trním,
 stal ses navždy mocným Králem

@@ -1,22 +1,24 @@
 Bůh Touží
 
-:V1A
-Bůh touží, abychom všichni přišli do nebe,
-na nádherné místo, kde On sám přebývá.
+:V1
+Bůh touží, abychom všichni
+přišli do nebe,
+na nádherné místo,
+kde On sám přebývá.
 
-:V1B
+:V2	
 Kde jsou proudy živé vody,
 tam nás zavede,
 tam kde září světlo
 slávy Beránka.
 
-:V1C
+:V3
 Nebe voní modlitbou,
 jako bys kráčel jarní zahradou,
 Jednu malou kytku
 do nebe teď posílám.
 
-:V1D
+:V4
 Dej ať slovo Tvé
 v nás vždy přebývá,
 ať je  vyvýšená sláva Tvá,

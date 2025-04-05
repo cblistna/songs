@@ -1,4 +1,5 @@
 Ježíši, já vím
+V1 V2 C V3 C
 
 :V1
 Ježíši, já vím,
@@ -6,9 +7,11 @@ Ježíši, já vím,
 Blízkost Tvá, je dar,
 nenechám si ho vzít.
 
-:P
-Vím, že Ty jsi mi dal život svůj!
-Před trůnem Tvým ted´zpívat chci!
+:V2
+Vím, že Ty
+jsi mi dal život svůj!
+Před trůnem Tvým
+ted´zpívat chci!
 
 :C
 Ty jsi svatý Bůh (Halelujá)
@@ -16,7 +19,7 @@ Ty jsi svatý Pán (Halelujá)
 Vším, co mám Tě uctívám!
 Vším, co mám Tě uctívám!
 
-:V2
+:V3
 Tobě blízko být
 a v Tvém království žít.
 Jsi můj Bůh a Král,
