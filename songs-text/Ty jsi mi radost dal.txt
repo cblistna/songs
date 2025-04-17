@@ -1,10 +1,10 @@
 Ty jsi mi radost dal
+V1 V2 V3 V4 V5
 
 :V1
-Ty jsi mi radost dal
-
-Ó, Ježíši, Ty jsi Pán a Král
-Ty jsi mi radost dal
+Ty jsi mi radost dal.
+Ó, Ježíši, Ty jsi Pán a Král,
+Ty jsi mi radost dal.
 
 :V2
 Ty jsi mi lásku dal...
@@ -13,16 +13,7 @@ Ty jsi mi lásku dal...
 Ty jsi mi pokoj dal...
 
 :V4
-Ty jsi mi sebe dal...
+Ty jsi mi naději dal...
 
 :V5
-Ty jsi mi víru dal...
-
-:V6
-Ty jsi mi život dal...
-
-:V7
-Tys mi naději dal...
-
-:V8
-Tys mi svobodu dal...
+Ty jsi mi sebe dal...
