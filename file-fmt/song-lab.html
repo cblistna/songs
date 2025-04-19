@@ -2,13 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Song Lyrics with Chords</title>
+  <title>Song Lyrics with Chords (Monospace)</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 2em; }
     .section { margin-bottom: 2em; }
     .section-title { font-weight: bold; font-size: 1.2em; margin-bottom: 0.5em; }
     .line { display: flex; flex-direction: row; margin-bottom: 0.2em; flex-wrap: wrap; }
-    .lyrics { font-size: 1.1em; white-space: pre; letter-spacing: 0.02em; display: flex; }
+    .lyrics {
+      font-family: 'Consolas', 'Courier New', Courier, monospace;
+      font-size: 1.15em;
+      white-space: pre;
+      letter-spacing: 0.02em;
+      display: flex;
+    }
     .separator { height: 1.2em; }
     select, label { margin-right: 1em; }
     .lyric-cell {
@@ -18,6 +24,7 @@
       width: 1ch;
       text-align: center;
       position: relative;
+      font-family: inherit;
     }
     .chord-above {
       font-size: 0.75em;
@@ -28,6 +35,7 @@
       white-space: pre;
       visibility: visible;
       height: 1em;
+      font-family: inherit;
     }
     .chord-above.hidden {
       visibility: hidden;
@@ -36,11 +44,12 @@
       line-height: 1.2em;
       min-height: 1.2em;
       white-space: pre;
+      font-family: inherit;
     }
   </style>
 </head>
 <body>
-  <h1>Song Lyrics with Chords</h1>
+  <h1>Song Lyrics with Chords (Monospace)</h1>
   <div>
     <label>Key:
       <select id="keySelect"></select>
