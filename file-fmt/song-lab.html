@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Song Lyrics with Chords</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 2em; }
+    .section { margin-bottom: 2em; }
+    .section-title { font-weight: bold; font-size: 1.2em; margin-bottom: 0.5em; }
+    .line { display: flex; flex-direction: row; margin-bottom: 0.2em; flex-wrap: wrap; }
+    .lyrics { font-size: 1.1em; white-space: pre; letter-spacing: 0.02em; display: flex; }
+    .separator { height: 1.2em; }
+    select, label { margin-right: 1em; }
+    .lyric-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 1ch;
+      text-align: center;
+      position: relative;
+    }
+    .chord-above {
+      font-size: 0.75em;
+      color: #3366cc;
+      font-weight: bold;
+      line-height: 1;
+      min-height: 1em;
+      white-space: pre;
+      visibility: visible;
+      height: 1em;
+    }
+    .chord-above.hidden {
+      visibility: hidden;
+    }
+    .lyric-char {
+      line-height: 1.2em;
+      min-height: 1.2em;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <h1>Song Lyrics with Chords</h1>
+  <div>
+    <label>Key:
+      <select id="keySelect"></select>
+    </label>
+    <label>Capo:
+      <select id="capoSelect"></select>
+    </label>
+    <label>
+      <input type="checkbox" id="showChords" checked>
+      Show chords
+    </label>
+  </div>
+  <div id="song"></div>
+
+  <script>
+    // --- SONG DATA EXAMPLE ---
+    const songData = {
+      "V1": [
+        "1Line number 3)one",
+        "",
+        "5Line number 1-two"
+      ],
+      "V2": [
+        "1Line number 3)one",
+        "5)-Line number 1#two"
+      ]
+    };
+
+    // --- CHORD THEORY ---
+    const FLATS = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    const SHARPS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const KEYS = [
+      'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb',
+      'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'
+    ];
+
+    function getScale(key) {
+      let idx = SHARPS.indexOf(key);
+      if (idx === -1) idx = FLATS.indexOf(key);
+      const intervals = [2,2,1,2,2,2,1];
+      let scale = [idx];
+      for (let i = 0; i < 6; i++) {
+        scale.push((scale[i] + intervals[i]) % 12);
+      }
+      return scale;
+    }
+
+    function getChordName(num, key, modifier, capo) {
+      const scale = getScale(key);
+      let idx = (parseInt(num, 10) - 1) % 7;
+      let noteIdx = scale[idx];
+
+      // Parse modifiers: order doesn't matter, can combine
+      let isMinor = modifier.includes(')');
+      let isSharp = modifier.includes('#');
+      let isFlat = modifier.includes('-');
+
+      if (isSharp) noteIdx = (noteIdx + 1) % 12;
+      if (isFlat) noteIdx = (noteIdx + 11) % 12;
+      // Capo lowers the pitch
+      if (capo > 0) noteIdx = (noteIdx + 12 - capo) % 12;
+
+      let chordRoot = SHARPS[noteIdx];
+      let chordType = isMinor ? 'm' : '';
+      return chordRoot + chordType;
+    }
+
+    // --- UI SETUP ---
+    const keySelect = document.getElementById('keySelect');
+    KEYS.forEach(k => {
+      let opt = document.createElement('option');
+      opt.value = k;
+      opt.textContent = k;
+      keySelect.appendChild(opt);
+    });
+    keySelect.value = 'C';
+
+    const capoSelect = document.getElementById('capoSelect');
+    for (let i = 0; i <= 11; i++) {
+      let opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = i;
+      capoSelect.appendChild(opt);
+    }
+    capoSelect.value = 0;
+
+    const showChordsCheckbox = document.getElementById('showChords');
+
+    // --- SONG RENDERING ---
+    function parseLine(line, key, capo, showChords) {
+      // Chord encoding: digit [1-7] with any combination of ')', '#', '-'
+      let regex = /([1-7])([)\-#]*)/g;
+      let lastIdx = 0;
+      let match;
+
+      let lyric = '';
+      let chordMap = []; // chordMap[i] is the chord above lyric[i]
+
+      while ((match = regex.exec(line)) !== null) {
+        let [full, num, modifier] = match;
+        let idx = match.index;
+
+        // Text before chord
+        if (idx > lastIdx) {
+          let text = line.slice(lastIdx, idx);
+          for (let c of text) {
+            lyric += c;
+            chordMap.push(null);
+          }
+        }
+        // Chord: will be shown above the *next* lyric character
+        let chordName = getChordName(num, key, modifier, capo);
+        chordMap.push(chordName);
+        lastIdx = idx + full.length;
+      }
+      // Trailing text
+      if (lastIdx < line.length) {
+        let text = line.slice(lastIdx);
+        for (let c of text) {
+          lyric += c;
+          chordMap.push(null);
+        }
+      }
+
+      // Now, render lyrics with chords above each character as needed
+      let lyricRow = '';
+      for (let i = 0; i < lyric.length; i++) {
+        lyricRow += `<span class="lyric-cell">` +
+          `<span class="chord-above${(!showChords || !chordMap[i]) ? ' hidden' : ''}">${chordMap[i] ? chordMap[i] : '\u00A0'}</span>` +
+          `<span class="lyric-char">${lyric[i]}</span>` +
+        `</span>`;
+      }
+
+      return {lyricLine: lyricRow};
+    }
+
+    function renderSong() {
+      const key = keySelect.value;
+      const capo = parseInt(capoSelect.value, 10);
+      const showChords = showChordsCheckbox.checked;
+      const songDiv = document.getElementById('song');
+      songDiv.innerHTML = '';
+      Object.entries(songData).forEach(([section, lines]) => {
+        let sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section';
+        let title = document.createElement('div');
+        title.className = 'section-title';
+        title.textContent = section;
+        sectionDiv.appendChild(title);
+
+        lines.forEach(line => {
+          if (line.trim() === '') {
+            // Whitespace separator
+            let sep = document.createElement('div');
+            sep.className = 'separator';
+            sectionDiv.appendChild(sep);
+            return;
+          }
+          let {lyricLine} = parseLine(line, key, capo, showChords);
+          let lineDiv = document.createElement('div');
+          lineDiv.className = 'line';
+          let lyricsDiv = document.createElement('div');
+          lyricsDiv.className = 'lyrics';
+          lyricsDiv.innerHTML = lyricLine;
+          lineDiv.appendChild(lyricsDiv);
+          sectionDiv.appendChild(lineDiv);
+        });
+        songDiv.appendChild(sectionDiv);
+      });
+    }
+
+    keySelect.addEventListener('change', renderSong);
+    capoSelect.addEventListener('change', renderSong);
+    showChordsCheckbox.addEventListener('change', renderSong);
+
+    // Initial render
+    renderSong();
+  </script>
+</body>
+</html>
