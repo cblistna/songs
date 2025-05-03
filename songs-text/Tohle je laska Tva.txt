@@ -1,5 +1,5 @@
 Tohle je láska Tvá
-V1 V2 C3 V4 V5 C3 B6
+V1 V2 C V3 V4 C B
 
 :V1
 Kdo zlomí vládu temna a hříchu,
@@ -11,22 +11,23 @@ Kdo silou bouře pohne i skálou,
 Před kým se skláním v úžasu s chválou?
 Je to Král slávy, nad všemi králi Král.
 
-:C3
+:C
 Tohle je láska Tvá a milost úžasná.
 Žes byl na místě mém, Můj kříž jsi nesl sám.
+
 Vydal jsi život svůj, abych byl svobodný.
 Za vše co dals mi, zpívám Ti Ježíši.
 
-:V4
+:V3
 Kdo vrátí řády, kde zmatky vládnou.
 Sirotky přijme s otcovskou láskou.
 Je to králi slávy, nad všemi králi král.
 
-:V5
+:V4
 Kdo světu vládne Pravdou a právem,
 jak slunce září v celé své kráse.
 Je to králi slávy, nad všemi králi král.
 
-:B6
+:B
 Beránku buď sláva čest.
 Sláva Králi jenž hrob nemohl snést.
