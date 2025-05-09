@@ -1,36 +1,32 @@
 Jenom ty Králi můj
+V1 C V2 C B C
 
 :V1
 Jenom Ty Králi můj
-
-:V2a
-1. Jenom Ty Králi můj
 Jsi štítem kam běžím
 Zřídlem blahodárným
 Jsi písní mou
 
-:V2b
 Jenom Ty jsi můj Král
 Ve Tvůj stín se ukrývám
 Jsi mojí záchranou
 Jsi písní mou
 
-:V3
-Ref.:
+:C
 Jsi dobrý Bůh, náš Král, óóó
 Jsi dobrý Bůh, náš Král, óóó
 
-:V4a
-2. Jenom Ty králi můj
+:V2
+Jenom Ty králi můj
 Jsi větrem v plachtách mých
 Kotvou ve vodách zlých
 Jsi písní mou
 
-:V4b
 Jenom Ty jsi můj Král
 V srdci mém silný žár
 Mých dnů jsi ozvěnou
 Jsi písní mou
 
-:B1
-/: Ty mě nikdy nenecháš, nikdy nenecháš padnout :/ 4x
+:B
+Ty mě nikdy nenecháš,
+nikdy nenecháš padnout

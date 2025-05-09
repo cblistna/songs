@@ -1,41 +1,42 @@
 My wierzymy
+V1 V2 C V3 C B C
 
-:V1a
-1. W czasie wielkiej desperacji
+:V1
+W czasie wielkiej desperacji
 gdy zwątpienie wokół nas
 Jest jedynym Fundamentem
 Wiarę swą mamy w Nim
 
-:V1b
+:V2
 W tym złamanym pokoleniu
 Choć ciemność trwa widzimy, że
 tylko w Nim jest wybawienie
-wiarę swą mamy w Nim
+Wiarę swą mamy w Nim
 
-:V2
-Ref.:
-My wierzymy w Boga Ojca, my wierzymy w Syna Moc
-my wierzymy w Duchu Świętym i, że życie mamy w Nim
+:C
+My wierzymy w Boga Ojca
+my wierzymy w Syna Moc
+my wierzymy w Duchu Świętym
+i że życie mamy w Nim
+
+My wierzymy w śmierć na krzyżu
+my wierzymy, że zwyciężył zło
+my wierzymy w Zmartwychwstanie
+i że Pan powróci znów!
 
 :V3
-My wierzymy w śmierć na krzyżu, my wierzymy, że zwyciężył zło my wierzymy w Zmartwychwstanie i, że Pan powróci znów!
-
-:V4
-2. Miejmy wiarę niewzruszoną
+Miejmy wiarę niewzruszoną
 większą niż to mówi pieśń
 w czasie pokus i słabości
-/: wiarę swą mamy w Nim :/
+Wiarę swą mamy w Nim
+Wiarę swą mamy w Nim
 
-:V5
-Ref.: My wierzymy w Boga Ojca...
-
-:B1A
+:B
 Niech zgubieni swój odnajdą dom
 miłość pełna w nim zapanuje znów
 Kościół wreszcie niech pokocha świat
-
-:B1B
 Wiarę swą mamy w Nim
+
 bramy piekieł nie przemogą Go
 Boża Wielka Moc zniszczyła zło
 Wiemy że On sam nie zawiedzie nas
