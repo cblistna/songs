@@ -1,16 +1,17 @@
 Tyś Jak Skała
+V1 V2 B
 
-:V1A
+:V1
 Tyś jak skała, Tyś jak wzgórze,
-Panie nasz  Boźe nasz.
-Tyś jak wiatr  w swej naturze,
-Tyś jest Sworcą  wszystkich nas.
+Panie nasz, Boźe nasz.
+Tyś jak wiatr w swej naturze,
+Tyś jest Stwórcą wszystkich nas.
 
-:V1B
+:V2
 Światłem swym rozswietlasz drogę,
-która prosto wiedzie nas.
+Która prosto wiedzie nas.
 Tam, gdzie zródło Twej miłości,
-gdzie radośnie płynie czas.
+Gdzie radośnie płynie czas.
 
-:V1C
+:B
 Alelu, aleluja
