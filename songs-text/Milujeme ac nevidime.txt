@@ -1,4 +1,5 @@
 Milujeme ač nevidíme
+V1 V2 V3
 
 :V1
 Milujeme ač nevidíme,
@@ -18,7 +19,6 @@ Jsme omyti krví Beránka
 na místě zvaném Golgata,
 otroky hříchu nemusíme déle být.
 
-:V4
 Na kříži svůj život dokonal,
 třetího dne však zmrtvýchvstal,
 otroky hříchu nemusíme déle být.

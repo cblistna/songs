@@ -1,16 +1,18 @@
 Jak wielki jest Bóg
+V1 C V2 C B C
 
 :V1
 To On, nasz Pan i Król
 odziany w majestat Swój,
 Ziemio, raduj się,
 Ziemio, raduj się.
+
 Okrywa światłość Go,
 ucieka ciemność i zło
 i drży na Jego głos,
 i drży na Jego głos
 
-:V2
+:C
 Jak wielki jest Bóg,
 śpiewaj ze mną,
 wielki jest Bóg,
@@ -22,12 +24,13 @@ On czas w swej dłoni ma,
 od wieków na wieki trwa,
 początkiem, końcem On,
 początkiem, końcem On.
+
 Jedyny w Trójcy Bóg,
 Ojciec, Syn i Duch,
 Barankiem jest i lwem,
 Barankiem jest i lwem
 
-:V4
+:B
 Na wieki godzien jest
 przyjąć chwałę, moc i cześć,
 ogłaszać chcę
