@@ -4,12 +4,12 @@ V1 C V2 C B C
 :V1
 Nasz Bóg jest naszą skałą
 Jedynym fundamentem On
-
 Niepewność wokół nas
-Królestwa tracą chwałę
 
+Królestwa tracą chwałę
 Lecz my składamy ufność swą
 W imieniu Jezus
+
 Jezu ufamy Tobie
 
 :C
@@ -22,12 +22,12 @@ Odwieczny Pan, niezwyciężony
 :V2
 Mądrości w nim jest pełnia
 Prawy i kochający Bóg
-
 Kolana ugną się
-Marzenia i nadzieje
 
+Marzenia i nadzieje
 Składamy dziś w imieniu tym
 W imieniu Jezus
+
 Jezu, ufamy Tobie
 
 :B
