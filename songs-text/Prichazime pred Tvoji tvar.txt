@@ -8,10 +8,10 @@ Ty slova života máš,
 kam bychom šli pro dobré zprávy?
 
 :V2
-Přicházíme sklonit svou tvář,
-vzdát chválu do chrámu Tvého.
+Přicházíme před Tvoji tvář,
+skrýt se hloub do stínu Tvých křídel.
 Ty slova života máš,
-vyvádíš nás od všeho zlého.
+nádherné je smět být Tvůj přítel.
 
 :C
 Ty jsi úkryt náš,
@@ -26,13 +26,14 @@ ať zní:
 jen Ty jsi náš Král.
 
 :V3
-Přicházíme před Tvoji tvář,
-skrýt se hloub do stínu Tvých křídel.
-Ty slova života máš,
-nádherné je smět být Tvůj přítel.
-
-:V4
 Přicházíme sklonit svou tvář,
 vyznat úctu skále své spásy.
 Ty slova života máš, my jsme
 Tvůj lid a Ty náš Král jsi!
+
+:V4
+Přicházíme sklonit svou tvář,
+vzdát chválu do chrámu Tvého.
+Ty slova života máš,
+vyvádíš nás od všeho zlého.
+
