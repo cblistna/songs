@@ -1,4 +1,5 @@
 Jsi nádherný
+V1 V2 V3 V4 B
 
 :V1
 Vidím tvou tvář v každém svítání
@@ -34,8 +35,8 @@ Pro svoji nevěstu ty přijdeš si sám
 tam uvidíme tvoji tvář
 Jsi nádherný.
 
-:C
-Vidím tvou tvář
+:B
+Bidím tvou tvář
 jsi nádherný
 jsi nádherný
 nádherný.

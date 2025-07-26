@@ -1,13 +1,14 @@
 Groby zamieniasz w ogrody
+V1 V2 C V3 V4 C B1 T
 
-:v1
+:V1
 Cały ten świat
 Nie dał mi spełnienia
 Ziemski mój skarb
 Niewiele jest wart
 Przeminie jak wiatr
 
-:v2
+:V2
 Lecz odkąd Cię znam
 Żyję już na nowo
 Nie trzeba mi nic
@@ -20,14 +21,14 @@ O, nie ma nikogo jak Ty
 Panie, nie ma
 Nie ma nikogo jak Ty
 
-:v3
+:V3
 Nie muszę się bać
 Że widzisz moje błędy
 Bo dobrze mnie znasz
 I mimo mych wad
 Przyjacielem chcesz być
 
-:v4
+:V4
 I gdziekolwiek się znajdę
 Na górze czy w dolinie
 Pewność mam, że
