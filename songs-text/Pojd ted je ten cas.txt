@@ -1,13 +1,15 @@
 Pojď teď je ten čas
+V1 C
 
 :V1
 Pojď, teď je ten čas jej chválit
 Pojď, své srdce můžeš Králi dát
+
 Pojď, teď je ten čas jej chválit
 Pojď, před Pánem svým teď můžeš stát
 tak pojď
 
-:V2
+:C
 Jednou každý jazyk vyzná, že jsi Pán
 Každý jednou se pokloní
 Navždy slavný poklad zůstává

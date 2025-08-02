@@ -1,21 +1,24 @@
 Řeka tvé lásky
+V1 V2 C
 
-:V1A
-/: Řeka Tvé lásky proudí k nám,
+:V1
+Řeka Tvé lásky proudí k nám,
 přes hory i přes oceán,
 a já své srdce otvírám,
 ať Tvůj Duch dotkne se mne sám.
 
-:V1B
+:V2
 Mám radost, že Tvou lásku znám,
 že v pravdě můžu chodit dál,
-k Tobě své dlaně pozvedám a Tebe vzývám.:/
+k Tobě své dlaně pozvedám
+a Tebe vzývám.
 
-:C1
-Ref: /: Budu jen o Tvé lásce zpívat,
-věčně jen o Tvé lásce zpívat ! :/ 2x
+:C
+Budu jen o Tvé lásce zpívat,
+věčně jen o Tvé lásce zpívat
 
-:V1C
-Pane já radostí tančím, je to bláznivé, já vím.
+:B
+Pane já radostí tančím,
+je to bláznivé, já vím.
 Až Tvou slávu každý spatří,
-potom tančit bude spolu s námi !
+potom tančit bude spolu s námi!
