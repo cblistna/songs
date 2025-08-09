@@ -1,10 +1,11 @@
 Hosana
+V1 C V2 C
 
 :V1
 Hosana, hosana,
 hosana Bohu na nebi.
 
-:C1
+:C
 Jméno slavíme tvé,
 chválí tě srdce mé,
 vyvýšen buď o Bože náš,

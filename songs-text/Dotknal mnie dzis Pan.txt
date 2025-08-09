@@ -1,10 +1,14 @@
 Dotknął mnie dziś Pan
+V1 V2 V3
 
 :V1
-Dotknął mnie dziś Pan i radość ogromną w sercu mam.
+Dotknął mnie dziś Pan
+i radość ogromną w sercu mam.
 
 :V2
-Z tej radości chcę śpiewać i klaskać w dłonie swe.
+Z tej radości chcę śpiewać
+i klaskać w dłonie swe.
 
 :V3
-Więc wszyscy razem chwalmy Go, za to, że trzyma nas ręką Swą.
+Więc wszyscy razem chwalmy Go,
+za to, że trzyma nas ręką Swą.
