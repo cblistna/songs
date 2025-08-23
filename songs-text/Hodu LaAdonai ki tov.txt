@@ -1,4 +1,5 @@
-HODU LADONAI KI TOV
+Hodu LaAdonai ki tov
+V1 V2 V3
 
 :V1
 HODU LADONAI KI TOV,
