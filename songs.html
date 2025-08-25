@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Songs Text Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --highlight-color: #007bff;
+            --error-color: #dc3545;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --border-color: #333333;
+            --highlight-color: #4dabf7;
+            --error-color: #ff6b6b;
+            --success-color: #51cf66;
+            --warning-color: #ffd43b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--highlight-color);
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 16px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--highlight-color);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--highlight-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .theme-toggle {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .status {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .loading {
+            background-color: var(--warning-color);
+            color: #856404;
+        }
+
+        .error {
+            background-color: var(--error-color);
+            color: white;
+        }
+
+        .success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background-color: var(--border-color);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .content-container {
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .text-content {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 80vh;
+            overflow-y: auto;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .highlight {
+            background-color: var(--warning-color);
+            color: #856404;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .song-separator {
+            color: var(--highlight-color);
+            font-weight: bold;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin: 10px 0;
+            padding: 5px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: auto;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--highlight-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>🎵 Songs Text Viewer</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search songs... (e.g. 'Halleluja', 'Jesus')" onkeyup="searchSongs()">
+            <button class="btn btn-primary" onclick="loadSongs()">🔄 Reload</button>
+            <button class="btn btn-secondary" onclick="downloadSongs()" id="downloadBtn" disabled>💾 Download</button>
+        </div>
+
+        <div id="loadingStatus" class="status loading">
+            <div class="spinner"></div>
+            Loading songs from GitHub...
+        </div>
+
+        <div id="errorStatus" class="status error hidden"></div>
+
+        <div id="successStatus" class="status success hidden"></div>
+
+        <div id="statsContainer" class="stats hidden">
+            <div class="stat-item">📄 Total Songs: <span id="totalSongs">0</span></div>
+            <div class="stat-item">🔍 Matches: <span id="matchCount">0</span></div>
+            <div class="stat-item">📅 Release: <span id="releaseInfo">Unknown</span></div>
+        </div>
+
+        <div class="content-container hidden" id="contentContainer">
+            <div class="text-content" id="textContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let songsData = '';
+        let originalContent = '';
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+        // Initialize theme
+        if (isDarkMode) {
+            document.body.setAttribute('data-theme', 'dark');
+            document.querySelector('.theme-toggle').innerHTML = '☀️ Light Mode';
+        }
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            if (isDarkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.querySelector('.theme-toggle').innerHTML = '☀️ Light Mode';
+            } else {
+                document.body.removeAttribute('data-theme');
+                document.querySelector('.theme-toggle').innerHTML = '🌙 Dark Mode';
+            }
+        }
+
+        function showStatus(type, message) {
+            // Hide all status divs
+            document.querySelectorAll('.status').forEach(el => el.classList.add('hidden'));
+            
+            // Show the specific status
+            const statusEl = document.getElementById(type + 'Status');
+            if (statusEl) {
+                statusEl.classList.remove('hidden');
+                if (type === 'error') {
+                    statusEl.textContent = '❌ ' + message;
+                } else if (type === 'success') {
+                    statusEl.textContent = '✅ ' + message;
+                }
+            }
+        }
+
+        function updateStats(songCount, matchCount, releaseTag) {
+            document.getElementById('totalSongs').textContent = songCount;
+            document.getElementById('matchCount').textContent = matchCount;
+            document.getElementById('releaseInfo').textContent = releaseTag || 'Unknown';
+            document.getElementById('statsContainer').classList.remove('hidden');
+        }
+
+        function countSongs(text) {
+            // Count song separators (<<<) to estimate number of songs
+            const separators = text.split('\n<<<\n').length;
+            return Math.max(1, separators);
+        }
+
+        function formatContent(text) {
+            // Replace song separators with styled dividers
+            return text.replace(/\n<<<\n/g, '\n<div class="song-separator">♪ ♫ ♪ ♫ ♪</div>\n');
+        }
+
+        function searchSongs() {
+            const query = document.getElementById('searchBox').value.toLowerCase().trim();
+            const contentEl = document.getElementById('textContent');
+            
+            if (!query) {
+                // Show all content
+                contentEl.innerHTML = formatContent(originalContent);
+                updateStats(countSongs(originalContent), countSongs(originalContent), document.getElementById('releaseInfo').textContent);
+                return;
+            }
+
+            // Split content by songs and filter
+            const songs = originalContent.split('\n<<<\n');
+            const matchingSongs = songs.filter(song => 
+                song.toLowerCase().includes(query)
+            );
+
+            if (matchingSongs.length === 0) {
+                contentEl.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--error-color);">No songs found matching "' + query + '"</div>';
+                updateStats(countSongs(originalContent), 0, document.getElementById('releaseInfo').textContent);
+                return;
+            }
+
+            // Highlight search terms and rejoin
+            const highlightedSongs = matchingSongs.map(song => {
+                const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                return song.replace(regex, '<span class="highlight">$&</span>');
+            });
+
+            const result = highlightedSongs.join('\n<div class="song-separator">♪ ♫ ♪ ♫ ♪</div>\n');
+            contentEl.innerHTML = result;
+            updateStats(countSongs(originalContent), matchingSongs.length, document.getElementById('releaseInfo').textContent);
+        }
+
+        function downloadSongs() {
+            if (!songsData) return;
+            
+            const blob = new Blob([songsData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'songs-collection.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        async function loadSongs() {
+            try {
+                showStatus('loading', '');
+                document.getElementById('contentContainer').classList.add('hidden');
+                document.getElementById('statsContainer').classList.add('hidden');
+                document.getElementById('downloadBtn').disabled = true;
+
+                // Fetch latest release from GitHub with better error handling
+                const releaseResponse = await fetch('https://api.github.com/repos/cblistna/songs/releases/latest', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'Songs-Viewer/1.0'
+                    },
+                    redirect: 'follow'
+                });
+
+                console.log('Release response status:', releaseResponse.status);
+                
+                if (releaseResponse.status === 302) {
+                    // Handle redirect manually
+                    const location = releaseResponse.headers.get('location');
+                    if (location) {
+                        console.log('Following redirect to:', location);
+                        const redirectResponse = await fetch(location, {
+                            headers: {
+                                'Accept': 'application/vnd.github.v3+json',
+                                'User-Agent': 'Songs-Viewer/1.0'
+                            }
+                        });
+                        if (!redirectResponse.ok) {
+                            throw new Error(`Redirect failed: ${redirectResponse.status} ${redirectResponse.statusText}`);
+                        }
+                        const releaseData = await redirectResponse.json();
+                    } else {
+                        throw new Error('Received 302 redirect but no location header');
+                    }
+                } else if (!releaseResponse.ok) {
+                    const errorText = await releaseResponse.text();
+                    console.error('API Error:', errorText);
+                    throw new Error(`GitHub API error: ${releaseResponse.status} ${releaseResponse.statusText}. ${errorText.substring(0, 200)}`);
+                }
+
+                let releaseData;
+                try {
+                    releaseData = await releaseResponse.json();
+                } catch (jsonError) {
+                    console.error('JSON parse error:', jsonError);
+                    throw new Error('Failed to parse GitHub API response');
+                }
+                
+                console.log('Release data:', releaseData);
+                
+                // Find the .txt asset
+                const txtAsset = releaseData.assets.find(asset => 
+                    asset.name.startsWith('songs-v') && asset.name.endsWith('.txt')
+                );
+
+                if (!txtAsset) {
+                    console.log('Available assets:', releaseData.assets.map(a => a.name));
+                    throw new Error('No .txt songs file found in the latest release. Available assets: ' + releaseData.assets.map(a => a.name).join(', '));
+                }
+
+                console.log('Found txt asset:', txtAsset.name, 'URL:', txtAsset.browser_download_url);
+
+                // Download the text content with better error handling
+                const songsResponse = await fetch(txtAsset.browser_download_url, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                
+                console.log('Songs download response status:', songsResponse.status);
+                console.log('Content-Type:', songsResponse.headers.get('content-type'));
+                
+                if (!songsResponse.ok) {
+                    throw new Error(`Failed to download songs: ${songsResponse.status} ${songsResponse.statusText}`);
+                }
+
+                // Handle both text and binary responses
+                const contentType = songsResponse.headers.get('content-type') || '';
+                if (contentType.includes('application/octet-stream') || contentType.includes('application/zip')) {
+                    // If it's binary, get as array buffer and decode as UTF-8
+                    const arrayBuffer = await songsResponse.arrayBuffer();
+                    const decoder = new TextDecoder('utf-8');
+                    songsData = decoder.decode(arrayBuffer);
+                } else {
+                    // If it's text, get as text
+                    songsData = await songsResponse.text();
+                }
+                
+                originalContent = songsData;
+
+                // Display content
+                const contentEl = document.getElementById('textContent');
+                contentEl.innerHTML = formatContent(songsData);
+                
+                // Update UI
+                document.getElementById('contentContainer').classList.remove('hidden');
+                document.getElementById('downloadBtn').disabled = false;
+                
+                const songCount = countSongs(songsData);
+                updateStats(songCount, songCount, releaseData.tag_name);
+                
+                showStatus('success', `Successfully loaded ${songCount} songs from ${releaseData.tag_name}`);
+                
+                // Clear search box
+                document.getElementById('searchBox').value = '';
+
+            } catch (error) {
+                console.error('Error loading songs:', error);
+                
+                // Try alternative approach using CORS proxy if direct access fails
+                if (error.message.includes('302') || error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+                    try {
+                        console.log('Trying CORS proxy approach...');
+                        showStatus('loading', 'Trying alternative download method...');
+                        
+                        // Try using a CORS proxy
+                        const proxyUrl = 'https://api.allorigins.win/get?url=';
+                        const githubApiUrl = encodeURIComponent('https://api.github.com/repos/cblistna/songs/releases/latest');
+                        
+                        const proxyResponse = await fetch(proxyUrl + githubApiUrl);
+                        if (!proxyResponse.ok) {
+                            throw new Error('CORS proxy also failed');
+                        }
+                        
+                        const proxyData = await proxyResponse.json();
+                        const releaseData = JSON.parse(proxyData.contents);
+                        
+                        const txtAsset = releaseData.assets.find(asset => 
+                            asset.name.startsWith('songs-v') && asset.name.endsWith('.txt')
+                        );
+                        
+                        if (!txtAsset) {
+                            throw new Error('No .txt file found via proxy method either');
+                        }
+                        
+                        // Download via proxy
+                        const songProxyUrl = proxyUrl + encodeURIComponent(txtAsset.browser_download_url);
+                        const songProxyResponse = await fetch(songProxyUrl);
+                        
+                        if (!songProxyResponse.ok) {
+                            throw new Error('Failed to download songs via proxy');
+                        }
+                        
+                        const songProxyData = await songProxyResponse.json();
+                        
+                        // Handle both text and binary content from proxy
+                        if (songProxyData.contents) {
+                            songsData = songProxyData.contents;
+                        } else {
+                            // If proxy returns binary data, decode it
+                            const binaryData = atob(songProxyData.data || '');
+                            const bytes = new Uint8Array(binaryData.length);
+                            for (let i = 0; i < binaryData.length; i++) {
+                                bytes[i] = binaryData.charCodeAt(i);
+                            }
+                            const decoder = new TextDecoder('utf-8');
+                            songsData = decoder.decode(bytes);
+                        }
+                        
+                        originalContent = songsData;
+                        
+                        // Display content
+                        const contentEl = document.getElementById('textContent');
+                        contentEl.innerHTML = formatContent(songsData);
+                        
+                        // Update UI
+                        document.getElementById('contentContainer').classList.remove('hidden');
+                        document.getElementById('downloadBtn').disabled = false;
+                        
+                        const songCount = countSongs(songsData);
+                        updateStats(songCount, songCount, releaseData.tag_name);
+                        
+                        showStatus('success', `Successfully loaded ${songCount} songs from ${releaseData.tag_name} (via proxy)`);
+                        
+                        // Clear search box
+                        document.getElementById('searchBox').value = '';
+                        return;
+                        
+                    } catch (proxyError) {
+                        console.error('Proxy method also failed:', proxyError);
+                        showStatus('error', `Both direct and proxy methods failed. Original error: ${error.message}. Proxy error: ${proxyError.message}. Try refreshing the page or check your internet connection.`);
+                    }
+                } else {
+                    showStatus('error', error.message + '. Try refreshing the page or check your internet connection.');
+                }
+            }
+        }
+
+        // Auto-load on page load
+        document.addEventListener('DOMContentLoaded', loadSongs);
+
+        // Handle Enter key in search box
+        document.getElementById('searchBox').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchSongs();
+            }
+        });
+    </script>
+</body>
+</html>
