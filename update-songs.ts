@@ -20,7 +20,7 @@ if (!release.ok) {
 
 const asset = (await release.json()).assets.find((
   asset: Record<string, string>,
-) => asset.name.startsWith("songs-v"));
+) => asset.name.startsWith("songs-v") && asset.name.endsWith(".zip"));
 
 if (!asset) {
   throw new Error(`Songs asset not found in the release.`);
@@ -37,21 +37,21 @@ if (!artifact.body) {
 try {
   const songs = await Deno.lstat("./Songs");
   if (songs.isDirectory) {
-    const ts =  new Intl.DateTimeFormat('sv-SE', {
-    year: "2-digit",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    timeZone: 'Europe/Prague',
-    hour12: false,
-  }).format(new Date())
-    .replaceAll('-', '')
-    .replace(' ', 'T')
-    .replaceAll(':', '');
-    const backup = `Songs-${ts}`
-    await Deno.rename('./Songs', `./${backup}`);
+    const ts = new Intl.DateTimeFormat("sv-SE", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "Europe/Prague",
+      hour12: false,
+    }).format(new Date())
+      .replaceAll("-", "")
+      .replace(" ", "T")
+      .replaceAll(":", "");
+    const backup = `Songs-${ts}`;
+    await Deno.rename("./Songs", `./${backup}`);
     console.log(`Archived 'Songs/' -> '${backup}/'.`);
   }
 } catch (err) { /* ignore */ }
