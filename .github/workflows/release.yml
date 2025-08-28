@@ -26,7 +26,8 @@ jobs:
       - name: Generate artifact names
         run: |
           echo "XML_ARTIFACT=songs-v${{ env.VERSION }}.zip" >> $GITHUB_ENV
-          echo "TXT_ARTIFACT=songs-v${{ env.VERSION }}.txt" >> $GITHUB_ENV
+          # TODO: Re-enable TXT artifact in the future
+          # echo "TXT_ARTIFACT=songs-v${{ env.VERSION }}.txt" >> $GITHUB_ENV
 
       - name: Build songs to OS format
         run: |
@@ -39,20 +40,22 @@ jobs:
           zip -r -UN=UTF8 ${{ env.XML_ARTIFACT }} Songs >/dev/null
           cd ..
 
-      - name: Export songs into single text file
-        run: |
-          deno run -A serialize.ts 'songs-text/*.txt' '<<<' "build/${{ env.TXT_ARTIFACT }}"
+      # TODO: Re-enable TXT export in the future
+      # - name: Export songs into single text file
+      #   run: |
+      #     deno run -A serialize.ts 'songs-text/*.txt' '<<<' "build/${{ env.TXT_ARTIFACT }}"
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
             build/${{ env.XML_ARTIFACT }}
-            build/${{ env.TXT_ARTIFACT }}
+            # TODO: Re-enable TXT artifact in the future
+            # build/${{ env.TXT_ARTIFACT }}
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: "songs-v${{ env.VERSION }}"
           name: "Songs v${{ env.VERSION }}"
-          body: "The release contains zip-archived Songs folder and consolidated text file."
+          body: "The release contains zip-archived Songs folder."
           draft: false
           prerelease: false
 
