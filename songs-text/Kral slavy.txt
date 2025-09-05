@@ -1,30 +1,40 @@
 Král slávy
+V1 V2 C V3 C
 
-:V1A
-Kdo je tím Králem slávy, jenž mě láskou provází
-a stále ke mně mluví něžně slovem svým?
+:V1
+Kdo je tím Králem slávy,
+jenž mě láskou provází
+a stále ke mně mluví
+něžně slovem svým?
 
-:V1B
-Mé svědomí mi říká: Bez odpuštění nelze žít.
-Kdo je tím Králem slávy, jenž mi je nabízí?
+Mé svědomí mi říká
+Bez odpuštění nelze žít.
+Kdo je tím Králem slávy,
+jenž mi je nabízí?
 
-:V1C
-Kdo andělů je Králem? Bůh, co žehná pokojem.
-Kdo otvírá nám nebe a krásu, co je v něm?
+:V2
+Kdo andělů je Králem?
+Bůh, co žehná pokojem.
+Kdo otvírá nám nebe
+a krásu, co je v něm?
 
-:V1D
-Má duše po Něm touží, po milosti, v pravdě stát.
-Kdo je tím Králem slávy? Lidský syn i Bůh a Pán.
+Má duše po Něm touží,
+po milosti, v pravdě stát.
+Kdo je tím Králem slávy?
+Lidský syn i Bůh a Pán
 
-:C1
+:C
 Má jméno Ježíš, drahý Ježíš,
 mocný Pán, v srdci mém Král.
 On je Král slávy.
 
-:V2A
-Kdo je tím Králem slávy? Důstojností oplývá
-a moudrostí se halí, milostivý Král.
+:V3
+Kdo je tím Králem slávy?
+Důstojností oplývá
+a moudrostí se halí,
+milostivý Král.
 
-:V2B
-Je Pánem na nebesích, počátkem všeho stvoření.
-On je tím Králem slávy, on je pro mě vším.
+Je Pánem na nebesích,
+počátkem všeho stvoření.
+On je tím Králem slávy,
+On je pro mě vším

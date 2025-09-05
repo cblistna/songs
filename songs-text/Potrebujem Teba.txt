@@ -1,10 +1,11 @@
-POTREBUJEM TEBA
+Potrebujem Teba
+V1 V2 C V3 C B C
 
 :V1
 Hneď zavčas rána viniem sa k Tebe
 v tichu ťa hľadám; kedy už prídeš?
 Po Tebe túži telo aj duša
-Neustále,       neustále
+Neustále, neustále
 
 :V2
 Bez Tvojho Ducha ostávam prázdny
@@ -13,7 +14,7 @@ Prosím, buď blízko vo dne aj v noci
 Neustále, neustále
 
 :C
-Ref:  Potrebujem Teba ako suchá zem dážď
+Potrebujem Teba ako suchá zem dážď
 len skrze Tvoju milosť môžem rásť
 Potrebujem Teba viac, než svoj dych
 len na Tebe môj život závisí
@@ -25,4 +26,4 @@ Aj keď som šťastný a keď žnem úspech
 Neustále, neustále
 
 :B
-Neustále,        neustále
+Neustále, neustále

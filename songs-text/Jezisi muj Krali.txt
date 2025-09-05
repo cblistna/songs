@@ -1,25 +1,23 @@
 Ježíši, můj Králi
-V1 V2 V3 V4
+V1 C
 
 :V1
 Ježíši, můj Králi
-nikdo není jako Ty.
+nikdo není jako Ty
 Na každý den chválit chci jen
-zázraky Tvé lásky k nám.
+zázraky Tvé lásky k nám
 
-:V2
 Tvá síla mě chrání,
 jsi skála má, jsi můj štít,
 bezpečný jsem v úkrytu Tvém
-nepřestanu chválou znít.
+nepřestanu chválou znít
 
-:V3
+:C
 Křič k Pánu, křič celá země a jásej,
 chval svého Krále každý, kdo hlas má,
 ať padnou skály a hřmí oceán,
-když bude znít jméno Tvé.
+když bude znít jméno Tvé
 
-:V4
 Radostně zpívám o lásce Tvé k nám,
 žasnu nad tím, co jsi sám udělal,
-nevyrovná se nic slávě, co slíbils nám.
+nevyrovná se nic slávě, co slíbils nám
