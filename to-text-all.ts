@@ -10,6 +10,9 @@ for await (const file of Deno.readDir(container)) {
   const xml = await Deno.readTextFile(`${container}/${file.name}`);
   try {
     const song = parseXml(file.name, xml);
+    if (!song) {
+      throw new Error(`Failed to parse XML from ${file.name}`);
+    }
     const text = toText(song);
     console.log(`---\n${text}`);
   } catch (err) {
