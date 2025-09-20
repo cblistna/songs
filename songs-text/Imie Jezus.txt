@@ -1,4 +1,5 @@
 Imię Jezus
+V1 V2 C V3 C C B B C
 
 :V1
 Chcę ogłaszać moc Imienia Jezus
@@ -12,12 +13,6 @@ On zwycięża każdy grzech i zło
 Od Niego mamy wolność i nadzieję
 Imię Jezus
 
-:V3
-Chcę ogłaszać moc Imienia Jezus
-On zwycięża strach, usuwa lęk
-Dla wszystkich, co zmagają się z depresją
-Imię Jezus
-
 :C
 Potężne Imię
 w Nim uzdrowienie
@@ -26,6 +21,12 @@ w Nim życie jest
 Burzy warownie 
 rozprasza ciemność
 rozpala mnie
+
+:V3
+Chcę ogłaszać moc Imienia Jezus
+On zwycięża strach, usuwa lęk
+Dla wszystkich, co zmagają się z depresją
+Imię Jezus
 
 :B
 Ogłaszam to na górach i na ulicach miast:

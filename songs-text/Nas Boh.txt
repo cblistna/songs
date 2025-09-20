@@ -1,4 +1,5 @@
 Náš Boh (Vodu na víno meníš)
+V1 V2 C C V1 V2 C C B C C
 
 :V1
 Vodu na víno meníš
@@ -10,19 +11,18 @@ Zasvietiš v tmách životom
 z prachu nás dvíhaš slovom
 Nikto nie je ako Ty
 
-:V3
+:C
 Náš Boh je väčší
 On je silnejší
 Pane, si viac
 než čo tento svet dáva
 
-:V4
 Rany nám liečiš
 mocný a slávny
 náš Boh
 Si náš Pán
 
-:V5
+:B
 Veď keď náš Boh je za nás
 nemôže vládnuť strach
 keď náš Boh je s nami,
