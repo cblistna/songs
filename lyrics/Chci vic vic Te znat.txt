@@ -1,4 +1,5 @@
 Chci víc, víc Tě znát
+V1 C V2 C
 
 :V1
 K Tobě Pane můj pozvedám duši svou
@@ -6,19 +7,17 @@ V Tebe doufám Bože, stůj nade mnou
 Není bláznovstvím dát naději svou
 do Tvého náručí a být s Tebou
 
-:V2
 Nauč mě znát, kam vedou stezky Tvé
 Nauč mě chodit po cestě Tvé
 
-:V3
-/: Chci víc, víc Tě znát :/
+Chci víc, víc Tě znát
+:C
 
-:V4
+:V2
 Pozvedám oči své k Tobě Pane můj
 Po vodách bez břehů dál hledám Tvůj dům
 Každý den s nadějí se v modlitbě ptám,
 kolik času zde na zemi mám
 
-:V5
 Nauč mě znát, kam vedou stezky Tvé
 nauč mě chodit po cestě Tvé
