@@ -1,4 +1,5 @@
 Můj Bůh
+V1 V2
 
 :V1
 Můj Bůh je můj štít, je mou písní.
