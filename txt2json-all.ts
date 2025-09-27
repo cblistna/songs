@@ -1,6 +1,6 @@
 import { parseText, Song } from "./song.ts";
 
-const songsDirectory = "songs-text/";
+const songsDirectory = "lyrics/";
 
 console.error(
   `Converting songs from text -> json, source: '${songsDirectory}'...`,

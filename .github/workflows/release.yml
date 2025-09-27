@@ -32,7 +32,7 @@ jobs:
       - name: Build songs to OS format
         run: |
           mkdir -p build/Songs
-          deno run -A text2xml.ts songs-text/ build/Songs/
+          deno run -A text2xml.ts lyrics/ build/Songs/
 
       - name: Archive
         run: |
@@ -43,7 +43,7 @@ jobs:
       # TODO: Re-enable TXT export in the future
       # - name: Export songs into single text file
       #   run: |
-      #     deno run -A serialize.ts 'songs-text/*.txt' '<<<' "build/${{ env.TXT_ARTIFACT }}"
+       #     deno run -A serialize.ts 'lyrics/*.txt' '<<<' "build/${{ env.TXT_ARTIFACT }}"
 
       - name: Release
         uses: ncipollo/release-action@v1

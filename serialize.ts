@@ -9,7 +9,7 @@ if (!globPattern || !separator || !outputFile) {
     "Usage: deno run -A serialize.ts <glob-pattern> <separator> <output-file>",
   );
   console.error(
-    "Example: deno run -A serialize.ts 'songs-text/*.txt' '<<<' output.txt",
+    "Example: deno run -A serialize.ts 'lyrics/*.txt' '<<<' output.txt",
   );
   Deno.exit(1);
 }
