@@ -9,4 +9,3 @@
 - creates in memory index of song titles and first line of song lyrics
 - use trigram fuzzy search
 - use lower case letters, remove accents from song title and first line of song when indexing
-- have trigram for every word
