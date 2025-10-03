@@ -1,17 +1,15 @@
-name: Deploy GitHub Pages
+name: Deploy GitHub Pages (gh-pages)
 
 on:
   push:
     branches:
-      - master
+      - main
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
-  deploy:
+  build-and-deploy:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +23,7 @@ jobs:
         with:
           deno-version: v1
 
-      - name: Rebuild songs.json from lyrics
+      - name: Rebuild pages/songs.json from lyrics
         run: |
           mkdir -p pages
           deno cache ./txt2json-all.ts
@@ -34,10 +32,10 @@ jobs:
       - name: Validate pages/songs.json
         run: python3 -c "import json,sys; json.load(open('pages/songs.json'))"
 
-      - name: Upload pages/ as artifact for Pages
-        uses: actions/upload-pages-artifact@v1
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: ./pages
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pages
+          publish_branch: gh-pages
+          allow_empty_commit: true
