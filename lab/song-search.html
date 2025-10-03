@@ -157,7 +157,7 @@
             color: #2d5a2d;
         }
 
-        /* Responsive design */
+        
         @media (max-width: 768px) {
             body {
                 padding: 15px;
@@ -202,7 +202,7 @@
             }
         }
 
-        /* Loading animation */
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -212,7 +212,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        /* Focus styles for accessibility */
+        
         .search-input:focus-visible {
             outline: 3px solid #ff9966;
             outline-offset: 2px;
@@ -251,38 +251,18 @@
     </div>
 
     <script>
-        // Global variables
+        
         let songsData = {};
         let searchTimeout = null;
         let selectedIndex = -1;
         let currentResults = [];
 
-        // Accent removal mapping for Czech, Slovak, and Polish
-        const accentMap = {
-            'á': 'a', 'à': 'a', 'ä': 'a', 'â': 'a', 'ă': 'a', 'ą': 'a',
-            'é': 'e', 'è': 'e', 'ë': 'e', 'ê': 'e', 'ě': 'e', 'ę': 'e',
-            'í': 'i', 'ì': 'i', 'ï': 'i', 'î': 'i',
-            'ó': 'o', 'ò': 'o', 'ö': 'o', 'ô': 'o', 'ő': 'o', 'ô': 'o',
-            'ú': 'u', 'ù': 'u', 'ü': 'u', 'û': 'u', 'ů': 'u', 'ű': 'u',
-            'ý': 'y', 'ÿ': 'y',
-            'č': 'c', 'ć': 'c', 'ç': 'c',
-            'ď': 'd',
-            'ň': 'n', 'ń': 'n',
-            'ř': 'r', 'ŕ': 'r',
-            'š': 's', 'ś': 's',
-            'ť': 't',
-            'ž': 'z', 'ź': 'z', 'ż': 'z',
-            'ł': 'l', 'ĺ': 'l', 'ľ': 'l'
-        };
-
-        // Remove accents from text
-        function removeAccents(text) {
-            return text.toLowerCase().replace(/[^\u0000-\u007E]/g, function(char) {
-                return accentMap[char] || char;
-            });
+        
+        function removeAccents(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         }
 
-        // Load songs data from JSON file
+        
         async function loadSongsData() {
             try {
                 const response = await fetch('songs.json');
@@ -295,16 +275,16 @@
             }
         }
 
-        // Normalize text for trigram generation
+        
         function normalizeText(text) {
-            return text
+            return removeAccents(text)
                 .toLowerCase()
-                .replace(/[^\w\s]/g, '') // Remove all punctuation and diacritics
-                .replace(/\s+/g, ' ')    // Replace multiple spaces with single space
+                .replace(/[^a-z0-9\s]/g, '') 
+                .replace(/\s+/g, ' ')        
                 .trim();
         }
 
-        // Clean song title for display (remove text after semicolon)
+        
         function cleanTitleForDisplay(title) {
             const semicolonIndex = title.indexOf(';');
             if (semicolonIndex !== -1) {
@@ -313,33 +293,32 @@
             return title;
         }
 
-        // Get first line of first section for preview
+        
         function getFirstLine(songData) {
             if (songData.sections && Array.isArray(songData.sections) && songData.sections.length > 0) {
                 const firstSection = songData.sections[0];
                 if (firstSection.slides && Array.isArray(firstSection.slides) && firstSection.slides.length > 0) {
                     const firstSlide = firstSection.slides[0];
                     if (Array.isArray(firstSlide) && firstSlide.length > 0) {
-                        return firstSlide[0]; // Return first line
+                        return firstSlide[0]; 
                     }
                 }
             }
             return '';
         }
 
-        // Generate trigrams for entire text (character-level)
-        function generateTrigrams(text) {
-            const normalizedText = normalizeText(text);
-            if (normalizedText.length < 3) return [normalizedText];
-            
+        
+        function createPostgresStyleTrigrams(text) {
+            const normalized = normalizeText(text);
+            const padded = '  ' + normalized + ' ';
             const trigrams = new Set();
-            for (let i = 0; i <= normalizedText.length - 3; i++) {
-                trigrams.add(normalizedText.substring(i, i + 3));
+            for (let i = 0; i < padded.length - 2; i++) {
+                trigrams.add(padded.substring(i, i + 3));
             }
             return Array.from(trigrams);
         }
 
-        // Calculate Jaccard similarity between two sets of trigrams
+        
         function calculateSimilarity(trigrams1, trigrams2) {
             const set1 = new Set(trigrams1);
             const set2 = new Set(trigrams2);
@@ -350,49 +329,59 @@
             return union.size === 0 ? 0 : intersection.size / union.size;
         }
 
-        // Search songs using trigram similarity
+        
         function searchSongs(query) {
             if (query.length < 3) return [];
             
-            const queryTrigrams = generateTrigrams(query);
+            const queryTrigrams = createPostgresStyleTrigrams(query);
             const results = [];
             
             Object.keys(songsData).forEach(songTitle => {
-                const songTrigrams = generateTrigrams(songTitle);
-                const similarity = calculateSimilarity(queryTrigrams, songTrigrams);
+                const firstLine = getFirstLine(songsData[songTitle]);
                 
-                if (similarity >= 0.1) {
-                    const firstLine = getFirstLine(songsData[songTitle]);
+                
+                const titleTrigrams = createPostgresStyleTrigrams(songTitle);
+                const titleSimilarity = calculateSimilarity(queryTrigrams, titleTrigrams);
+                
+                
+                const firstLineTrigrams = createPostgresStyleTrigrams(firstLine);
+                const firstLineSimilarity = calculateSimilarity(queryTrigrams, firstLineTrigrams);
+                
+                
+                const maxSimilarity = Math.max(titleSimilarity * 1.1, firstLineSimilarity);
+                
+                if (maxSimilarity >= 0.1) {
                     results.push({
                         title: songTitle,
                         displayTitle: cleanTitleForDisplay(songTitle),
                         firstLine: firstLine,
-                        similarity: similarity,
+                        similarity: maxSimilarity,
+                        titleMatch: titleSimilarity > firstLineSimilarity,
                         data: songsData[songTitle]
                     });
                 }
             });
             
-            // Sort by similarity (descending) and return top 10
+            
             return results
                 .sort((a, b) => b.similarity - a.similarity)
                 .slice(0, 10);
         }
 
-        // Highlight matching parts in song title
+        
         function highlightMatches(title, query) {
             if (query.length < 3) return title;
             
-            // Find common trigrams and highlight them
-            const queryTrigrams = generateTrigrams(query);
-            const titleTrigrams = generateTrigrams(title);
+            
+            const queryTrigrams = createPostgresStyleTrigrams(query);
+            const titleTrigrams = createPostgresStyleTrigrams(title);
             
             let highlightedTitle = title;
             const commonTrigrams = queryTrigrams.filter(trigram => 
                 titleTrigrams.includes(trigram) && trigram.length === 3
             );
             
-            // Sort by length (longer first) to avoid nested highlighting issues
+            
             commonTrigrams.sort((a, b) => b.length - a.length);
             
             commonTrigrams.forEach(trigram => {
@@ -403,12 +392,12 @@
             return highlightedTitle;
         }
 
-        // Escape special regex characters
+        
         function escapeRegExp(string) {
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
-        // Display search results
+        
         function displayResults(results, query) {
             const resultsContainer = document.getElementById('searchResults');
             
@@ -419,7 +408,7 @@
             
             resultsContainer.innerHTML = '';
             currentResults = results;
-            selectedIndex = 0; // Auto-select first result
+            selectedIndex = 0; 
             
             results.forEach((result, index) => {
                 const item = document.createElement('div');
@@ -447,14 +436,14 @@
             resultsContainer.style.display = 'block';
         }
 
-        // Clear current selection
+        
         function clearSelection() {
             document.querySelectorAll('.search-result-item').forEach(item => {
                 item.classList.remove('selected');
             });
         }
 
-        // Handle search with debouncing
+        
         function handleSearch() {
             const query = document.getElementById('searchInput').value.trim();
             
@@ -473,7 +462,7 @@
             }, 100);
         }
 
-        // Handle keyboard navigation
+        
         function handleKeydown(event) {
             const resultsContainer = document.getElementById('searchResults');
             
@@ -506,7 +495,7 @@
             }
         }
 
-        // Move selection up or down
+        
         function moveSelection(direction) {
             if (currentResults.length === 0) return;
             
@@ -526,21 +515,21 @@
             }
         }
 
-        // Hide search results
+        
         function hideResults() {
             document.getElementById('searchResults').style.display = 'none';
             selectedIndex = -1;
             currentResults = [];
         }
 
-        // Setup event listeners
+        
         function setupEventListeners() {
             const searchInput = document.getElementById('searchInput');
             
             searchInput.addEventListener('input', handleSearch);
             searchInput.addEventListener('keydown', handleKeydown);
             
-            // Hide results when clicking outside
+            
             document.addEventListener('click', function(event) {
                 if (!event.target.closest('.search-container')) {
                     hideResults();
@@ -548,28 +537,28 @@
             });
         }
 
-        // Select and display song details
+        
         function selectSong(result) {
             const detailsContent = document.getElementById('songDetailsContent');
             const titleElement = document.getElementById('songDetailsTitle');
             
-            // Update title
+            
             titleElement.textContent = result.displayTitle;
             
-            // Format song content in readable format
+            
             const formattedContent = formatSongContent(result.data);
             
             detailsContent.innerHTML = `<div class="song-lyrics">${formattedContent}</div>`;
             
-            // Hide search results
+            
             hideResults();
         }
 
-        // Format song content for display
+        
         function formatSongContent(songData) {
             let content = '';
             
-            // Add sections without title (title is now in header)
+            
             if (songData.sections && Array.isArray(songData.sections)) {
                 songData.sections.forEach((section, sectionIndex) => {
                     if (section.slides && Array.isArray(section.slides)) {
@@ -581,7 +570,7 @@
                             }
                         });
                         
-                        // Add space between sections (except after the last section)
+                        
                         if (sectionIndex < songData.sections.length - 1) {
                             content += '\n';
                         }
@@ -592,7 +581,7 @@
             return content.trim();
         }
 
-        // Format JSON with basic syntax highlighting
+        
         function formatJson(obj) {
             const jsonString = JSON.stringify(obj, null, 2);
             
@@ -600,13 +589,13 @@
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
-                .replace(/("([^"\\]|\\.)*")/g, '<span style="color: #2d5a2d; font-weight: bold;">$1</span>') // strings
-                .replace(/(\b\d+\.?\d*\b)/g, '<span style="color: #ff6b35;">$1</span>') // numbers
-                .replace(/(\btrue\b|\bfalse\b|\bnull\b)/g, '<span style="color: #ff6b35; font-style: italic;">$1</span>') // booleans/null
-                .replace(/("[^"]*")(\s*:)/g, '<span style="color: #2d7a2d; font-weight: bold;">$1</span>$2'); // keys
+                .replace(/("([^"\\]|\\.)*")/g, '<span style="color: #2d5a2d; font-weight: bold;">$1</span>') 
+                .replace(/(\b\d+\.?\d*\b)/g, '<span style="color: #ff6b35;">$1</span>') 
+                .replace(/(\btrue\b|\bfalse\b|\bnull\b)/g, '<span style="color: #ff6b35; font-style: italic;">$1</span>') 
+                .replace(/("[^"]*")(\s*:)/g, '<span style="color: #2d7a2d; font-weight: bold;">$1</span>$2'); 
         }
 
-        // Initialize the application
+        
         document.addEventListener('DOMContentLoaded', function() {
             loadSongsData();
             setupEventListeners();
