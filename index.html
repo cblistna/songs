@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vyhledávání písní</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+        min-height: 100vh;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        color: #2d5a2d;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .header p {
+        color: #5a7a5a;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+      }
+
+      .search-container {
+        position: relative;
+        margin-bottom: 30px;
+        width: 66.666%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+ .search-input {
+            width: 100%;
+            padding: 18px 24px;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            border: 3px solid #c4d9c4;
+            border-radius: 16px;
+            background: #ffffff;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(45, 90, 45, 0.1);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: 48px;
+        }
+
+      .search-input:focus {
+        border-color: #ff9966;
+        box-shadow: 0 0 0 4px rgba(255, 153, 102, 0.2),
+          0 4px 12px rgba(45, 90, 45, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .search-input::placeholder {
+        color: #8fb48f;
+      }
+
+ .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 3px solid #c4d9c4;
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            max-height: calc(84px * 5);
+            overflow-y: auto; /* remains scrollable when more than 5 results */
+            overflow-x: hidden;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 8px 24px rgba(45, 90, 45, 0.15);
+            /* visually hide scrollbar while keeping scrolling usable */
+            -ms-overflow-style: none; /* IE 10+ */
+            scrollbar-width: none; /* Firefox */
+        }
+        .search-results::-webkit-scrollbar { display: none; }
+        .search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #7a9a7a;
+            padding: 6px 8px;
+        }
+        .search-clear:focus { outline: none; }
+
+      .search-result-item {
+        padding: 18px 24px;
+        min-height: 56px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f8f0;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #2d5a2d;
+        font-size: 1rem;
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .search-result-item:hover,
+      .search-result-item.selected {
+        background: linear-gradient(135deg, #ff9966, #ffb399);
+        color: white;
+        transform: translateX(4px);
+      }
+
+      .search-result-item:hover small,
+      .search-result-item.selected small {
+        color: rgba(255, 255, 255, 0.8) !important;
+      }
+
+      .search-result-item:last-child {
+        border-bottom: none;
+      }
+
+      .song-details {
+        background: #ffffff;
+        border: 3px solid #c4d9c4;
+        border-radius: 16px;
+        padding: 24px;
+        min-height: 200px;
+        box-shadow: 0 4px 16px rgba(45, 90, 45, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .song-details:hover {
+        box-shadow: 0 6px 20px rgba(45, 90, 45, 0.15);
+      }
+
+      .song-details h2 {
+        color: #2d5a2d;
+        margin-bottom: 5px;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 600;
+      }
+
+      .song-lyrics {
+        background: #ffffff;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: clamp(0.9rem, 1.8vw, 1rem);
+        line-height: 1.6;
+        color: #2d5a2d;
+        white-space: pre-line;
+        text-align: left;
+      }
+
+      .no-results {
+        text-align: center;
+        color: #7a9a7a;
+        font-style: italic;
+        padding: 60px 20px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 15px;
+        }
+
+        .container {
+          max-width: 100%;
+        }
+
+        .search-container {
+          width: 100%;
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        .search-input {
+          padding: 15px 20px;
+        }
+
+        .search-result-item {
+          padding: 14px 20px;
+        }
+
+        .song-details {
+          padding: 20px;
+        }
+
+        .song-lyrics {
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header {
+          margin-bottom: 30px;
+        }
+
+        .search-input {
+          padding: 12px 16px;
+        }
+
+        .search-result-item {
+          padding: 12px 16px;
+        }
+
+        .song-details {
+          padding: 16px;
+        }
+
+        /* Stack playlist and preview on very small screens only */
+        .main-grid { grid-template-columns: 1fr !important; gap: 12px; }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .search-results {
+        animation: fadeIn 0.3s ease;
+      }
+
+      .search-input:focus-visible {
+        outline: 3px solid #ff9966;
+        outline-offset: 2px;
+      }
+
+      .search-result-item:focus {
+        outline: 2px solid #ff9966;
+        outline-offset: -2px;
+      }
+
+      /* Playlist & two-column layout */
+      .main-grid {
+        display: grid;
+        grid-template-columns: minmax(240px, 1fr) 2fr;
+        gap: 20px;
+        align-items: start;
+        margin-top: 20px;
+      }
+
+      .playlist-panel {
+        width: 100%;
+      }
+
+      .right-panel {
+        width: 100%;
+      }
+
+      /* Playlist header container */
+      .playlist-header-container {
+        margin-bottom: 16px;
+      }
+
+      .playlist-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .playlist-title-container {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      #playlistTitle {
+        flex: 1 1 auto;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2d5a2d;
+        margin: 0;
+        padding: 8px 12px;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        background: transparent;
+        outline: none;
+        cursor: text;
+        transition: all 0.2s ease;
+      }
+
+      .playlist-chevron {
+        background: transparent;
+        border: none;
+        color: #7a9a7a;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s ease;
+      }
+
+      .playlist-chevron:hover {
+        background: #f0f8f0;
+        color: #2d5a2d;
+      }
+
+      #playlistTitle:hover {
+        background: #f8fdf8;
+        border-color: #e0f0e0;
+      }
+
+      #playlistTitle:focus {
+        background: #ffffff;
+        border-color: #7fb07f;
+        box-shadow: 0 0 0 3px rgba(127, 176, 127, 0.1);
+      }
+
+      /* Playlist selector dropdown */
+      .playlist-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border: 2px solid #c4d9c4;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(45, 90, 45, 0.15);
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+      }
+
+      .playlist-dropdown.show {
+        display: block;
+      }
+
+      .playlist-option {
+        padding: 10px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f8f0;
+        transition: background-color 0.15s ease;
+      }
+
+      .playlist-option:last-child {
+        border-bottom: none;
+      }
+
+      .playlist-option:hover {
+        background: #f8fdf8;
+      }
+
+      .playlist-option.current {
+        background: #e8f5e8;
+        font-weight: 600;
+      }
+
+
+
+      .playlist-select {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2d5a2d;
+        background: #f8fdf8;
+        border: 2px solid #e0f0e0;
+        border-radius: 8px;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+        padding-right: 40px;
+      }
+
+      .playlist-select:hover {
+        border-color: #c4d9c4;
+        background: #ffffff;
+      }
+
+      .playlist-select:focus {
+        border-color: #ff9966;
+        box-shadow: 0 0 0 3px rgba(255, 153, 102, 0.1);
+        background: #ffffff;
+      }
+
+      /* Playlist action buttons */
+      .playlist-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .playlist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 2px solid #e0f0e0;
+        background: #f8fdf8;
+        color: #5a7a5a;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.2s ease;
+      }
+
+      .playlist-btn:hover {
+        background: #2d5a2d;
+        color: #ffffff;
+        border-color: #2d5a2d;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(45, 90, 45, 0.2);
+      }
+
+      .playlist-btn:focus {
+        outline: 2px solid #ff9966;
+        outline-offset: 2px;
+      }
+
+      .playlist-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(45, 90, 45, 0.2);
+      }
+
+      /* Ensure SVG icons inherit the button color */
+      .playlist-btn svg {
+        display: block;
+        color: inherit;
+        width: 18px;
+        height: 18px;
+      }
+
+      .playlist-btn svg path,
+      .playlist-btn svg circle,
+      .playlist-btn svg rect {
+        stroke: currentColor !important;
+        fill: none !important;
+      }
+
+
+
+      #ariaLive {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+
+      
+
+      .playlist-items {
+        background: #ffffff;
+        border: 3px solid #c4d9c4;
+        border-radius: 12px;
+        /* Allow playlist to grow vertically as items are added */
+        max-height: none;
+        overflow: visible;
+      }
+
+      /* If you later enable scrolling, keep the scrollbar visually minimal */
+      .playlist-items::-webkit-scrollbar { height: 8px; }
+      .playlist-items { -ms-overflow-style: auto; scrollbar-width: auto; }
+
+      .playlist-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f0f8f0;
+        gap: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: relative;
+      }
+
+      .drag-handle {
+        width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        color: #7a9a7a;
+        cursor: grab;
+        user-select: none;
+      }
+
+.dragging { opacity: 0.6; }
+
+      /* Visual drop indicators */
+      .playlist-item.drop-before::before,
+      .playlist-item.drop-after::after {
+        content: "";
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        height: 3px;
+        background: linear-gradient(90deg, #ff9966, #ffb399);
+        border-radius: 2px;
+        pointer-events: none;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      }
+      .playlist-item.drop-before::before { top: 0; transform: translateY(-50%); }
+      .playlist-item.drop-after::after { bottom: 0; transform: translateY(50%); }
+
+      /* Sonar bounce when item was moved */
+      @keyframes sonar {
+        0% { box-shadow: 0 0 0 0 rgba(255,153,102,0.25); }
+        70% { box-shadow: 0 0 0 18px rgba(255,153,102,0.0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,153,102,0); }
+      }
+      .playlist-item.moved {
+        animation: sonar 700ms ease-out;
+      }
+
+      .playlist-item a {
+        color: #2d5a2d;
+        text-decoration: none;
+        flex: 1 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+      }
+
+      .playlist-item small {
+        display: block;
+        color: #7a9a7a;
+        font-size: 0.85em;
+      }
+
+      .playlist-item button.remove-item {
+        margin-left: 8px;
+        background: transparent;
+        border: none;
+        color: #7a9a7a;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .playlist-item small {
+        display: block;
+        color: #7a9a7a;
+        font-size: 0.85em;
+      }
+
+      .playlist-item button.remove-item {
+        margin-left: 8px;
+        background: transparent;
+        border: none;
+        color: #7a9a7a;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🎵 Vyhledávání písní</h1>
+      </div>
+
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Zadejte alespoň 2 znaky pro vyhledání písní..."
+                    autocomplete="off"
+                    autofocus
+                >
+                <button id="searchClearBtn" class="search-clear" aria-label="Vymazat hledání"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+
+        <div class="playlist-header-container">
+          <div class="playlist-header" id="playlistHeader">
+            <div style="flex: 1 1 auto; position: relative;">
+              <div class="playlist-title-container">
+                <h2 id="playlistTitle" contenteditable="true" spellcheck="false" tabindex="0" role="textbox" aria-label="Název playlistu">Playlist</h2>
+                <button id="playlistChevron" class="playlist-chevron" aria-label="Vybrat playlist" title="Vybrat playlist">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div id="playlistDropdown" class="playlist-dropdown"></div>
+            </div>
+            <div class="playlist-actions">
+              <button id="newPlaylistBtn" class="playlist-btn" title="Nový playlist" aria-label="Nový playlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button id="clearPlaylistBtn" class="playlist-btn" title="Vyprázdnit playlist" aria-label="Vyprázdnit playlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                  <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <button id="deletePlaylistBtn" class="playlist-btn" title="Smazat playlist" aria-label="Smazat playlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0v14m4-14v14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <div id="ariaLive" aria-live="polite" aria-atomic="true"></div>
+          </div>
+        </div>
+
+        <div class="main-grid">
+          <div class="playlist-panel">
+            <div id="playlistItems" class="playlist-items">
+              <!-- playlist entries go here -->
+            </div>
+          </div>
+
+          <div class="right-panel">
+            <div class="song-details">
+              <h2 id="songDetailsTitle">Detail písně</h2>
+              <div id="songDetailsContent" class="no-results">
+                Vyberte píseň z výsledků vyhledávání pro zobrazení detailů
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Accessible confirmation dialog -->
+    <div id="confirmDialog" role="dialog" aria-modal="true" aria-hidden="true" style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; z-index:2000;">
+      <div style="background:#fff; border:3px solid #c4d9c4; border-radius:12px; padding:20px; max-width:420px; width:90%; margin:auto; box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+        <div id="confirmDialogMessage" style="color:#2d5a2d; margin-bottom:16px;">Potvrdit akci?</div>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button id="confirmNoBtn" class="playlist-btn" aria-label="Zrušit">Ne</button>
+          <button id="confirmYesBtn" class="playlist-btn" aria-label="Potvrdit">Ano</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Songs, index and search state
+      let songsData = {};
+      let songIndex = {};
+      let searchTimeout = null;
+      let selectedIndex = -1;
+      let currentResults = [];
+      let dragSrcIndex = null;
+      let lastMovedKey = null;
+
+      // Playlist state
+      const PLAYLISTS_KEY = 'song_lab_playlists_v1';
+      let playlists = {}; // id -> { id, name, items: [{title, firstLine, songKey}] }
+      let currentPlaylistId = null;
+
+      function removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
+
+      async function loadSongsData() {
+        try {
+          const response = await fetch('songs.json');
+          songsData = await response.json();
+
+          songIndex = {};
+          Object.keys(songsData).forEach((title) => {
+            const firstLine = getFirstLine(songsData[title]);
+            songIndex[title] = {
+              title: title,
+              displayTitle: cleanTitleForDisplay(title),
+              firstLine: firstLine,
+              titleTrigrams: createPostgresStyleTrigrams(title),
+              firstLineTrigrams: createPostgresStyleTrigrams(firstLine),
+              data: songsData[title]
+            };
+          });
+
+          console.log('Songs data loaded:', Object.keys(songsData).length);
+        } catch (err) {
+          console.error('Error loading songs.json', err);
+          document.getElementById('songDetailsContent').innerHTML = '<div class="no-results">Chyba při načítání dat písní. Zkontrolujte, zda existuje soubor songs.json.</div>';
+        }
+      }
+
+      function normalizeText(text) {
+        return removeAccents(text || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+      }
+
+      function cleanTitleForDisplay(title) {
+        const idx = title.indexOf(';');
+        if (idx !== -1) return title.substring(0, idx).trim();
+        return title;
+      }
+
+      function getFirstLine(songData) {
+        if (!songData) return '';
+        if (!songData.sections || !Array.isArray(songData.sections) || songData.sections.length === 0) return '';
+        const firstSection = songData.sections[0];
+        if (!firstSection.slides || !Array.isArray(firstSection.slides) || firstSection.slides.length === 0) return '';
+        const firstSlide = firstSection.slides[0];
+        if (!Array.isArray(firstSlide) || firstSlide.length === 0) return '';
+        return firstSlide[0];
+      }
+
+      function createPostgresStyleTrigrams(text) {
+        const normalized = normalizeText(text);
+        const padded = '  ' + normalized + ' ';
+        const trigrams = new Set();
+        for (let i = 0; i < padded.length - 2; i++) trigrams.add(padded.substring(i, i + 3));
+        return Array.from(trigrams);
+      }
+
+      function calculateSimilarity(t1, t2) {
+        const s1 = new Set(t1 || []);
+        const s2 = new Set(t2 || []);
+        const inter = new Set([...s1].filter(x => s2.has(x)));
+        const union = new Set([...s1, ...s2]);
+        return union.size === 0 ? 0 : inter.size / union.size;
+      }
+
+      function searchSongs(query) {
+        if (!query || query.length < 2) return [];
+        const MIN_SIMILARITY = query.length <= 3 ? 0.12 : 0.10;
+        const qTr = createPostgresStyleTrigrams(query);
+        const res = [];
+        Object.keys(songIndex).forEach(key => {
+          const idx = songIndex[key];
+          const titleSim = calculateSimilarity(qTr, idx.titleTrigrams);
+          const lineSim = calculateSimilarity(qTr, idx.firstLineTrigrams);
+          const combined = Math.max(titleSim * 1.2, lineSim);
+          const nq = normalizeText(query);
+          const nt = normalizeText(idx.title);
+          if (nt.startsWith(nq) && nq.length >= 2) {
+            res.push({ ...idx, similarity: Math.max(0.95, combined), titleMatch: true, songKey: key });
+            return;
+          }
+          if (combined >= MIN_SIMILARITY) res.push({ ...idx, similarity: combined, titleMatch: titleSim > lineSim, songKey: key });
+        });
+        return res.sort((a, b) => b.similarity - a.similarity).slice(0, 10);
+      }
+
+      // --- DOM: results rendering (unchanged semantics) ---
+      function displayResults(results) {
+        const container = document.getElementById('searchResults');
+        if (!results || results.length === 0) { container.style.display = 'none'; return; }
+        container.innerHTML = '';
+        currentResults = results.slice(0, 5);
+        selectedIndex = 0;
+        currentResults.forEach((r, i) => {
+          const div = document.createElement('div');
+          div.className = 'search-result-item';
+          if (i === 0) div.classList.add('selected');
+          const firstLineHtml = r.firstLine ? `<small style="color:#7a9a7a;font-size:0.85em;display:block;margin-top:4px">${r.firstLine}</small>` : '';
+          div.innerHTML = `${r.displayTitle}${firstLineHtml}`;
+          div.dataset.index = i;
+          div.addEventListener('click', () => onSearchResultClick(r));
+          div.addEventListener('mouseenter', () => { clearSelection(); selectedIndex = i; div.classList.add('selected'); });
+          container.appendChild(div);
+        });
+        container.style.display = 'block';
+      }
+
+      function clearSelection() { document.querySelectorAll('.search-result-item').forEach(el => el.classList.remove('selected')); }
+
+      function handleSearch() {
+        const q = document.getElementById('searchInput').value.trim();
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          if (!q || q.length < 2) { document.getElementById('searchResults').style.display = 'none'; return; }
+          const r = searchSongs(q);
+          displayResults(r);
+        }, 100);
+      }
+
+      function handleKeydown(e) {
+        const container = document.getElementById('searchResults');
+        if (e.key === 'Escape') { e.preventDefault(); clearSearch(); return; }
+        if (e.key === 'Tab') { if (container.style.display !== 'none' && currentResults.length > 0) { e.preventDefault(); onSearchResultClick(currentResults[0]); } return; }
+        if (container.style.display === 'none' || currentResults.length === 0) return;
+        switch (e.key) {
+          case 'ArrowDown': e.preventDefault(); moveSelection(1); break;
+          case 'ArrowUp': e.preventDefault(); moveSelection(-1); break;
+          case 'Enter': e.preventDefault(); if (selectedIndex >= 0 && selectedIndex < currentResults.length) onSearchResultClick(currentResults[selectedIndex]); break;
+        }
+      }
+
+      function moveSelection(dir) {
+        const items = document.querySelectorAll('.search-result-item'); if (items.length === 0) return; let ni = selectedIndex + dir; if (ni < 0) ni = 0; if (ni >= items.length) ni = items.length - 1; if (ni === selectedIndex) return; clearSelection(); selectedIndex = ni; if (items[selectedIndex]) { items[selectedIndex].classList.add('selected'); items[selectedIndex].scrollIntoView({ block: 'nearest' }); }
+      }
+
+      function hideResults() { document.getElementById('searchResults').style.display = 'none'; selectedIndex = -1; currentResults = []; }
+      function clearSearch() { const si = document.getElementById('searchInput'); si.value = ''; hideResults(); si.focus(); }
+
+      function onSearchResultClick(result) {
+        // Add to playlist instead of clearing only
+        addSongToCurrentPlaylist({ title: result.displayTitle, firstLine: result.firstLine || '', songKey: result.songKey });
+        // show preview for that song
+        showSongPreview(result.songKey);
+        hideResults();
+        const si = document.getElementById('searchInput'); si.value = '';
+      }
+
+      function selectSong(result) {
+        // kept for backward compatibility
+        showSongPreview(result.songKey || result.title);
+      }
+
+      function formatSongContent(songData) {
+        let out = '';
+        if (!songData) return out;
+        songData.sections && songData.sections.forEach((section, si) => {
+          section.slides && section.slides.forEach((slide) => { if (Array.isArray(slide)) slide.forEach(line => out += line + '\n'); });
+          if (si < songData.sections.length - 1) out += '\n';
+        });
+        return out.trim();
+      }
+
+      function showSongPreview(songKey) {
+        const data = songsData[songKey];
+        const titleEl = document.getElementById('songDetailsTitle');
+        const contentEl = document.getElementById('songDetailsContent');
+        if (!data) { titleEl.textContent = 'Detail písně'; contentEl.innerHTML = '<div class="no-results">Vyberte píseň z výsledků vyhledávání pro zobrazení detailů</div>'; return; }
+        titleEl.textContent = cleanTitleForDisplay(songKey);
+        contentEl.innerHTML = `<div class="song-lyrics">${formatSongContent(data)}</div>`;
+      }
+
+      function clearSongPreview() {
+        const titleEl = document.getElementById('songDetailsTitle');
+        const contentEl = document.getElementById('songDetailsContent');
+        titleEl.textContent = 'Detail písně';
+        contentEl.innerHTML = '<div class="no-results">Vyberte píseň z výsledků vyhledávání pro zobrazení detailů</div>';
+      }
+
+      // --- Playlist management (in-memory + localStorage) ---
+      function loadPlaylists() {
+        try {
+          const raw = localStorage.getItem(PLAYLISTS_KEY);
+          playlists = raw ? JSON.parse(raw) : {};
+        } catch (e) { playlists = {}; }
+        // ensure at least one playlist exists
+        if (!Object.keys(playlists).length) {
+          const id = createNewPlaylist('Nový playlist');
+          currentPlaylistId = id;
+        } else {
+          currentPlaylistId = Object.keys(playlists)[0];
+        }
+        updatePlaylistTitle();
+        renderCurrentPlaylist();
+      }
+
+      function savePlaylists() { try { localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists)); } catch (e) { console.error('Failed to save playlists', e); } }
+
+      function createNewPlaylist(name) {
+        const id = 'pl_' + Date.now();
+        playlists[id] = { id, name: name || 'Nový playlist', items: [] };
+        savePlaylists();
+        currentPlaylistId = id;
+        updatePlaylistTitle();
+        renderCurrentPlaylist();
+        clearSongPreview();
+        // announce creation for screen readers
+        try {
+          const ariaLive = document.getElementById('ariaLive');
+          if (ariaLive) ariaLive.textContent = 'Vytvořen playlist ' + (playlists[id].name || '');
+        } catch (e) {}
+        return id;
+      }
+
+       function deleteCurrentPlaylist() {
+         if (!currentPlaylistId) return;
+         openConfirm('Smazat tento playlist?').then((ok) => {
+           if (!ok) return;
+           const deletedName = playlists[currentPlaylistId] ? playlists[currentPlaylistId].name : '';
+           delete playlists[currentPlaylistId];
+           const keys = Object.keys(playlists);
+           currentPlaylistId = keys.length ? keys[0] : createNewPlaylist('Nový playlist');
+           savePlaylists();
+           updatePlaylistTitle();
+           renderCurrentPlaylist();
+           clearSongPreview();
+           // announce deletion
+           try {
+             const ariaLive = document.getElementById('ariaLive');
+             if (ariaLive) ariaLive.textContent = 'Playlist smazán: ' + deletedName;
+           } catch (e) {}
+         });
+       }
+
+      function updatePlaylistTitle() {
+        const titleEl = document.getElementById('playlistTitle');
+        if (!titleEl) return;
+        if (currentPlaylistId && playlists[currentPlaylistId]) {
+          titleEl.textContent = playlists[currentPlaylistId].name || 'Playlist';
+        } else {
+          titleEl.textContent = 'Playlist';
+        }
+      }
+
+      function onPlaylistTitleEdit() {
+        const titleEl = document.getElementById('playlistTitle');
+        if (!titleEl || !currentPlaylistId || !playlists[currentPlaylistId]) return;
+        
+        const newName = titleEl.textContent.trim() || 'Playlist';
+        
+        // Update the visual display if it was empty
+        if (titleEl.textContent.trim() === '') {
+          titleEl.textContent = 'Playlist';
+        }
+        
+        if (newName !== playlists[currentPlaylistId].name) {
+          playlists[currentPlaylistId].name = newName;
+          savePlaylists();
+          try {
+            const ariaLive = document.getElementById('ariaLive');
+            if (ariaLive) ariaLive.textContent = 'Playlist přejmenován na: ' + newName;
+          } catch (e) {}
+        }
+      }
+
+      function showPlaylistDropdown() {
+        const dropdown = document.getElementById('playlistDropdown');
+        if (!dropdown) return;
+        
+        dropdown.innerHTML = '';
+        Object.keys(playlists).forEach(id => {
+          const option = document.createElement('div');
+          option.className = 'playlist-option' + (id === currentPlaylistId ? ' current' : '');
+          option.textContent = playlists[id].name || 'Playlist';
+          option.addEventListener('click', () => {
+            currentPlaylistId = id;
+            updatePlaylistTitle();
+            renderCurrentPlaylist();
+            clearSongPreview();
+            hidePlaylistDropdown();
+            try {
+              const ariaLive = document.getElementById('ariaLive');
+              if (ariaLive) ariaLive.textContent = 'Přepnuto na playlist: ' + (playlists[id].name || 'Playlist');
+            } catch (e) {}
+          });
+          dropdown.appendChild(option);
+        });
+        
+        dropdown.classList.add('show');
+      }
+
+      function hidePlaylistDropdown() {
+        const dropdown = document.getElementById('playlistDropdown');
+        if (dropdown) {
+          dropdown.classList.remove('show');
+        }
+      }
+
+      function renderCurrentPlaylist() {
+        const container = document.getElementById('playlistItems');
+        container.innerHTML = '';
+        container.setAttribute('role', 'list');
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+        const pl = playlists[currentPlaylistId];
+        pl.items.forEach((it, idx) => {
+          const row = document.createElement('div');
+          row.className = 'playlist-item';
+          row.setAttribute('role', 'listitem');
+          row.draggable = true;
+
+          const handle = document.createElement('div');
+          handle.className = 'drag-handle';
+          handle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          handle.title = 'Táhnout pro přesunutí';
+
+          const a = document.createElement('a');
+          a.href = '#';
+          a.setAttribute('tabindex', '0');
+          a.setAttribute('aria-label', (it.title || '') + (it.firstLine ? ' — ' + it.firstLine : ''));
+          a.innerHTML = `<strong>${it.title}</strong>${it.firstLine ? '<small>' + it.firstLine + '</small>' : ''}`;
+          a.addEventListener('click', (ev) => { ev.preventDefault(); showSongPreview(it.songKey); });
+          a.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showSongPreview(it.songKey); } });
+
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'remove-item';
+          removeBtn.title = 'Odstranit';
+          removeBtn.setAttribute('aria-label', 'Odstranit položku');
+          removeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          removeBtn.addEventListener('click', () => { removeItemFromPlaylist(idx); });
+
+          row.appendChild(handle);
+          row.appendChild(a);
+          row.appendChild(removeBtn);
+          // if this row corresponds to the last moved item, add moved class briefly
+          if (lastMovedKey && it.songKey === lastMovedKey) {
+            row.classList.add('moved');
+            // clear the marker after the animation ends
+            row.addEventListener('animationend', () => { row.classList.remove('moved'); lastMovedKey = null; }, { once: true });
+          }
+          container.appendChild(row);
+
+          // drag events with visual insert cue
+          row.addEventListener('dragstart', (e) => {
+            dragSrcIndex = idx;
+            row.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            try { e.dataTransfer.setData('text/plain', String(idx)); } catch (err) {}
+          });
+
+          row.addEventListener('dragend', (e) => {
+            dragSrcIndex = null;
+            // clear all drop cues
+            document.querySelectorAll('.playlist-item.drop-before, .playlist-item.drop-after').forEach(el => el.classList.remove('drop-before', 'drop-after'));
+            row.classList.remove('dragging');
+          });
+
+          row.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            // compute whether we should show before or after based on mouse position
+            const rect = row.getBoundingClientRect();
+            const midY = rect.top + rect.height / 2;
+            const isBefore = (e.clientY < midY);
+            // clear cues on all rows first
+            document.querySelectorAll('.playlist-item.drop-before, .playlist-item.drop-after').forEach(el => el.classList.remove('drop-before', 'drop-after'));
+            if (isBefore) row.classList.add('drop-before'); else row.classList.add('drop-after');
+          });
+
+          row.addEventListener('dragleave', (e) => { row.classList.remove('drag-over', 'drop-before', 'drop-after'); });
+
+          row.addEventListener('drop', (e) => {
+            e.preventDefault();
+            row.classList.remove('drag-over');
+            const from = dragSrcIndex !== null ? dragSrcIndex : parseInt((e.dataTransfer && e.dataTransfer.getData && e.dataTransfer.getData('text/plain')) || -1, 10);
+            if (from === -1) return;
+            const rect = row.getBoundingClientRect();
+            const midY = rect.top + rect.height / 2;
+            const insertBefore = (e.clientY < midY);
+            const pl = playlists[currentPlaylistId];
+            const moved = pl.items.splice(from, 1)[0];
+            let insertAt = idx;
+            // if inserting after the target, and source was before, adjust index
+            if (!insertBefore) insertAt = idx + 1;
+            if (from < insertAt) insertAt--; // account for removal shifting indexes
+            pl.items.splice(insertAt, 0, moved);
+            savePlaylists();
+            // remember key for visual feedback
+            lastMovedKey = moved.songKey || null;
+            renderCurrentPlaylist();
+          });
+        });
+      }
+
+      function addSongToCurrentPlaylist(item) {
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+        // dedupe by songKey: if exists, move it to the end and show preview
+        const pl = playlists[currentPlaylistId];
+        const existingIdx = pl.items.findIndex(i => i.songKey === item.songKey);
+          if (existingIdx !== -1) {
+            // move it to the end
+            const existing = pl.items.splice(existingIdx, 1)[0];
+            pl.items.push(existing);
+            savePlaylists();
+            // remember key for visual feedback
+            lastMovedKey = existing.songKey || null;
+            renderCurrentPlaylist();
+            // show the preview for the existing item
+            showSongPreview(item.songKey);
+            // announce moved to end
+            try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Položka přesunuta na konec playlistu'; } catch (e) {}
+            return;
+          }
+          // append new item to the end
+          pl.items.push(item);
+          // keep playlist reasonably bounded (optional limit 200) - remove oldest items from start
+          while (pl.items.length > 200) pl.items.shift();
+          savePlaylists();
+          // mark newly added item for feedback
+          lastMovedKey = item.songKey || null;
+          renderCurrentPlaylist();
+          // announce addition
+          try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Přidána položka: ' + (item.title || ''); } catch (e) {}
+      }
+
+      function removeItemFromPlaylist(index) {
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+        const removed = playlists[currentPlaylistId].items[index];
+        playlists[currentPlaylistId].items.splice(index, 1);
+        savePlaylists();
+        renderCurrentPlaylist();
+        try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Položka odstraněna: ' + (removed ? (removed.title || '') : ''); } catch (e) {}
+      }
+
+       function clearPlaylist() {
+         if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+         openConfirm('Vymazat všechny položky v playlistu?').then((ok) => {
+           if (!ok) return;
+           playlists[currentPlaylistId].items = [];
+           savePlaylists();
+           renderCurrentPlaylist();
+           clearSongPreview();
+           try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Playlist vyprázdněn'; } catch (e) {}
+         });
+       }
+
+      // --- setup event listeners ---
+      function setupEventListeners() {
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('searchClearBtn');
+        const titleEl = document.getElementById('playlistTitle');
+        const newBtn = document.getElementById('newPlaylistBtn');
+        const delBtn = document.getElementById('deletePlaylistBtn');
+        const clearPlBtn = document.getElementById('clearPlaylistBtn');
+        const ariaLive = document.getElementById('ariaLive');
+
+        // Search input handlers
+        searchInput.addEventListener('input', handleSearch);
+        searchInput.addEventListener('keydown', handleKeydown);
+        clearBtn.addEventListener('click', clearSearch);
+        document.addEventListener('click', (ev) => { if (!ev.target.closest('.search-container')) hideResults(); });
+
+        // Playlist title editing
+        if (titleEl) {
+          titleEl.addEventListener('blur', onPlaylistTitleEdit);
+          titleEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              titleEl.blur();
+            }
+          });
+        }
+
+        // Playlist selection chevron
+        const chevronBtn = document.getElementById('playlistChevron');
+        if (chevronBtn) {
+          chevronBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropdown = document.getElementById('playlistDropdown');
+            if (dropdown && dropdown.classList.contains('show')) {
+              hidePlaylistDropdown();
+            } else {
+              showPlaylistDropdown();
+            }
+          });
+        }
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          const dropdown = document.getElementById('playlistDropdown');
+          if (dropdown && !e.target.closest('#playlistTitle') && !e.target.closest('#playlistDropdown') && !e.target.closest('#playlistChevron')) {
+            hidePlaylistDropdown();
+          }
+        });
+
+        // Playlist actions
+        newBtn.addEventListener('click', () => createNewPlaylist('Nový playlist'));
+        delBtn.addEventListener('click', deleteCurrentPlaylist);
+        clearPlBtn.addEventListener('click', clearPlaylist);
+
+        // focus shortcuts
+        document.addEventListener('keydown', (e) => {
+          const active = document.activeElement;
+          const isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+          if (isTyping) return;
+          if (e.key === '/' && !e.metaKey && !e.ctrlKey) { e.preventDefault(); try { searchInput.focus(); searchInput.select(); } catch (err) {} }
+          if ((e.key && e.key.toLowerCase() === 'k') && (e.ctrlKey || e.metaKey)) { e.preventDefault(); try { searchInput.focus(); searchInput.select(); } catch (err) {} }
+        });
+      }
+
+       function debounce(fn, wait) {
+         let t = null;
+         return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), wait); };
+       }
+
+       // Accessible confirm dialog helper
+       function openConfirm(message) {
+         return new Promise((resolve) => {
+           const dialog = document.getElementById('confirmDialog');
+           const msg = document.getElementById('confirmDialogMessage');
+           const yes = document.getElementById('confirmYesBtn');
+           const no = document.getElementById('confirmNoBtn');
+           if (!dialog || !msg || !yes || !no) { resolve(window.confirm(message)); return; }
+           msg.textContent = message;
+           dialog.style.display = 'flex';
+           dialog.setAttribute('aria-hidden', 'false');
+           // trap focus simply
+           const prevActive = document.activeElement;
+           yes.focus();
+           function cleanup() {
+             dialog.style.display = 'none';
+             dialog.setAttribute('aria-hidden', 'true');
+             yes.removeEventListener('click', onYes);
+             no.removeEventListener('click', onNo);
+             document.removeEventListener('keydown', onKey);
+             try { prevActive && prevActive.focus(); } catch (e) {}
+           }
+           function onYes() { cleanup(); resolve(true); }
+           function onNo() { cleanup(); resolve(false); }
+           function onKey(e) { if (e.key === 'Escape') { onNo(); } if (e.key === 'Enter') { onYes(); } }
+           yes.addEventListener('click', onYes);
+           no.addEventListener('click', onNo);
+           document.addEventListener('keydown', onKey);
+         });
+       }
+
+       document.addEventListener('DOMContentLoaded', async () => {
+        await loadSongsData();
+        loadPlaylists();
+        setupEventListeners();
+        // autofocus attempts
+        const input = document.getElementById('searchInput');
+        if (input) { try { input.focus(); setTimeout(() => { try { input.focus(); input.select && input.select(); } catch (e) {} }, 50); } catch (e) {} }
+      });
+    </script>
+  </body>
+</html>
