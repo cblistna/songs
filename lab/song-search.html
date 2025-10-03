@@ -49,7 +49,7 @@
         margin-right: auto;
       }
 
-.search-input {
+ .search-input {
             width: 100%;
             padding: 18px 24px;
             font-size: clamp(1rem, 2vw, 1.2rem);
@@ -76,7 +76,7 @@
         color: #8fb48f;
       }
 
-.search-results {
+ .search-results {
             position: absolute;
             top: 100%;
             left: 0;
@@ -253,6 +253,121 @@
         outline: 2px solid #ff9966;
         outline-offset: -2px;
       }
+
+      /* Playlist & two-column layout */
+      .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 20px;
+        align-items: start;
+        margin-top: 20px;
+      }
+
+      .playlist-panel {
+        width: 100%;
+      }
+
+      .right-panel {
+        width: 100%;
+      }
+
+      .playlist-manager {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 8px;
+        align-items: center;
+      }
+
+      .playlist-manager select {
+        flex: 1 1 auto;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 2px solid #c4d9c4;
+        background: #fff;
+      }
+
+      .playlist-manager button {
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: none;
+        background: #ff9966;
+        color: white;
+        cursor: pointer;
+      }
+
+      .playlist-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      #playlistTitle {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2d5a2d;
+        padding: 6px 8px;
+        border-radius: 8px;
+        min-width: 0;
+        outline: none;
+        border: 2px solid transparent;
+      }
+
+      #playlistTitle[contenteditable]:focus {
+        border-color: #ff9966;
+      }
+
+      .playlist-items {
+        background: #ffffff;
+        border: 3px solid #c4d9c4;
+        border-radius: 12px;
+        max-height: calc(84px * 5);
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .playlist-items::-webkit-scrollbar { display: none; }
+
+      .playlist-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border-bottom: 1px solid #f0f8f0;
+        gap: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .playlist-item a {
+        color: #2d5a2d;
+        text-decoration: none;
+        flex: 1 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+      }
+
+      .playlist-item small {
+        display: block;
+        color: #7a9a7a;
+        font-size: 0.85em;
+      }
+
+      .playlist-item button.remove-item {
+        margin-left: 8px;
+        background: transparent;
+        border: none;
+        color: #7a9a7a;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .main-grid { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
@@ -261,449 +376,385 @@
         <h1>🎵 Vyhledávání písní</h1>
       </div>
 
-        <div class="search-container">
-            <input 
-                type="text" 
-                id="searchInput" 
-                class="search-input" 
-                placeholder="Zadejte alespoň 2 znaky pro vyhledání písní..."
-                autocomplete="off"
-                autofocus
-            >
-            <button id="searchClearBtn" class="search-clear" aria-label="Clear search">✕</button>
-            <div id="searchResults" class="search-results"></div>
-        </div>
+        <div class="main-grid">
+          <div class="playlist-panel">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Zadejte alespoň 2 znaky pro vyhledání písní..."
+                    autocomplete="off"
+                    autofocus
+                >
+                <button id="searchClearBtn" class="search-clear" aria-label="Clear search">✕</button>
+                <div id="searchResults" class="search-results"></div>
+            </div>
 
-      <div class="song-details">
-        <h2 id="songDetailsTitle">Detail písně</h2>
-        <div id="songDetailsContent" class="no-results">
-          Vyberte píseň z výsledků vyhledávání pro zobrazení detailů
+            <div class="playlist-manager">
+              <select id="playlistSelect" aria-label="Select playlist"></select>
+              <button id="newPlaylistBtn" title="New playlist">New</button>
+              <button id="deletePlaylistBtn" title="Delete playlist">Del</button>
+            </div>
+
+            <div class="playlist-header">
+              <div id="playlistTitle" contenteditable="true" aria-label="Playlist title">Nový playlist</div>
+              <button id="clearPlaylistBtn" title="Clear playlist">Clear</button>
+            </div>
+
+            <div id="playlistItems" class="playlist-items">
+              <!-- playlist entries go here -->
+            </div>
+          </div>
+
+          <div class="right-panel">
+            <div class="song-details">
+              <h2 id="songDetailsTitle">Detail písně</h2>
+              <div id="songDetailsContent" class="no-results">
+                Vyberte píseň z výsledků vyhledávání pro zobrazení detailů
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
     </div>
 
     <script>
+      // Songs, index and search state
       let songsData = {};
       let songIndex = {};
       let searchTimeout = null;
       let selectedIndex = -1;
       let currentResults = [];
 
+      // Playlist state
+      const PLAYLISTS_KEY = 'song_lab_playlists_v1';
+      let playlists = {}; // id -> { id, name, items: [{title, firstLine, songKey}] }
+      let currentPlaylistId = null;
+
       function removeAccents(str) {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       }
 
-       async function loadSongsData() {
-         try {
-           const response = await fetch("songs.json");
-           songsData = await response.json();
+      async function loadSongsData() {
+        try {
+          const response = await fetch('songs.json');
+          songsData = await response.json();
 
-           // Build in-memory trigram index for titles and first lines
-           songIndex = {};
-           Object.keys(songsData).forEach((title) => {
-             const firstLine = getFirstLine(songsData[title]);
-             songIndex[title] = {
-               title: title,
-               displayTitle: cleanTitleForDisplay(title),
-               firstLine: firstLine,
-               titleTrigrams: createPostgresStyleTrigrams(title),
-               firstLineTrigrams: createPostgresStyleTrigrams(firstLine),
-               data: songsData[title],
-             };
-           });
+          songIndex = {};
+          Object.keys(songsData).forEach((title) => {
+            const firstLine = getFirstLine(songsData[title]);
+            songIndex[title] = {
+              title: title,
+              displayTitle: cleanTitleForDisplay(title),
+              firstLine: firstLine,
+              titleTrigrams: createPostgresStyleTrigrams(title),
+              firstLineTrigrams: createPostgresStyleTrigrams(firstLine),
+              data: songsData[title]
+            };
+          });
 
-           console.log(
-             "Songs data loaded:",
-             Object.keys(songsData).length,
-             "songs; index built for",
-             Object.keys(songIndex).length
-           );
-         } catch (error) {
-           console.error("Error loading songs data:", error);
-           document.getElementById("songDetailsContent").innerHTML =
-             '<div class="no-results">Chyba při načítání dat písní. Zkontrolujte, zda existuje soubor songs.json.</div>';
-         }
-       }
+          console.log('Songs data loaded:', Object.keys(songsData).length);
+        } catch (err) {
+          console.error('Error loading songs.json', err);
+          document.getElementById('songDetailsContent').innerHTML = '<div class="no-results">Chyba při načítání dat písní. Zkontrolujte, zda existuje soubor songs.json.</div>';
+        }
+      }
 
       function normalizeText(text) {
-        return removeAccents(text)
-          .toLowerCase()
-          .replace(/[^a-z0-9\s]/g, "")
-          .replace(/\s+/g, " ")
-          .trim();
+        return removeAccents(text || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
       }
 
       function cleanTitleForDisplay(title) {
-        const semicolonIndex = title.indexOf(";");
-        if (semicolonIndex !== -1) {
-          return title.substring(0, semicolonIndex).trim();
-        }
+        const idx = title.indexOf(';');
+        if (idx !== -1) return title.substring(0, idx).trim();
         return title;
       }
 
       function getFirstLine(songData) {
-        if (
-          songData.sections &&
-          Array.isArray(songData.sections) &&
-          songData.sections.length > 0
-        ) {
-          const firstSection = songData.sections[0];
-          if (
-            firstSection.slides &&
-            Array.isArray(firstSection.slides) &&
-            firstSection.slides.length > 0
-          ) {
-            const firstSlide = firstSection.slides[0];
-            if (Array.isArray(firstSlide) && firstSlide.length > 0) {
-              return firstSlide[0];
-            }
-          }
-        }
-        return "";
+        if (!songData) return '';
+        if (!songData.sections || !Array.isArray(songData.sections) || songData.sections.length === 0) return '';
+        const firstSection = songData.sections[0];
+        if (!firstSection.slides || !Array.isArray(firstSection.slides) || firstSection.slides.length === 0) return '';
+        const firstSlide = firstSection.slides[0];
+        if (!Array.isArray(firstSlide) || firstSlide.length === 0) return '';
+        return firstSlide[0];
       }
 
       function createPostgresStyleTrigrams(text) {
         const normalized = normalizeText(text);
-        const padded = "  " + normalized + " ";
+        const padded = '  ' + normalized + ' ';
         const trigrams = new Set();
-        for (let i = 0; i < padded.length - 2; i++) {
-          trigrams.add(padded.substring(i, i + 3));
-        }
+        for (let i = 0; i < padded.length - 2; i++) trigrams.add(padded.substring(i, i + 3));
         return Array.from(trigrams);
       }
 
-      function calculateSimilarity(trigrams1, trigrams2) {
-        const set1 = new Set(trigrams1);
-        const set2 = new Set(trigrams2);
-
-        const intersection = new Set([...set1].filter((x) => set2.has(x)));
-        const union = new Set([...set1, ...set2]);
-
-        return union.size === 0 ? 0 : intersection.size / union.size;
+      function calculateSimilarity(t1, t2) {
+        const s1 = new Set(t1 || []);
+        const s2 = new Set(t2 || []);
+        const inter = new Set([...s1].filter(x => s2.has(x)));
+        const union = new Set([...s1, ...s2]);
+        return union.size === 0 ? 0 : inter.size / union.size;
       }
 
-       function searchSongs(query) {
-         const MIN_QUERY_LEN = 2;
-         const MIN_SIMILARITY = query.length <= 3 ? 0.12 : 0.10; // slightly stricter for very short queries
-
-         if (query.length < MIN_QUERY_LEN) return [];
-
-         const queryTrigrams = createPostgresStyleTrigrams(query);
-         const results = [];
-
-         Object.keys(songIndex).forEach((songTitle) => {
-           const idx = songIndex[songTitle];
-
-           const titleSimilarity = calculateSimilarity(queryTrigrams, idx.titleTrigrams);
-           const firstLineSimilarity = calculateSimilarity(queryTrigrams, idx.firstLineTrigrams);
-
-           // weight title matches a bit higher for relevance
-           const combined = Math.max(titleSimilarity * 1.2, firstLineSimilarity);
-
-           // Boost exact prefix matches strongly
-           const normalizedQuery = normalizeText(query);
-           const normalizedTitle = normalizeText(songTitle);
-           if (normalizedTitle.startsWith(normalizedQuery) && normalizedQuery.length >= 2) {
-             results.push({ ...idx, similarity: Math.max(0.95, combined), titleMatch: true });
-             return;
-           }
-
-           if (combined >= MIN_SIMILARITY) {
-             results.push({ ...idx, similarity: combined, titleMatch: titleSimilarity > firstLineSimilarity });
-           }
-         });
-
-         return results.sort((a, b) => b.similarity - a.similarity).slice(0, 10);
-       }
-
-      function escapeRegExp(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      }
-
-      function displayResults(results, query) {
-        const resultsContainer = document.getElementById("searchResults");
-
-        if (results.length === 0) {
-          resultsContainer.style.display = "none";
-          return;
-        }
-
-        resultsContainer.innerHTML = "";
-        // Only keep the visible slice in currentResults so keyboard indices match rendered items
-        currentResults = results.slice(0, 5);
-        selectedIndex = 0;
-
-        currentResults.forEach((result, index) => {
-          const item = document.createElement("div");
-          item.className = "search-result-item";
-          if (index === 0) item.classList.add("selected");
-
-          const titleHtml = result.displayTitle;
-          const firstLineHtml = result.firstLine
-            ? `<small style="color: #7a9a7a; font-size: 0.85em; display: block; margin-top: 4px;">${result.firstLine}</small>`
-            : "";
-
-          item.innerHTML = `${titleHtml}${firstLineHtml}`;
-          item.dataset.index = index;
-
-          item.addEventListener("click", () => selectSong(result));
-          item.addEventListener("mouseenter", () => {
-            clearSelection();
-            selectedIndex = index;
-            item.classList.add("selected");
-          });
-
-          resultsContainer.appendChild(item);
-        });
-
-        resultsContainer.style.display = "block";
-      }
-
-      function clearSelection() {
-        document.querySelectorAll(".search-result-item").forEach((item) => {
-          item.classList.remove("selected");
-        });
-      }
-
-      function handleSearch() {
-        const query = document.getElementById("searchInput").value.trim();
-
-        if (searchTimeout) {
-          clearTimeout(searchTimeout);
-        }
-
-        searchTimeout = setTimeout(() => {
-          if (query.length < 2) {
-            document.getElementById("searchResults").style.display = "none";
+      function searchSongs(query) {
+        if (!query || query.length < 2) return [];
+        const MIN_SIMILARITY = query.length <= 3 ? 0.12 : 0.10;
+        const qTr = createPostgresStyleTrigrams(query);
+        const res = [];
+        Object.keys(songIndex).forEach(key => {
+          const idx = songIndex[key];
+          const titleSim = calculateSimilarity(qTr, idx.titleTrigrams);
+          const lineSim = calculateSimilarity(qTr, idx.firstLineTrigrams);
+          const combined = Math.max(titleSim * 1.2, lineSim);
+          const nq = normalizeText(query);
+          const nt = normalizeText(idx.title);
+          if (nt.startsWith(nq) && nq.length >= 2) {
+            res.push({ ...idx, similarity: Math.max(0.95, combined), titleMatch: true, songKey: key });
             return;
           }
+          if (combined >= MIN_SIMILARITY) res.push({ ...idx, similarity: combined, titleMatch: titleSim > lineSim, songKey: key });
+        });
+        return res.sort((a, b) => b.similarity - a.similarity).slice(0, 10);
+      }
 
-          const results = searchSongs(query);
-          displayResults(results, query);
+      // --- DOM: results rendering (unchanged semantics) ---
+      function displayResults(results) {
+        const container = document.getElementById('searchResults');
+        if (!results || results.length === 0) { container.style.display = 'none'; return; }
+        container.innerHTML = '';
+        currentResults = results.slice(0, 5);
+        selectedIndex = 0;
+        currentResults.forEach((r, i) => {
+          const div = document.createElement('div');
+          div.className = 'search-result-item';
+          if (i === 0) div.classList.add('selected');
+          const firstLineHtml = r.firstLine ? `<small style="color:#7a9a7a;font-size:0.85em;display:block;margin-top:4px">${r.firstLine}</small>` : '';
+          div.innerHTML = `${r.displayTitle}${firstLineHtml}`;
+          div.dataset.index = i;
+          div.addEventListener('click', () => onSearchResultClick(r));
+          div.addEventListener('mouseenter', () => { clearSelection(); selectedIndex = i; div.classList.add('selected'); });
+          container.appendChild(div);
+        });
+        container.style.display = 'block';
+      }
+
+      function clearSelection() { document.querySelectorAll('.search-result-item').forEach(el => el.classList.remove('selected')); }
+
+      function handleSearch() {
+        const q = document.getElementById('searchInput').value.trim();
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          if (!q || q.length < 2) { document.getElementById('searchResults').style.display = 'none'; return; }
+          const r = searchSongs(q);
+          displayResults(r);
         }, 100);
       }
 
-      function handleKeydown(event) {
-        const resultsContainer = document.getElementById("searchResults");
-
-        // Always allow Escape to clear the input and hide results, even when no suggestions are shown
-        if (event.key === "Escape") {
-          event.preventDefault();
-          clearSearch();
-          return;
-        }
-
-        // If Tab was pressed, and there are suggestions, select the first suggestion like Enter
-        if (event.key === "Tab") {
-          if (resultsContainer.style.display !== "none" && currentResults.length > 0) {
-            event.preventDefault();
-            selectSong(currentResults[0]);
-          }
-          return;
-        }
-
-        // If there are no visible results, ignore navigation keys
-        if (
-          resultsContainer.style.display === "none" ||
-          currentResults.length === 0
-        ) {
-          return;
-        }
-
-        switch (event.key) {
-          case "ArrowDown":
-            event.preventDefault();
-            moveSelection(1);
-            break;
-
-          case "ArrowUp":
-            event.preventDefault();
-            moveSelection(-1);
-            break;
-
-          case "Enter":
-            event.preventDefault();
-            if (selectedIndex >= 0 && selectedIndex < currentResults.length) {
-              selectSong(currentResults[selectedIndex]);
-            }
-            break;
+      function handleKeydown(e) {
+        const container = document.getElementById('searchResults');
+        if (e.key === 'Escape') { e.preventDefault(); clearSearch(); return; }
+        if (e.key === 'Tab') { if (container.style.display !== 'none' && currentResults.length > 0) { e.preventDefault(); onSearchResultClick(currentResults[0]); } return; }
+        if (container.style.display === 'none' || currentResults.length === 0) return;
+        switch (e.key) {
+          case 'ArrowDown': e.preventDefault(); moveSelection(1); break;
+          case 'ArrowUp': e.preventDefault(); moveSelection(-1); break;
+          case 'Enter': e.preventDefault(); if (selectedIndex >= 0 && selectedIndex < currentResults.length) onSearchResultClick(currentResults[selectedIndex]); break;
         }
       }
 
-      function moveSelection(direction) {
-        const items = document.querySelectorAll(".search-result-item");
-        if (items.length === 0) return;
-
-        // Calculate tentative new index
-        let newIndex = selectedIndex + direction;
-
-        // Clamp between 0 and last rendered index to prevent moving away
-        if (newIndex < 0) newIndex = 0;
-        if (newIndex >= items.length) newIndex = items.length - 1;
-
-        // If index hasn't changed, keep current selection (no wrapping)
-        if (newIndex === selectedIndex) return;
-
-        clearSelection();
-        selectedIndex = newIndex;
-
-        if (items[selectedIndex]) {
-          items[selectedIndex].classList.add("selected");
-          items[selectedIndex].scrollIntoView({ block: "nearest" });
-        }
+      function moveSelection(dir) {
+        const items = document.querySelectorAll('.search-result-item'); if (items.length === 0) return; let ni = selectedIndex + dir; if (ni < 0) ni = 0; if (ni >= items.length) ni = items.length - 1; if (ni === selectedIndex) return; clearSelection(); selectedIndex = ni; if (items[selectedIndex]) { items[selectedIndex].classList.add('selected'); items[selectedIndex].scrollIntoView({ block: 'nearest' }); }
       }
 
-      function hideResults() {
-        document.getElementById("searchResults").style.display = "none";
-        selectedIndex = -1;
-        currentResults = [];
-      }
+      function hideResults() { document.getElementById('searchResults').style.display = 'none'; selectedIndex = -1; currentResults = []; }
+      function clearSearch() { const si = document.getElementById('searchInput'); si.value = ''; hideResults(); si.focus(); }
 
-        function clearSearch() {
-            const searchInput = document.getElementById('searchInput');
-            searchInput.value = '';
-            hideResults();
-            searchInput.focus();
-        }
-        function setupEventListeners() {
-            const searchInput = document.getElementById("searchInput");
-            const clearBtn = document.getElementById('searchClearBtn');
-            
-            searchInput.addEventListener("input", handleSearch);
-            searchInput.addEventListener("keydown", handleKeydown);
-            clearBtn.addEventListener('click', clearSearch);
-            
-            document.addEventListener("click", function (event) {
-                if (!event.target.closest('.search-container')) {
-                    hideResults();
-                }
-            });
-        }
+      function onSearchResultClick(result) {
+        // Add to playlist instead of clearing only
+        addSongToCurrentPlaylist({ title: result.displayTitle, firstLine: result.firstLine || '', songKey: result.songKey });
+        // show preview for that song
+        showSongPreview(result.songKey);
+        hideResults();
+        const si = document.getElementById('searchInput'); si.value = '';
+      }
 
       function selectSong(result) {
-        const detailsContent = document.getElementById("songDetailsContent");
-        const titleElement = document.getElementById("songDetailsTitle");
-
-        titleElement.textContent = result.displayTitle;
-
-        const formattedContent = formatSongContent(result.data);
-
-        detailsContent.innerHTML = `<div class="song-lyrics">${formattedContent}</div>`;
-
-        // Clear the search input when a song is selected
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) searchInput.value = '';
-
-        hideResults();
+        // kept for backward compatibility
+        showSongPreview(result.songKey || result.title);
       }
 
       function formatSongContent(songData) {
-        let content = "";
+        let out = '';
+        if (!songData) return out;
+        songData.sections && songData.sections.forEach((section, si) => {
+          section.slides && section.slides.forEach((slide) => { if (Array.isArray(slide)) slide.forEach(line => out += line + '\n'); });
+          if (si < songData.sections.length - 1) out += '\n';
+        });
+        return out.trim();
+      }
 
-        if (songData.sections && Array.isArray(songData.sections)) {
-          songData.sections.forEach((section, sectionIndex) => {
-            if (section.slides && Array.isArray(section.slides)) {
-              section.slides.forEach((slide, slideIndex) => {
-                if (Array.isArray(slide)) {
-                  slide.forEach((line) => {
-                    content += `${line}\n`;
-                  });
-                }
-              });
+      function showSongPreview(songKey) {
+        const data = songsData[songKey];
+        const titleEl = document.getElementById('songDetailsTitle');
+        const contentEl = document.getElementById('songDetailsContent');
+        if (!data) { titleEl.textContent = 'Detail písně'; contentEl.innerHTML = '<div class="no-results">Vyberte píseň z výsledků vyhledávání pro zobrazení detailů</div>'; return; }
+        titleEl.textContent = cleanTitleForDisplay(songKey);
+        contentEl.innerHTML = `<div class="song-lyrics">${formatSongContent(data)}</div>`;
+      }
 
-              if (sectionIndex < songData.sections.length - 1) {
-                content += "\n";
-              }
-            }
-          });
+      // --- Playlist management (in-memory + localStorage) ---
+      function loadPlaylists() {
+        try {
+          const raw = localStorage.getItem(PLAYLISTS_KEY);
+          playlists = raw ? JSON.parse(raw) : {};
+        } catch (e) { playlists = {}; }
+        // ensure at least one playlist exists
+        if (!Object.keys(playlists).length) {
+          const id = createNewPlaylist('Nový playlist');
+          currentPlaylistId = id;
+        } else {
+          currentPlaylistId = Object.keys(playlists)[0];
         }
-
-        return content.trim();
+        renderPlaylistSelector();
+        renderCurrentPlaylist();
       }
 
-      function formatJson(obj) {
-        const jsonString = JSON.stringify(obj, null, 2);
+      function savePlaylists() { try { localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists)); } catch (e) { console.error('Failed to save playlists', e); } }
 
-        return jsonString
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(
-            /("([^"\\]|\\.)*")/g,
-            '<span style="color: #2d5a2d; font-weight: bold;">$1</span>'
-          )
-          .replace(
-            /(\b\d+\.?\d*\b)/g,
-            '<span style="color: #ff6b35;">$1</span>'
-          )
-          .replace(
-            /(\btrue\b|\bfalse\b|\bnull\b)/g,
-            '<span style="color: #ff6b35; font-style: italic;">$1</span>'
-          )
-          .replace(
-            /("[^"]*")(\s*:)/g,
-            '<span style="color: #2d7a2d; font-weight: bold;">$1</span>$2'
-          );
+      function createNewPlaylist(name) {
+        const id = 'pl_' + Date.now();
+        playlists[id] = { id, name: name || 'Playlist', items: [] };
+        savePlaylists();
+        renderPlaylistSelector();
+        currentPlaylistId = id;
+        renderCurrentPlaylist();
+        return id;
       }
 
-      document.addEventListener("DOMContentLoaded", async function () {
+      function deleteCurrentPlaylist() {
+        if (!currentPlaylistId) return;
+        if (!confirm('Smazat tento playlist?')) return;
+        delete playlists[currentPlaylistId];
+        const keys = Object.keys(playlists);
+        currentPlaylistId = keys.length ? keys[0] : createNewPlaylist('Nový playlist');
+        savePlaylists();
+        renderPlaylistSelector();
+        renderCurrentPlaylist();
+      }
+
+      function renderPlaylistSelector() {
+        const sel = document.getElementById('playlistSelect');
+        sel.innerHTML = '';
+        Object.keys(playlists).forEach(id => {
+          const opt = document.createElement('option');
+          opt.value = id; opt.textContent = playlists[id].name || 'Playlist';
+          if (id === currentPlaylistId) opt.selected = true;
+          sel.appendChild(opt);
+        });
+      }
+
+      function onPlaylistSelectChange(e) {
+        currentPlaylistId = e.target.value;
+        renderCurrentPlaylist();
+      }
+
+      function renderCurrentPlaylist() {
+        const container = document.getElementById('playlistItems');
+        const titleEl = document.getElementById('playlistTitle');
+        container.innerHTML = '';
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) { titleEl.textContent = 'Nový playlist'; return; }
+        const pl = playlists[currentPlaylistId];
+        titleEl.textContent = pl.name || 'Playlist';
+        pl.items.forEach((it, idx) => {
+          const row = document.createElement('div');
+          row.className = 'playlist-item';
+          const a = document.createElement('a');
+          a.href = '#';
+          a.innerHTML = `<strong>${it.title}</strong>${it.firstLine ? '<small>' + it.firstLine + '</small>' : ''}`;
+          a.addEventListener('click', (ev) => { ev.preventDefault(); showSongPreview(it.songKey); });
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'remove-item';
+          removeBtn.title = 'Remove';
+          removeBtn.innerHTML = '✕';
+          removeBtn.addEventListener('click', () => { removeItemFromPlaylist(idx); });
+          row.appendChild(a);
+          row.appendChild(removeBtn);
+          container.appendChild(row);
+        });
+      }
+
+      function addSongToCurrentPlaylist(item) {
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+        playlists[currentPlaylistId].items.push(item);
+        savePlaylists();
+        renderCurrentPlaylist();
+      }
+
+      function removeItemFromPlaylist(index) {
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+        playlists[currentPlaylistId].items.splice(index, 1);
+        savePlaylists();
+        renderCurrentPlaylist();
+      }
+
+      function clearPlaylist() {
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+        if (!confirm('Vymazat všechny položky v playlistu?')) return;
+        playlists[currentPlaylistId].items = [];
+        savePlaylists();
+        renderCurrentPlaylist();
+      }
+
+      function onPlaylistTitleEdit(e) {
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+        playlists[currentPlaylistId].name = e.target.textContent.trim() || 'Playlist';
+        savePlaylists();
+        renderPlaylistSelector();
+      }
+
+      // --- setup event listeners ---
+      function setupEventListeners() {
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('searchClearBtn');
+        const sel = document.getElementById('playlistSelect');
+        const newBtn = document.getElementById('newPlaylistBtn');
+        const delBtn = document.getElementById('deletePlaylistBtn');
+        const clearPlBtn = document.getElementById('clearPlaylistBtn');
+        const titleEl = document.getElementById('playlistTitle');
+
+        searchInput.addEventListener('input', handleSearch);
+        searchInput.addEventListener('keydown', handleKeydown);
+        clearBtn.addEventListener('click', clearSearch);
+        document.addEventListener('click', (ev) => { if (!ev.target.closest('.search-container')) hideResults(); });
+
+        sel.addEventListener('change', onPlaylistSelectChange);
+        newBtn.addEventListener('click', () => createNewPlaylist('Nový playlist'));
+        delBtn.addEventListener('click', deleteCurrentPlaylist);
+        clearPlBtn.addEventListener('click', clearPlaylist);
+        titleEl.addEventListener('input', debounce(onPlaylistTitleEdit, 400));
+
+        // focus shortcuts
+        document.addEventListener('keydown', (e) => {
+          const active = document.activeElement;
+          const isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+          if (isTyping) return;
+          if (e.key === '/' && !e.metaKey && !e.ctrlKey) { e.preventDefault(); try { searchInput.focus(); searchInput.select(); } catch (err) {} }
+          if ((e.key && e.key.toLowerCase() === 'k') && (e.ctrlKey || e.metaKey)) { e.preventDefault(); try { searchInput.focus(); searchInput.select(); } catch (err) {} }
+        });
+      }
+
+      function debounce(fn, wait) {
+        let t = null;
+        return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), wait); };
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
         await loadSongsData();
+        loadPlaylists();
         setupEventListeners();
-        // Ensure input is focused on load; some browsers require a small delay
+        // autofocus attempts
         const input = document.getElementById('searchInput');
-        if (input) {
-          try {
-            input.focus();
-            // second attempt after a short delay for browsers that suppress immediate focus
-            setTimeout(() => {
-              try {
-                input.focus();
-                input.select && input.select();
-              } catch (e) {
-                /* ignore */
-              }
-            }, 50);
-          } catch (e) {
-            /* ignore */
-          }
-
-          // Fallbacks: visibility change, click, and keyboard shortcuts ("/" or Ctrl/Cmd+K)
-          (function setupAutofocusFallbacks() {
-            document.addEventListener('visibilitychange', () => {
-              if (document.visibilityState === 'visible') {
-                setTimeout(() => {
-                  try {
-                    input.focus();
-                    input.select && input.select();
-                  } catch (e) {}
-                }, 50);
-              }
-            });
-
-            const onClickFocus = () => {
-              try {
-                input.focus();
-                input.select && input.select();
-              } catch (e) {}
-              document.removeEventListener('click', onClickFocus);
-            };
-            document.addEventListener('click', onClickFocus);
-
-            document.addEventListener('keydown', (e) => {
-              const active = document.activeElement;
-              const isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
-              if (isTyping) return;
-
-              if (e.key === '/' && !e.metaKey && !e.ctrlKey) {
-                e.preventDefault();
-                try { input.focus(); input.select && input.select(); } catch (err) {}
-              } else if ((e.key && e.key.toLowerCase() === 'k') && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                try { input.focus(); input.select && input.select(); } catch (err) {}
-              }
-            });
-          })();
-        }
+        if (input) { try { input.focus(); setTimeout(() => { try { input.focus(); input.select && input.select(); } catch (e) {} }, 50); } catch (e) {} }
       });
     </script>
   </body>
