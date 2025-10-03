@@ -658,6 +658,17 @@
         </div>
     </div>
 
+    <!-- Accessible confirmation dialog -->
+    <div id="confirmDialog" role="dialog" aria-modal="true" aria-hidden="true" style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; z-index:2000;">
+      <div style="background:#fff; border:3px solid #c4d9c4; border-radius:12px; padding:20px; max-width:420px; width:90%; margin:auto; box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+        <div id="confirmDialogMessage" style="color:#2d5a2d; margin-bottom:16px;">Potvrdit akci?</div>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button id="confirmNoBtn" class="playlist-btn" aria-label="Zrušit">Ne</button>
+          <button id="confirmYesBtn" class="playlist-btn" aria-label="Potvrdit">Ano</button>
+        </div>
+      </div>
+    </div>
+
     <script>
       // Songs, index and search state
       let songsData = {};
@@ -886,23 +897,25 @@
         return id;
       }
 
-      function deleteCurrentPlaylist() {
-        if (!currentPlaylistId) return;
-        if (!confirm('Smazat tento playlist?')) return;
-        const deletedName = playlists[currentPlaylistId] ? playlists[currentPlaylistId].name : '';
-        delete playlists[currentPlaylistId];
-        const keys = Object.keys(playlists);
-        currentPlaylistId = keys.length ? keys[0] : createNewPlaylist('Nový playlist');
-        savePlaylists();
-        updatePlaylistTitle();
-        renderCurrentPlaylist();
-        clearSongPreview();
-        // announce deletion
-        try {
-          const ariaLive = document.getElementById('ariaLive');
-          if (ariaLive) ariaLive.textContent = 'Playlist smazán: ' + deletedName;
-        } catch (e) {}
-      }
+       function deleteCurrentPlaylist() {
+         if (!currentPlaylistId) return;
+         openConfirm('Smazat tento playlist?').then((ok) => {
+           if (!ok) return;
+           const deletedName = playlists[currentPlaylistId] ? playlists[currentPlaylistId].name : '';
+           delete playlists[currentPlaylistId];
+           const keys = Object.keys(playlists);
+           currentPlaylistId = keys.length ? keys[0] : createNewPlaylist('Nový playlist');
+           savePlaylists();
+           updatePlaylistTitle();
+           renderCurrentPlaylist();
+           clearSongPreview();
+           // announce deletion
+           try {
+             const ariaLive = document.getElementById('ariaLive');
+             if (ariaLive) ariaLive.textContent = 'Playlist smazán: ' + deletedName;
+           } catch (e) {}
+         });
+       }
 
       function updatePlaylistTitle() {
         const titleEl = document.getElementById('playlistTitle');
@@ -1103,14 +1116,17 @@
         try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Položka odstraněna: ' + (removed ? (removed.title || '') : ''); } catch (e) {}
       }
 
-      function clearPlaylist() {
-        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
-        if (!confirm('Vymazat všechny položky v playlistu?')) return;
-        playlists[currentPlaylistId].items = [];
-        savePlaylists();
-        renderCurrentPlaylist();
-        try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Playlist vyprázdněn'; } catch (e) {}
-      }
+       function clearPlaylist() {
+         if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+         openConfirm('Vymazat všechny položky v playlistu?').then((ok) => {
+           if (!ok) return;
+           playlists[currentPlaylistId].items = [];
+           savePlaylists();
+           renderCurrentPlaylist();
+           clearSongPreview();
+           try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Playlist vyprázdněn'; } catch (e) {}
+         });
+       }
 
       // --- setup event listeners ---
       function setupEventListeners() {
@@ -1177,12 +1193,43 @@
         });
       }
 
-      function debounce(fn, wait) {
-        let t = null;
-        return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), wait); };
-      }
+       function debounce(fn, wait) {
+         let t = null;
+         return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), wait); };
+       }
 
-      document.addEventListener('DOMContentLoaded', async () => {
+       // Accessible confirm dialog helper
+       function openConfirm(message) {
+         return new Promise((resolve) => {
+           const dialog = document.getElementById('confirmDialog');
+           const msg = document.getElementById('confirmDialogMessage');
+           const yes = document.getElementById('confirmYesBtn');
+           const no = document.getElementById('confirmNoBtn');
+           if (!dialog || !msg || !yes || !no) { resolve(window.confirm(message)); return; }
+           msg.textContent = message;
+           dialog.style.display = 'flex';
+           dialog.setAttribute('aria-hidden', 'false');
+           // trap focus simply
+           const prevActive = document.activeElement;
+           yes.focus();
+           function cleanup() {
+             dialog.style.display = 'none';
+             dialog.setAttribute('aria-hidden', 'true');
+             yes.removeEventListener('click', onYes);
+             no.removeEventListener('click', onNo);
+             document.removeEventListener('keydown', onKey);
+             try { prevActive && prevActive.focus(); } catch (e) {}
+           }
+           function onYes() { cleanup(); resolve(true); }
+           function onNo() { cleanup(); resolve(false); }
+           function onKey(e) { if (e.key === 'Escape') { onNo(); } if (e.key === 'Enter') { onYes(); } }
+           yes.addEventListener('click', onYes);
+           no.addEventListener('click', onNo);
+           document.addEventListener('keydown', onKey);
+         });
+       }
+
+       document.addEventListener('DOMContentLoaded', async () => {
         await loadSongsData();
         loadPlaylists();
         setupEventListeners();
