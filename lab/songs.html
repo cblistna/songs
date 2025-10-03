@@ -197,12 +197,6 @@
             color: var(--text-color);
         }
 
-        .highlight {
-            background-color: var(--warning-color);
-            color: #856404;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
 
         .song-separator {
             color: var(--highlight-color);
@@ -382,7 +376,7 @@
             // Highlight search terms and rejoin
             const highlightedSongs = matchingSongs.map(song => {
                 const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-                return song.replace(regex, '<span class="highlight">$&</span>');
+                return song;
             });
 
             const result = highlightedSongs.join('\n<div class="song-separator">♪ ♫ ♪ ♫ ♪</div>\n');

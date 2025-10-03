@@ -149,13 +149,6 @@
             font-size: clamp(1rem, 2vw, 1.1rem);
         }
 
-        .highlight {
-            background: linear-gradient(135deg, #ffeb99, #fff2cc);
-            font-weight: 600;
-            padding: 2px 4px;
-            border-radius: 4px;
-            color: #2d5a2d;
-        }
 
         
         @media (max-width: 768px) {
@@ -331,7 +324,7 @@
 
         
         function searchSongs(query) {
-            if (query.length < 3) return [];
+            if (query.length < 2) return [];
             
             const queryTrigrams = createPostgresStyleTrigrams(query);
             const results = [];
@@ -369,28 +362,7 @@
         }
 
         
-        function highlightMatches(title, query) {
-            if (query.length < 3) return title;
-            
-            
-            const queryTrigrams = createPostgresStyleTrigrams(query);
-            const titleTrigrams = createPostgresStyleTrigrams(title);
-            
-            let highlightedTitle = title;
-            const commonTrigrams = queryTrigrams.filter(trigram => 
-                titleTrigrams.includes(trigram) && trigram.length === 3
-            );
-            
-            
-            commonTrigrams.sort((a, b) => b.length - a.length);
-            
-            commonTrigrams.forEach(trigram => {
-                const regex = new RegExp(escapeRegExp(trigram), 'gi');
-                highlightedTitle = highlightedTitle.replace(regex, '<span class="highlight">$&</span>');
-            });
-            
-            return highlightedTitle;
-        }
+
 
         
         function escapeRegExp(string) {
@@ -415,7 +387,7 @@
                 item.className = 'search-result-item';
                 if (index === 0) item.classList.add('selected');
                 
-                const titleHtml = highlightMatches(result.displayTitle, query);
+                const titleHtml = result.displayTitle;
                 const firstLineHtml = result.firstLine ? 
                     `<small style="color: #7a9a7a; font-size: 0.85em; display: block; margin-top: 4px;">${result.firstLine}</small>` : 
                     '';
@@ -452,7 +424,7 @@
             }
             
             searchTimeout = setTimeout(() => {
-                if (query.length < 3) {
+                if (query.length < 2) {
                     document.getElementById('searchResults').style.display = 'none';
                     return;
                 }
