@@ -227,6 +227,9 @@
         .song-details {
           padding: 16px;
         }
+
+        /* Stack playlist and preview on very small screens only */
+        .main-grid { grid-template-columns: 1fr !important; gap: 12px; }
       }
 
       @keyframes fadeIn {
@@ -257,7 +260,7 @@
       /* Playlist & two-column layout */
       .main-grid {
         display: grid;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: minmax(240px, 1fr) 2fr;
         gap: 20px;
         align-items: start;
         margin-top: 20px;
@@ -365,9 +368,7 @@
         font-size: 16px;
       }
 
-      @media (max-width: 768px) {
-        .main-grid { grid-template-columns: 1fr; }
-      }
+
     </style>
   </head>
   <body>
@@ -376,8 +377,6 @@
         <h1>🎵 Vyhledávání písní</h1>
       </div>
 
-        <div class="main-grid">
-          <div class="playlist-panel">
             <div class="search-container">
                 <input 
                     type="text" 
@@ -391,12 +390,12 @@
                 <div id="searchResults" class="search-results"></div>
             </div>
 
-            <div class="playlist-manager">
+        <div class="main-grid">
+          <div class="playlist-panel">
               <select id="playlistSelect" aria-label="Select playlist"></select>
               <button id="newPlaylistBtn" title="New playlist">New</button>
               <button id="deletePlaylistBtn" title="Delete playlist">Del</button>
-            </div>
-
+            
             <div class="playlist-header">
               <div id="playlistTitle" contenteditable="true" aria-label="Playlist title">Nový playlist</div>
               <button id="clearPlaylistBtn" title="Clear playlist">Clear</button>
@@ -628,6 +627,19 @@
         renderPlaylistSelector();
         currentPlaylistId = id;
         renderCurrentPlaylist();
+        // focus the title element so user can rename immediately
+        setTimeout(() => {
+          const titleEl = document.getElementById('playlistTitle');
+          if (titleEl) {
+            titleEl.focus();
+            // select all text for quick replacement
+            const range = document.createRange();
+            range.selectNodeContents(titleEl);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+        }, 60);
         return id;
       }
 
@@ -662,19 +674,25 @@
         const container = document.getElementById('playlistItems');
         const titleEl = document.getElementById('playlistTitle');
         container.innerHTML = '';
+        container.setAttribute('role', 'list');
         if (!currentPlaylistId || !playlists[currentPlaylistId]) { titleEl.textContent = 'Nový playlist'; return; }
         const pl = playlists[currentPlaylistId];
         titleEl.textContent = pl.name || 'Playlist';
         pl.items.forEach((it, idx) => {
           const row = document.createElement('div');
           row.className = 'playlist-item';
+          row.setAttribute('role', 'listitem');
           const a = document.createElement('a');
           a.href = '#';
+          a.setAttribute('tabindex', '0');
+          a.setAttribute('aria-label', (it.title || '') + (it.firstLine ? ' — ' + it.firstLine : ''));
           a.innerHTML = `<strong>${it.title}</strong>${it.firstLine ? '<small>' + it.firstLine + '</small>' : ''}`;
           a.addEventListener('click', (ev) => { ev.preventDefault(); showSongPreview(it.songKey); });
+          a.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showSongPreview(it.songKey); } });
           const removeBtn = document.createElement('button');
           removeBtn.className = 'remove-item';
           removeBtn.title = 'Remove';
+          removeBtn.setAttribute('aria-label', 'Odstranit položku');
           removeBtn.innerHTML = '✕';
           removeBtn.addEventListener('click', () => { removeItemFromPlaylist(idx); });
           row.appendChild(a);
@@ -685,7 +703,22 @@
 
       function addSongToCurrentPlaylist(item) {
         if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
-        playlists[currentPlaylistId].items.push(item);
+        // dedupe by songKey: if exists, move it to the top and show preview
+        const pl = playlists[currentPlaylistId];
+        const existingIdx = pl.items.findIndex(i => i.songKey === item.songKey);
+        if (existingIdx !== -1) {
+          // move it to the top
+          const existing = pl.items.splice(existingIdx, 1)[0];
+          pl.items.unshift(existing);
+          savePlaylists();
+          renderCurrentPlaylist();
+          // show the preview for the existing item
+          showSongPreview(item.songKey);
+          return;
+        }
+        pl.items.unshift(item);
+        // keep playlist reasonably bounded (optional limit 200)
+        if (pl.items.length > 200) pl.items.length = 200;
         savePlaylists();
         renderCurrentPlaylist();
       }
