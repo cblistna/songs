@@ -274,104 +274,197 @@
         width: 100%;
       }
 
-      .playlist-manager {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 8px;
-        align-items: center;
-      }
-
-      /* compact overlay: title over select */
-      .playlist-compact { display:flex; align-items:center; gap:8px; }
-      /* Playlist combo: a single component combining title (editable) and native select */
-      .playlist-combo { position:relative; display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; }
-      .playlist-combo #playlistTitle { position:relative; z-index:3; background:transparent; color:#2d5a2d; font-weight:600; padding:4px 6px; border-radius:6px; }
-      /* native select is kept but hidden when closed; when opened it becomes a native dropdown below the component */
-      .playlist-combo select {
-        position:absolute;
-        left:0;
-        top:100%;
-        width:100%;
-        margin-top:8px;
-        display:block;
-        opacity:0;
-        pointer-events:none;
-        z-index:2;
-        max-height:240px;
-        overflow:auto;
-        border-radius:8px;
-        border:1px solid #c4d9c4;
-        background:#fff;
-        color:#2d5a2d;
-      }
-      .playlist-combo select[data-temp-open="true"] { opacity:1; pointer-events:auto; box-shadow:0 8px 24px rgba(45,90,45,0.12); }
-      /* transparent small toggle inside the same component */
-      .playlist-combo .toggle-btn { background:transparent; color:#2d5a2d; width:28px; height:28px; padding:4px; border-radius:6px; }
-      .playlist-combo .toggle-btn svg { display:block; }
-
-      .playlist-actions { display:flex; gap:6px; align-items:center; }
-
-      .icon-btn { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; border:none; background:#2d5a2d; color:#fff; cursor:pointer; padding:4px; }
-      /* Ensure SVG icons inherit the button color so strokes/fills are visible on colored backgrounds */
-      .icon-btn svg { display:block; color: inherit; width: 100%; height: 100%; }
-      .icon-btn svg path, .icon-btn svg circle, .icon-btn svg rect { stroke: currentColor !important; fill: currentColor !important; }
-      .icon-btn:focus { outline:2px solid #ff9966; }
-
-      .playlist-manager select {
-        flex: 1 1 auto;
-        padding: 8px 10px;
-        border-radius: 8px;
-        border: 2px solid #c4d9c4;
-        background: #fff;
-      }
-
-      .playlist-controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
+      /* Playlist header container */
+      .playlist-header-container {
         margin-bottom: 16px;
       }
 
       .playlist-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        gap: 12px;
+        margin-bottom: 16px;
       }
 
-      .playlist-title-row {
+      .playlist-title-container {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 4px;
       }
 
       #playlistTitle {
+        flex: 1 1 auto;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2d5a2d;
+        margin: 0;
+        padding: 8px 12px;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        background: transparent;
+        outline: none;
+        cursor: text;
+        transition: all 0.2s ease;
+      }
+
+      .playlist-chevron {
+        background: transparent;
+        border: none;
+        color: #7a9a7a;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s ease;
+      }
+
+      .playlist-chevron:hover {
+        background: #f0f8f0;
+        color: #2d5a2d;
+      }
+
+      #playlistTitle:hover {
+        background: #f8fdf8;
+        border-color: #e0f0e0;
+      }
+
+      #playlistTitle:focus {
+        background: #ffffff;
+        border-color: #7fb07f;
+        box-shadow: 0 0 0 3px rgba(127, 176, 127, 0.1);
+      }
+
+      /* Playlist selector dropdown */
+      .playlist-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border: 2px solid #c4d9c4;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(45, 90, 45, 0.15);
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+      }
+
+      .playlist-dropdown.show {
+        display: block;
+      }
+
+      .playlist-option {
+        padding: 10px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f8f0;
+        transition: background-color 0.15s ease;
+      }
+
+      .playlist-option:last-child {
+        border-bottom: none;
+      }
+
+      .playlist-option:hover {
+        background: #f8fdf8;
+      }
+
+      .playlist-option.current {
+        background: #e8f5e8;
+        font-weight: 600;
+      }
+
+
+
+      .playlist-select {
+        width: 100%;
+        padding: 10px 16px;
         font-size: 1rem;
         font-weight: 600;
         color: #2d5a2d;
-        padding: 6px 8px;
+        background: #f8fdf8;
+        border: 2px solid #e0f0e0;
         border-radius: 8px;
-        min-width: 0;
         outline: none;
-        border: 2px solid transparent;
-        display: inline-block;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+        padding-right: 40px;
       }
 
-      /* When editing, add visible focus ring to contenteditable title */
-      .playlist-header.editing #playlistTitle {
-        box-shadow: 0 0 0 4px rgba(255,153,102,0.12);
+      .playlist-select:hover {
+        border-color: #c4d9c4;
+        background: #ffffff;
+      }
+
+      .playlist-select:focus {
         border-color: #ff9966;
+        box-shadow: 0 0 0 3px rgba(255, 153, 102, 0.1);
+        background: #ffffff;
       }
 
-      #playlistTitle[contenteditable] {
-        padding: 6px 8px;
+      /* Playlist action buttons */
+      .playlist-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .playlist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
         border-radius: 8px;
+        border: 2px solid #e0f0e0;
+        background: #f8fdf8;
+        color: #5a7a5a;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.2s ease;
       }
 
-      #playlistTitle[contenteditable]:focus {
-        outline: 2px solid #ff9966;
+      .playlist-btn:hover {
+        background: #2d5a2d;
+        color: #ffffff;
+        border-color: #2d5a2d;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(45, 90, 45, 0.2);
       }
+
+      .playlist-btn:focus {
+        outline: 2px solid #ff9966;
+        outline-offset: 2px;
+      }
+
+      .playlist-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(45, 90, 45, 0.2);
+      }
+
+      /* Ensure SVG icons inherit the button color */
+      .playlist-btn svg {
+        display: block;
+        color: inherit;
+        width: 18px;
+        height: 18px;
+      }
+
+      .playlist-btn svg path,
+      .playlist-btn svg circle,
+      .playlist-btn svg rect {
+        stroke: currentColor !important;
+        fill: none !important;
+      }
+
+
 
       #ariaLive {
         position: absolute;
@@ -510,30 +603,37 @@
                 <div id="searchResults" class="search-results"></div>
             </div>
 
-        <div class="playlist-controls">
-
-
+        <div class="playlist-header-container">
           <div class="playlist-header" id="playlistHeader">
-              <div class="playlist-title-row">
-                <div class="playlist-combo" style="margin-right:8px; border:2px solid transparent;" role="group" aria-label="Playlist selector">
-                  <div id="playlistTitle" contenteditable="plaintext-only" role="textbox" aria-label="Název playlistu">Nový playlist</div>
-                  <select id="playlistSelect" aria-label="Vybrat playlist"> </select>
-                  <button id="openPlaylistSelectBtn" class="toggle-btn" title="Otevřít playlisty" aria-label="Otevřít playlisty" aria-haspopup="listbox" aria-expanded="false" aria-controls="playlistSelect">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                </div>
-                <div class="playlist-actions">
-                  <button id="newPlaylistBtn" class="icon-btn" title="Nový playlist" aria-label="Nový playlist">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                  <button id="deletePlaylistBtn" class="icon-btn" title="Smazat playlist" aria-label="Smazat playlist">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 3h6l1 2h3v2H5V5h3l1-2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                </div>
+            <div style="flex: 1 1 auto; position: relative;">
+              <div class="playlist-title-container">
+                <h2 id="playlistTitle" contenteditable="true" spellcheck="false" tabindex="0" role="textbox" aria-label="Název playlistu">Playlist</h2>
+                <button id="playlistChevron" class="playlist-chevron" aria-label="Vybrat playlist" title="Vybrat playlist">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
               </div>
-            <div>
-              <button id="clearPlaylistBtn" class="icon-btn" title="Vyprázdnit playlist" aria-label="Vyprázdnit playlist">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 6h8M6 10h12M8 14h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div id="playlistDropdown" class="playlist-dropdown"></div>
+            </div>
+            <div class="playlist-actions">
+              <button id="newPlaylistBtn" class="playlist-btn" title="Nový playlist" aria-label="Nový playlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button id="clearPlaylistBtn" class="playlist-btn" title="Vyprázdnit playlist" aria-label="Vyprázdnit playlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                  <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <button id="deletePlaylistBtn" class="playlist-btn" title="Smazat playlist" aria-label="Smazat playlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0v14m4-14v14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </button>
             </div>
             <div id="ariaLive" aria-live="polite" aria-atomic="true"></div>
@@ -744,6 +844,13 @@
         contentEl.innerHTML = `<div class="song-lyrics">${formatSongContent(data)}</div>`;
       }
 
+      function clearSongPreview() {
+        const titleEl = document.getElementById('songDetailsTitle');
+        const contentEl = document.getElementById('songDetailsContent');
+        titleEl.textContent = 'Detail písně';
+        contentEl.innerHTML = '<div class="no-results">Vyberte píseň z výsledků vyhledávání pro zobrazení detailů</div>';
+      }
+
       // --- Playlist management (in-memory + localStorage) ---
       function loadPlaylists() {
         try {
@@ -757,7 +864,7 @@
         } else {
           currentPlaylistId = Object.keys(playlists)[0];
         }
-        renderPlaylistSelector();
+        updatePlaylistTitle();
         renderCurrentPlaylist();
       }
 
@@ -765,28 +872,12 @@
 
       function createNewPlaylist(name) {
         const id = 'pl_' + Date.now();
-        playlists[id] = { id, name: name || 'Playlist', items: [] };
+        playlists[id] = { id, name: name || 'Nový playlist', items: [] };
         savePlaylists();
-        renderPlaylistSelector();
         currentPlaylistId = id;
+        updatePlaylistTitle();
         renderCurrentPlaylist();
-        // focus the title element so user can rename immediately
-        setTimeout(() => {
-          const titleEl = document.getElementById('playlistTitle');
-          const header = document.getElementById('playlistHeader');
-          if (titleEl) {
-            titleEl.textContent = playlists[id].name || '';
-            if (header) header.classList.add('editing');
-            try {
-              titleEl.focus();
-              const range = document.createRange();
-              range.selectNodeContents(titleEl);
-              const sel = window.getSelection();
-              sel.removeAllRanges();
-              sel.addRange(range);
-            } catch (err) {}
-          }
-        }, 60);
+        clearSongPreview();
         // announce creation for screen readers
         try {
           const ariaLive = document.getElementById('ariaLive');
@@ -803,8 +894,9 @@
         const keys = Object.keys(playlists);
         currentPlaylistId = keys.length ? keys[0] : createNewPlaylist('Nový playlist');
         savePlaylists();
-        renderPlaylistSelector();
+        updatePlaylistTitle();
         renderCurrentPlaylist();
+        clearSongPreview();
         // announce deletion
         try {
           const ariaLive = document.getElementById('ariaLive');
@@ -812,33 +904,76 @@
         } catch (e) {}
       }
 
-      function renderPlaylistSelector() {
-        const sel = document.getElementById('playlistSelect');
-        sel.innerHTML = '';
-        Object.keys(playlists).forEach(id => {
-          const opt = document.createElement('option');
-          opt.value = id; opt.textContent = playlists[id].name || 'Playlist';
-          if (id === currentPlaylistId) opt.selected = true;
-          sel.appendChild(opt);
-        });
+      function updatePlaylistTitle() {
+        const titleEl = document.getElementById('playlistTitle');
+        if (!titleEl) return;
+        if (currentPlaylistId && playlists[currentPlaylistId]) {
+          titleEl.textContent = playlists[currentPlaylistId].name || 'Playlist';
+        } else {
+          titleEl.textContent = 'Playlist';
+        }
       }
 
-      function onPlaylistSelectChange(e) {
-        currentPlaylistId = e.target.value;
-        renderCurrentPlaylist();
+      function onPlaylistTitleEdit() {
+        const titleEl = document.getElementById('playlistTitle');
+        if (!titleEl || !currentPlaylistId || !playlists[currentPlaylistId]) return;
+        
+        const newName = titleEl.textContent.trim() || 'Playlist';
+        
+        // Update the visual display if it was empty
+        if (titleEl.textContent.trim() === '') {
+          titleEl.textContent = 'Playlist';
+        }
+        
+        if (newName !== playlists[currentPlaylistId].name) {
+          playlists[currentPlaylistId].name = newName;
+          savePlaylists();
+          try {
+            const ariaLive = document.getElementById('ariaLive');
+            if (ariaLive) ariaLive.textContent = 'Playlist přejmenován na: ' + newName;
+          } catch (e) {}
+        }
+      }
+
+      function showPlaylistDropdown() {
+        const dropdown = document.getElementById('playlistDropdown');
+        if (!dropdown) return;
+        
+        dropdown.innerHTML = '';
+        Object.keys(playlists).forEach(id => {
+          const option = document.createElement('div');
+          option.className = 'playlist-option' + (id === currentPlaylistId ? ' current' : '');
+          option.textContent = playlists[id].name || 'Playlist';
+          option.addEventListener('click', () => {
+            currentPlaylistId = id;
+            updatePlaylistTitle();
+            renderCurrentPlaylist();
+            clearSongPreview();
+            hidePlaylistDropdown();
+            try {
+              const ariaLive = document.getElementById('ariaLive');
+              if (ariaLive) ariaLive.textContent = 'Přepnuto na playlist: ' + (playlists[id].name || 'Playlist');
+            } catch (e) {}
+          });
+          dropdown.appendChild(option);
+        });
+        
+        dropdown.classList.add('show');
+      }
+
+      function hidePlaylistDropdown() {
+        const dropdown = document.getElementById('playlistDropdown');
+        if (dropdown) {
+          dropdown.classList.remove('show');
+        }
       }
 
       function renderCurrentPlaylist() {
         const container = document.getElementById('playlistItems');
-        const titleEl = document.getElementById('playlistTitle');
         container.innerHTML = '';
         container.setAttribute('role', 'list');
-        if (!currentPlaylistId || !playlists[currentPlaylistId]) { titleEl.textContent = 'Nový playlist'; return; }
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
         const pl = playlists[currentPlaylistId];
-        titleEl.textContent = pl.name || 'Playlist';
-        // ensure header is not left accidentally in editing mode
-        const header = document.getElementById('playlistHeader');
-        if (header) header.classList.remove('editing');
         pl.items.forEach((it, idx) => {
           const row = document.createElement('div');
           row.className = 'playlist-item';
@@ -981,14 +1116,10 @@
       function setupEventListeners() {
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('searchClearBtn');
-        const sel = document.getElementById('playlistSelect');
+        const titleEl = document.getElementById('playlistTitle');
         const newBtn = document.getElementById('newPlaylistBtn');
         const delBtn = document.getElementById('deletePlaylistBtn');
         const clearPlBtn = document.getElementById('clearPlaylistBtn');
-        const combo = document.querySelector('.playlist-combo');
-        const openBtn = document.getElementById('openPlaylistSelectBtn');
-        const titleElEditable = document.getElementById('playlistTitle');
-        const header = document.getElementById('playlistHeader');
         const ariaLive = document.getElementById('ariaLive');
 
         // Search input handlers
@@ -997,87 +1128,44 @@
         clearBtn.addEventListener('click', clearSearch);
         document.addEventListener('click', (ev) => { if (!ev.target.closest('.search-container')) hideResults(); });
 
-        // Playlist actions
-        sel.addEventListener('change', (e) => { onPlaylistSelectChange(e); closeCombo(); });
-        newBtn.addEventListener('click', () => createNewPlaylist('Nový playlist'));
-        delBtn.addEventListener('click', deleteCurrentPlaylist);
-        clearPlBtn.addEventListener('click', clearPlaylist);
-
-        // Combo helpers
-        function openCombo() {
-          if (!sel || !combo) return;
-          const opts = sel.options ? sel.options.length : 0;
-          if (opts <= 1) return;
-          sel.setAttribute('data-temp-open', 'true');
-          sel.size = Math.min(8, opts);
-          openBtn && openBtn.setAttribute('aria-expanded', 'true');
-          // make the native list visible and focusable
-          setTimeout(() => { try { sel.focus(); } catch (err) {} }, 10);
-          // listen for outside clicks
-          document.addEventListener('click', outsideClickListener);
-        }
-        function closeCombo() {
-          if (!sel) return;
-          sel.removeAttribute('data-temp-open');
-          try { sel.size = 1; } catch (err) {}
-          openBtn && openBtn.setAttribute('aria-expanded', 'false');
-          document.removeEventListener('click', outsideClickListener);
-        }
-        function outsideClickListener(e) {
-          if (!e.target.closest('.playlist-combo')) closeCombo();
-        }
-
-        // Toggle button
-        if (openBtn) {
-          openBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const expanded = openBtn.getAttribute('aria-expanded') === 'true';
-            if (expanded) closeCombo(); else openCombo();
+        // Playlist title editing
+        if (titleEl) {
+          titleEl.addEventListener('blur', onPlaylistTitleEdit);
+          titleEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              titleEl.blur();
+            }
           });
         }
 
-        // Keyboard: ArrowDown opens the combo when focused on title
-        titleElEditable && titleElEditable.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowDown') { e.preventDefault(); openCombo(); }
-          if (e.key === 'Enter') { e.preventDefault(); closePlaylistTitleEditor(false); }
-          if (e.key === 'Escape') { e.preventDefault(); closePlaylistTitleEditor(true); }
+        // Playlist selection chevron
+        const chevronBtn = document.getElementById('playlistChevron');
+        if (chevronBtn) {
+          chevronBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropdown = document.getElementById('playlistDropdown');
+            if (dropdown && dropdown.classList.contains('show')) {
+              hidePlaylistDropdown();
+            } else {
+              showPlaylistDropdown();
+            }
+          });
+        }
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          const dropdown = document.getElementById('playlistDropdown');
+          if (dropdown && !e.target.closest('#playlistTitle') && !e.target.closest('#playlistDropdown') && !e.target.closest('#playlistChevron')) {
+            hidePlaylistDropdown();
+          }
         });
 
-        // Ensure Escape collapses the select when it's open
-        sel && sel.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); closeCombo(); sel.blur(); } });
-
-        // Contenteditable rename editor (double-click to edit for safety)
-        let prevName = null;
-        function openPlaylistTitleEditor() {
-          if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
-          header.classList.add('editing');
-          prevName = playlists[currentPlaylistId].name || '';
-          try { titleElEditable.focus(); const range = document.createRange(); range.selectNodeContents(titleElEditable); const selRange = window.getSelection(); selRange.removeAllRanges(); selRange.addRange(range); } catch (err) {}
-        }
-        function closePlaylistTitleEditor(cancel) {
-          header.classList.remove('editing');
-          titleElEditable.blur();
-          if (cancel) {
-            if (currentPlaylistId && playlists[currentPlaylistId]) titleElEditable.textContent = playlists[currentPlaylistId].name || '';
-            ariaLive.textContent = 'Přejmenování zrušeno';
-            return;
-          }
-          const newName = (titleElEditable.textContent || '').trim() || 'Playlist';
-          if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
-          const prev = playlists[currentPlaylistId].name;
-          if (newName === prev) { ariaLive.textContent = 'Název nezměněn'; return; }
-          const duplicate = Object.keys(playlists).some(id => id !== currentPlaylistId && (playlists[id].name || '') === newName);
-          if (duplicate) { alert('Název playlistu již existuje'); openPlaylistTitleEditor(); return; }
-          playlists[currentPlaylistId].name = newName; savePlaylists(); renderPlaylistSelector(); renderCurrentPlaylist(); ariaLive.textContent = 'Playlist přejmenován na ' + newName;
-        }
-
-        // Interactions: double-click title to edit; single-click title focuses component
-        titleElEditable && titleElEditable.addEventListener('dblclick', (e) => { e.stopPropagation(); openPlaylistTitleEditor(); });
-        titleElEditable && titleElEditable.addEventListener('click', (e) => { e.stopPropagation(); /* do not auto-edit on single click */ });
-        titleElEditable && titleElEditable.addEventListener('blur', () => { closePlaylistTitleEditor(false); });
-
-        // close combo when an option is selected (handled above) and when select loses focus
-        sel && sel.addEventListener('blur', () => { closeCombo(); });
+        // Playlist actions
+        newBtn.addEventListener('click', () => createNewPlaylist('Nový playlist'));
+        delBtn.addEventListener('click', deleteCurrentPlaylist);
+        clearPlBtn.addEventListener('click', clearPlaylist);
 
         // focus shortcuts
         document.addEventListener('keydown', (e) => {
