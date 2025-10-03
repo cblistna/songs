@@ -1,593 +1,600 @@
 <!DOCTYPE html>
 <html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vyhledávání textů písní</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vyhledávání písní</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+        min-height: 100vh;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        color: #2d5a2d;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .header p {
+        color: #5a7a5a;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+      }
+
+      .search-container {
+        position: relative;
+        margin-bottom: 30px;
+        width: 66.666%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 18px 24px;
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        border: 3px solid #c4d9c4;
+        border-radius: 16px;
+        background: #ffffff;
+        outline: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(45, 90, 45, 0.1);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .search-input:focus {
+        border-color: #ff9966;
+        box-shadow: 0 0 0 4px rgba(255, 153, 102, 0.2),
+          0 4px 12px rgba(45, 90, 45, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .search-input::placeholder {
+        color: #8fb48f;
+      }
+
+      .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border: 3px solid #c4d9c4;
+        border-top: none;
+        border-radius: 0 0 16px 16px;
+        max-height: calc(56px * 5);
+        overflow-y: hidden;
+        overflow-x: hidden;
+        z-index: 100;
+        display: none;
+        box-shadow: 0 8px 24px rgba(45, 90, 45, 0.15);
+      }
+
+      .search-result-item {
+        padding: 16px 24px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f8f0;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #2d5a2d;
+        font-size: 1rem;
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .search-result-item:hover,
+      .search-result-item.selected {
+        background: linear-gradient(135deg, #ff9966, #ffb399);
+        color: white;
+        transform: translateX(4px);
+      }
+
+      .search-result-item:hover small,
+      .search-result-item.selected small {
+        color: rgba(255, 255, 255, 0.8) !important;
+      }
+
+      .search-result-item:last-child {
+        border-bottom: none;
+      }
+
+      .song-details {
+        background: #ffffff;
+        border: 3px solid #c4d9c4;
+        border-radius: 16px;
+        padding: 24px;
+        min-height: 200px;
+        box-shadow: 0 4px 16px rgba(45, 90, 45, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .song-details:hover {
+        box-shadow: 0 6px 20px rgba(45, 90, 45, 0.15);
+      }
+
+      .song-details h2 {
+        color: #2d5a2d;
+        margin-bottom: 5px;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 600;
+      }
+
+      .song-lyrics {
+        background: #ffffff;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: clamp(0.9rem, 1.8vw, 1rem);
+        line-height: 1.6;
+        color: #2d5a2d;
+        white-space: pre-line;
+        text-align: left;
+      }
+
+      .no-results {
+        text-align: center;
+        color: #7a9a7a;
+        font-style: italic;
+        padding: 60px 20px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+      }
+
+      @media (max-width: 768px) {
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
+          padding: 15px;
         }
 
         .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            color: #2d5a2d;
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .header p {
-            color: #5a7a5a;
-            font-size: clamp(1rem, 2vw, 1.1rem);
+          max-width: 100%;
         }
 
         .search-container {
-            position: relative;
-            margin-bottom: 30px;
-            width: 66.666%;
-            margin-left: auto;
-            margin-right: auto;
+          width: 100%;
+          margin-left: 0;
+          margin-right: 0;
         }
 
         .search-input {
-            width: 100%;
-            padding: 18px 24px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            border: 3px solid #c4d9c4;
-            border-radius: 16px;
-            background: #ffffff;
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(45, 90, 45, 0.1);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .search-input:focus {
-            border-color: #ff9966;
-            box-shadow: 0 0 0 4px rgba(255, 153, 102, 0.2), 0 4px 12px rgba(45, 90, 45, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .search-input::placeholder {
-            color: #8fb48f;
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            border: 3px solid #c4d9c4;
-            border-top: none;
-            border-radius: 0 0 16px 16px;
-            max-height: calc(56px * 5);
-            overflow-y: hidden;
-            overflow-x: hidden;
-            z-index: 100;
-            display: none;
-            box-shadow: 0 8px 24px rgba(45, 90, 45, 0.15);
+          padding: 15px 20px;
         }
 
         .search-result-item {
-            padding: 16px 24px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f8f0;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #2d5a2d;
-            font-size: 1rem;
-            line-height: 1.3;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .search-result-item:hover,
-        .search-result-item.selected {
-            background: linear-gradient(135deg, #ff9966, #ffb399);
-            color: white;
-            transform: translateX(4px);
-        }
-
-        .search-result-item:hover small,
-        .search-result-item.selected small {
-            color: rgba(255, 255, 255, 0.8) !important;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
+          padding: 14px 20px;
         }
 
         .song-details {
-            background: #ffffff;
-            border: 3px solid #c4d9c4;
-            border-radius: 16px;
-            padding: 24px;
-            min-height: 200px;
-            box-shadow: 0 4px 16px rgba(45, 90, 45, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .song-details:hover {
-            box-shadow: 0 6px 20px rgba(45, 90, 45, 0.15);
-        }
-
-        .song-details h2 {
-            color: #2d5a2d;
-            margin-bottom: 5px;
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-            font-weight: 600;
+          padding: 20px;
         }
 
         .song-lyrics {
-            background: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: clamp(0.9rem, 1.8vw, 1rem);
-            line-height: 1.6;
-            color: #2d5a2d;
-            white-space: pre-line;
-            text-align: left;
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header {
+          margin-bottom: 30px;
         }
 
-        .no-results {
-            text-align: center;
-            color: #7a9a7a;
-            font-style: italic;
-            padding: 60px 20px;
-            font-size: clamp(1rem, 2vw, 1.1rem);
+        .search-input {
+          padding: 12px 16px;
         }
 
-
-        
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            
-            .container {
-                max-width: 100%;
-            }
-            
-            .search-container {
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-            }
-            
-            .search-input {
-                padding: 15px 20px;
-            }
-            
-            .search-result-item {
-                padding: 14px 20px;
-            }
-            
-            .song-details {
-                padding: 20px;
-            }
-            
-            .song-lyrics {
-                font-size: 0.9rem;
-            }
+        .search-result-item {
+          padding: 12px 16px;
         }
 
-        @media (max-width: 480px) {
-            .header {
-                margin-bottom: 30px;
-            }
-            
-            .search-input {
-                padding: 12px 16px;
-            }
-            
-            .search-result-item {
-                padding: 12px 16px;
-            }
-            
-            .song-details {
-                padding: 16px;
-            }
+        .song-details {
+          padding: 16px;
         }
+      }
 
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        .search-results {
-            animation: fadeIn 0.3s ease;
-        }
+      .search-results {
+        animation: fadeIn 0.3s ease;
+      }
 
-        
-        .search-input:focus-visible {
-            outline: 3px solid #ff9966;
-            outline-offset: 2px;
-        }
+      .search-input:focus-visible {
+        outline: 3px solid #ff9966;
+        outline-offset: 2px;
+      }
 
-        .search-result-item:focus {
-            outline: 2px solid #ff9966;
-            outline-offset: -2px;
-        }
+      .search-result-item:focus {
+        outline: 2px solid #ff9966;
+        outline-offset: -2px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>🎵 Vyhledávání písní</h1>
-            <p>Prohledejte texty písní s pokročilým vyhledáváním</p>
-        </div>
+      <div class="header">
+        <h1>🎵 Vyhledávání písní</h1>
+      </div>
 
-        <div class="search-container">
-            <input 
-                type="text" 
-                id="searchInput" 
-                class="search-input" 
-                placeholder="Zadejte alespoň 2 znaky pro vyhledání písní..."
-                autocomplete="off"
-            >
-            <div id="searchResults" class="search-results"></div>
-        </div>
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Zadejte alespoň 2 znaky pro vyhledání písně..."
+          autocomplete="off"
+        />
+        <div id="searchResults" class="search-results"></div>
+      </div>
 
-        <div class="song-details">
-            <h2 id="songDetailsTitle">Detail písně</h2>
-            <div id="songDetailsContent" class="no-results">
-                Vyberte píseň z výsledků vyhledávání pro zobrazení detailů
-            </div>
+      <div class="song-details">
+        <h2 id="songDetailsTitle">Detail písně</h2>
+        <div id="songDetailsContent" class="no-results">
+          Vyberte píseň z výsledků vyhledávání pro zobrazení detailů
         </div>
+      </div>
     </div>
 
     <script>
-        
-        let songsData = {};
-        let searchTimeout = null;
-        let selectedIndex = -1;
-        let currentResults = [];
+      let songsData = {};
+      let searchTimeout = null;
+      let selectedIndex = -1;
+      let currentResults = [];
 
-        
-        function removeAccents(str) {
-            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      function removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
+
+      async function loadSongsData() {
+        try {
+          const response = await fetch("songs.json");
+          songsData = await response.json();
+          console.log(
+            "Songs data loaded:",
+            Object.keys(songsData).length,
+            "songs"
+          );
+        } catch (error) {
+          console.error("Error loading songs data:", error);
+          document.getElementById("songDetailsContent").innerHTML =
+            '<div class="no-results">Chyba při načítání dat písní. Zkontrolujte, zda existuje soubor songs.json.</div>';
         }
+      }
 
-        
-        async function loadSongsData() {
-            try {
-                const response = await fetch('songs.json');
-                songsData = await response.json();
-                console.log('Songs data loaded:', Object.keys(songsData).length, 'songs');
-            } catch (error) {
-                console.error('Error loading songs data:', error);
-                document.getElementById('songDetailsContent').innerHTML = 
-                    '<div class="no-results">Chyba při načítání dat písní. Zkontrolujte, zda existuje soubor songs.json.</div>';
+      function normalizeText(text) {
+        return removeAccents(text)
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function cleanTitleForDisplay(title) {
+        const semicolonIndex = title.indexOf(";");
+        if (semicolonIndex !== -1) {
+          return title.substring(0, semicolonIndex).trim();
+        }
+        return title;
+      }
+
+      function getFirstLine(songData) {
+        if (
+          songData.sections &&
+          Array.isArray(songData.sections) &&
+          songData.sections.length > 0
+        ) {
+          const firstSection = songData.sections[0];
+          if (
+            firstSection.slides &&
+            Array.isArray(firstSection.slides) &&
+            firstSection.slides.length > 0
+          ) {
+            const firstSlide = firstSection.slides[0];
+            if (Array.isArray(firstSlide) && firstSlide.length > 0) {
+              return firstSlide[0];
             }
+          }
         }
+        return "";
+      }
 
-        
-        function normalizeText(text) {
-            return removeAccents(text)
-                .toLowerCase()
-                .replace(/[^a-z0-9\s]/g, '') 
-                .replace(/\s+/g, ' ')        
-                .trim();
+      function createPostgresStyleTrigrams(text) {
+        const normalized = normalizeText(text);
+        const padded = "  " + normalized + " ";
+        const trigrams = new Set();
+        for (let i = 0; i < padded.length - 2; i++) {
+          trigrams.add(padded.substring(i, i + 3));
         }
+        return Array.from(trigrams);
+      }
 
-        
-        function cleanTitleForDisplay(title) {
-            const semicolonIndex = title.indexOf(';');
-            if (semicolonIndex !== -1) {
-                return title.substring(0, semicolonIndex).trim();
-            }
-            return title;
-        }
+      function calculateSimilarity(trigrams1, trigrams2) {
+        const set1 = new Set(trigrams1);
+        const set2 = new Set(trigrams2);
 
-        
-        function getFirstLine(songData) {
-            if (songData.sections && Array.isArray(songData.sections) && songData.sections.length > 0) {
-                const firstSection = songData.sections[0];
-                if (firstSection.slides && Array.isArray(firstSection.slides) && firstSection.slides.length > 0) {
-                    const firstSlide = firstSection.slides[0];
-                    if (Array.isArray(firstSlide) && firstSlide.length > 0) {
-                        return firstSlide[0]; 
-                    }
-                }
-            }
-            return '';
-        }
+        const intersection = new Set([...set1].filter((x) => set2.has(x)));
+        const union = new Set([...set1, ...set2]);
 
-        
-        function createPostgresStyleTrigrams(text) {
-            const normalized = normalizeText(text);
-            const padded = '  ' + normalized + ' ';
-            const trigrams = new Set();
-            for (let i = 0; i < padded.length - 2; i++) {
-                trigrams.add(padded.substring(i, i + 3));
-            }
-            return Array.from(trigrams);
-        }
+        return union.size === 0 ? 0 : intersection.size / union.size;
+      }
 
-        
-        function calculateSimilarity(trigrams1, trigrams2) {
-            const set1 = new Set(trigrams1);
-            const set2 = new Set(trigrams2);
-            
-            const intersection = new Set([...set1].filter(x => set2.has(x)));
-            const union = new Set([...set1, ...set2]);
-            
-            return union.size === 0 ? 0 : intersection.size / union.size;
-        }
+      function searchSongs(query) {
+        if (query.length < 2) return [];
 
-        
-        function searchSongs(query) {
-            if (query.length < 2) return [];
-            
-            const queryTrigrams = createPostgresStyleTrigrams(query);
-            const results = [];
-            
-            Object.keys(songsData).forEach(songTitle => {
-                const firstLine = getFirstLine(songsData[songTitle]);
-                
-                
-                const titleTrigrams = createPostgresStyleTrigrams(songTitle);
-                const titleSimilarity = calculateSimilarity(queryTrigrams, titleTrigrams);
-                
-                
-                const firstLineTrigrams = createPostgresStyleTrigrams(firstLine);
-                const firstLineSimilarity = calculateSimilarity(queryTrigrams, firstLineTrigrams);
-                
-                
-                const maxSimilarity = Math.max(titleSimilarity * 1.1, firstLineSimilarity);
-                
-                if (maxSimilarity >= 0.1) {
-                    results.push({
-                        title: songTitle,
-                        displayTitle: cleanTitleForDisplay(songTitle),
-                        firstLine: firstLine,
-                        similarity: maxSimilarity,
-                        titleMatch: titleSimilarity > firstLineSimilarity,
-                        data: songsData[songTitle]
-                    });
-                }
+        const queryTrigrams = createPostgresStyleTrigrams(query);
+        const results = [];
+
+        Object.keys(songsData).forEach((songTitle) => {
+          const firstLine = getFirstLine(songsData[songTitle]);
+
+          const titleTrigrams = createPostgresStyleTrigrams(songTitle);
+          const titleSimilarity = calculateSimilarity(
+            queryTrigrams,
+            titleTrigrams
+          );
+
+          const firstLineTrigrams = createPostgresStyleTrigrams(firstLine);
+          const firstLineSimilarity = calculateSimilarity(
+            queryTrigrams,
+            firstLineTrigrams
+          );
+
+          const maxSimilarity = Math.max(
+            titleSimilarity * 1.1,
+            firstLineSimilarity
+          );
+
+          if (maxSimilarity >= 0.1) {
+            results.push({
+              title: songTitle,
+              displayTitle: cleanTitleForDisplay(songTitle),
+              firstLine: firstLine,
+              similarity: maxSimilarity,
+              titleMatch: titleSimilarity > firstLineSimilarity,
+              data: songsData[songTitle],
             });
-            
-            
-            return results
-                .sort((a, b) => b.similarity - a.similarity)
-                .slice(0, 10);
-        }
-
-        
-
-
-        
-        function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        }
-
-        
-        function displayResults(results, query) {
-            const resultsContainer = document.getElementById('searchResults');
-            
-            if (results.length === 0) {
-                resultsContainer.style.display = 'none';
-                return;
-            }
-            
-            resultsContainer.innerHTML = '';
-            currentResults = results;
-            selectedIndex = 0; 
-            
-            results.slice(0,5).forEach((result, index) => {
-                const item = document.createElement('div');
-                item.className = 'search-result-item';
-                if (index === 0) item.classList.add('selected');
-                
-                const titleHtml = result.displayTitle;
-                const firstLineHtml = result.firstLine ? 
-                    `<small style="color: #7a9a7a; font-size: 0.85em; display: block; margin-top: 4px;">${result.firstLine}</small>` : 
-                    '';
-                
-                item.innerHTML = `${titleHtml}${firstLineHtml}`;
-                item.dataset.index = index;
-                
-                item.addEventListener('click', () => selectSong(result));
-                item.addEventListener('mouseenter', () => {
-                    clearSelection();
-                    selectedIndex = index;
-                    item.classList.add('selected');
-                });
-                
-                resultsContainer.appendChild(item);
-            });
-            
-            resultsContainer.style.display = 'block';
-        }
-
-        
-        function clearSelection() {
-            document.querySelectorAll('.search-result-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-        }
-
-        
-        function handleSearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            
-            if (searchTimeout) {
-                clearTimeout(searchTimeout);
-            }
-            
-            searchTimeout = setTimeout(() => {
-                if (query.length < 2) {
-                    document.getElementById('searchResults').style.display = 'none';
-                    return;
-                }
-                
-                const results = searchSongs(query);
-                displayResults(results, query);
-            }, 100);
-        }
-
-        
-        function handleKeydown(event) {
-            const resultsContainer = document.getElementById('searchResults');
-            
-            if (resultsContainer.style.display === 'none' || currentResults.length === 0) {
-                return;
-            }
-            
-            switch (event.key) {
-                case 'ArrowDown':
-                    event.preventDefault();
-                    moveSelection(1);
-                    break;
-                    
-                case 'ArrowUp':
-                    event.preventDefault();
-                    moveSelection(-1);
-                    break;
-                    
-                case 'Enter':
-                    event.preventDefault();
-                    if (selectedIndex >= 0 && selectedIndex < currentResults.length) {
-                        selectSong(currentResults[selectedIndex]);
-                    }
-                    break;
-                    
-                case 'Escape':
-                    event.preventDefault();
-                    hideResults();
-                    break;
-            }
-        }
-
-        
-        function moveSelection(direction) {
-            if (currentResults.length === 0) return;
-            
-            clearSelection();
-            selectedIndex += direction;
-            
-            if (selectedIndex < 0) {
-                selectedIndex = currentResults.length - 1;
-            } else if (selectedIndex >= currentResults.length) {
-                selectedIndex = 0;
-            }
-            
-            const items = document.querySelectorAll('.search-result-item');
-            if (items[selectedIndex]) {
-                items[selectedIndex].classList.add('selected');
-                items[selectedIndex].scrollIntoView({ block: 'nearest' });
-            }
-        }
-
-        
-        function hideResults() {
-            document.getElementById('searchResults').style.display = 'none';
-            selectedIndex = -1;
-            currentResults = [];
-        }
-
-        
-        function setupEventListeners() {
-            const searchInput = document.getElementById('searchInput');
-            
-            searchInput.addEventListener('input', handleSearch);
-            searchInput.addEventListener('keydown', handleKeydown);
-            
-            
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.search-container')) {
-                    hideResults();
-                }
-            });
-        }
-
-        
-        function selectSong(result) {
-            const detailsContent = document.getElementById('songDetailsContent');
-            const titleElement = document.getElementById('songDetailsTitle');
-            
-            
-            titleElement.textContent = result.displayTitle;
-            
-            
-            const formattedContent = formatSongContent(result.data);
-            
-            detailsContent.innerHTML = `<div class="song-lyrics">${formattedContent}</div>`;
-            
-            
-            hideResults();
-        }
-
-        
-        function formatSongContent(songData) {
-            let content = '';
-            
-            
-            if (songData.sections && Array.isArray(songData.sections)) {
-                songData.sections.forEach((section, sectionIndex) => {
-                    if (section.slides && Array.isArray(section.slides)) {
-                        section.slides.forEach((slide, slideIndex) => {
-                            if (Array.isArray(slide)) {
-                                slide.forEach(line => {
-                                    content += `${line}\n`;
-                                });
-                            }
-                        });
-                        
-                        
-                        if (sectionIndex < songData.sections.length - 1) {
-                            content += '\n';
-                        }
-                    }
-                });
-            }
-            
-            return content.trim();
-        }
-
-        
-        function formatJson(obj) {
-            const jsonString = JSON.stringify(obj, null, 2);
-            
-            return jsonString
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/("([^"\\]|\\.)*")/g, '<span style="color: #2d5a2d; font-weight: bold;">$1</span>') 
-                .replace(/(\b\d+\.?\d*\b)/g, '<span style="color: #ff6b35;">$1</span>') 
-                .replace(/(\btrue\b|\bfalse\b|\bnull\b)/g, '<span style="color: #ff6b35; font-style: italic;">$1</span>') 
-                .replace(/("[^"]*")(\s*:)/g, '<span style="color: #2d7a2d; font-weight: bold;">$1</span>$2'); 
-        }
-
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            loadSongsData();
-            setupEventListeners();
+          }
         });
+
+        return results.sort((a, b) => b.similarity - a.similarity).slice(0, 10);
+      }
+
+      function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      function displayResults(results, query) {
+        const resultsContainer = document.getElementById("searchResults");
+
+        if (results.length === 0) {
+          resultsContainer.style.display = "none";
+          return;
+        }
+
+        resultsContainer.innerHTML = "";
+        currentResults = results;
+        selectedIndex = 0;
+
+        results.slice(0, 5).forEach((result, index) => {
+          const item = document.createElement("div");
+          item.className = "search-result-item";
+          if (index === 0) item.classList.add("selected");
+
+          const titleHtml = result.displayTitle;
+          const firstLineHtml = result.firstLine
+            ? `<small style="color: #7a9a7a; font-size: 0.85em; display: block; margin-top: 4px;">${result.firstLine}</small>`
+            : "";
+
+          item.innerHTML = `${titleHtml}${firstLineHtml}`;
+          item.dataset.index = index;
+
+          item.addEventListener("click", () => selectSong(result));
+          item.addEventListener("mouseenter", () => {
+            clearSelection();
+            selectedIndex = index;
+            item.classList.add("selected");
+          });
+
+          resultsContainer.appendChild(item);
+        });
+
+        resultsContainer.style.display = "block";
+      }
+
+      function clearSelection() {
+        document.querySelectorAll(".search-result-item").forEach((item) => {
+          item.classList.remove("selected");
+        });
+      }
+
+      function handleSearch() {
+        const query = document.getElementById("searchInput").value.trim();
+
+        if (searchTimeout) {
+          clearTimeout(searchTimeout);
+        }
+
+        searchTimeout = setTimeout(() => {
+          if (query.length < 2) {
+            document.getElementById("searchResults").style.display = "none";
+            return;
+          }
+
+          const results = searchSongs(query);
+          displayResults(results, query);
+        }, 100);
+      }
+
+      function handleKeydown(event) {
+        const resultsContainer = document.getElementById("searchResults");
+
+        if (
+          resultsContainer.style.display === "none" ||
+          currentResults.length === 0
+        ) {
+          return;
+        }
+
+        switch (event.key) {
+          case "ArrowDown":
+            event.preventDefault();
+            moveSelection(1);
+            break;
+
+          case "ArrowUp":
+            event.preventDefault();
+            moveSelection(-1);
+            break;
+
+          case "Enter":
+            event.preventDefault();
+            if (selectedIndex >= 0 && selectedIndex < currentResults.length) {
+              selectSong(currentResults[selectedIndex]);
+            }
+            break;
+
+          case "Escape":
+            event.preventDefault();
+            if (document.activeElement === document.getElementById('searchInput')) {
+              document.getElementById('searchInput').value = '';
+              hideResults();
+            } else {
+              hideResults();
+            }
+            break;
+        }
+      }
+
+      function moveSelection(direction) {
+        if (currentResults.length === 0) return;
+
+        clearSelection();
+        selectedIndex += direction;
+
+        if (selectedIndex < 0) {
+          selectedIndex = currentResults.length - 1;
+        } else if (selectedIndex >= currentResults.length) {
+          selectedIndex = 0;
+        }
+
+        const items = document.querySelectorAll(".search-result-item");
+        if (items[selectedIndex]) {
+          items[selectedIndex].classList.add("selected");
+          items[selectedIndex].scrollIntoView({ block: "nearest" });
+        }
+      }
+
+      function hideResults() {
+        document.getElementById("searchResults").style.display = "none";
+        selectedIndex = -1;
+        currentResults = [];
+      }
+
+      function setupEventListeners() {
+        const searchInput = document.getElementById("searchInput");
+
+        searchInput.addEventListener("input", handleSearch);
+        searchInput.addEventListener("keydown", handleKeydown);
+
+        document.addEventListener("click", function (event) {
+          if (!event.target.closest(".search-container")) {
+            hideResults();
+          }
+        });
+      }
+
+      function selectSong(result) {
+        const detailsContent = document.getElementById("songDetailsContent");
+        const titleElement = document.getElementById("songDetailsTitle");
+
+        titleElement.textContent = result.displayTitle;
+
+        const formattedContent = formatSongContent(result.data);
+
+        detailsContent.innerHTML = `<div class="song-lyrics">${formattedContent}</div>`;
+
+        hideResults();
+      }
+
+      function formatSongContent(songData) {
+        let content = "";
+
+        if (songData.sections && Array.isArray(songData.sections)) {
+          songData.sections.forEach((section, sectionIndex) => {
+            if (section.slides && Array.isArray(section.slides)) {
+              section.slides.forEach((slide, slideIndex) => {
+                if (Array.isArray(slide)) {
+                  slide.forEach((line) => {
+                    content += `${line}\n`;
+                  });
+                }
+              });
+
+              if (sectionIndex < songData.sections.length - 1) {
+                content += "\n";
+              }
+            }
+          });
+        }
+
+        return content.trim();
+      }
+
+      function formatJson(obj) {
+        const jsonString = JSON.stringify(obj, null, 2);
+
+        return jsonString
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(
+            /("([^"\\]|\\.)*")/g,
+            '<span style="color: #2d5a2d; font-weight: bold;">$1</span>'
+          )
+          .replace(
+            /(\b\d+\.?\d*\b)/g,
+            '<span style="color: #ff6b35;">$1</span>'
+          )
+          .replace(
+            /(\btrue\b|\bfalse\b|\bnull\b)/g,
+            '<span style="color: #ff6b35; font-style: italic;">$1</span>'
+          )
+          .replace(
+            /("[^"]*")(\s*:)/g,
+            '<span style="color: #2d7a2d; font-weight: bold;">$1</span>$2'
+          );
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loadSongsData();
+        setupEventListeners();
+      });
     </script>
-</body>
+  </body>
 </html>
