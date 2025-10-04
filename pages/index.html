@@ -490,32 +490,38 @@
       .playlist-items::-webkit-scrollbar { height: 8px; }
       .playlist-items { -ms-overflow-style: auto; scrollbar-width: auto; }
 
-      .playlist-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 14px;
-        border-bottom: 1px solid #f0f8f0;
-        gap: 12px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        position: relative;
-      }
+       .playlist-item {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         padding: 12px 14px;
+         border-bottom: 1px solid #f0f8f0;
+         gap: 12px;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         position: relative;
+         touch-action: pan-y;
+       }
 
-      .drag-handle {
-        width: 18px;
-        height: 18px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 10px;
-        color: #7a9a7a;
-        cursor: grab;
-        user-select: none;
-      }
+       .drag-handle {
+         width: 18px;
+         height: 18px;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         margin-right: 10px;
+         color: #7a9a7a;
+         cursor: grab;
+         user-select: none;
+         touch-action: none;
+       }
 
-.dragging { opacity: 0.6; }
+.dragging { 
+  opacity: 0.8; 
+  box-shadow: 0 8px 24px rgba(45, 90, 45, 0.25);
+  border-radius: 8px;
+}
 
       /* Visual drop indicators */
       .playlist-item.drop-before::before,
@@ -530,8 +536,24 @@
         pointer-events: none;
         box-shadow: 0 2px 6px rgba(0,0,0,0.06);
       }
-      .playlist-item.drop-before::before { top: 0; transform: translateY(-50%); }
-      .playlist-item.drop-after::after { bottom: 0; transform: translateY(50%); }
+       .playlist-item.drop-before::before { top: 0; transform: translateY(-50%); }
+       .playlist-item.drop-after::after { bottom: 0; transform: translateY(50%); }
+
+       /* Drop hint placeholder */
+       .drop-hint {
+         height: 4px;
+         background: linear-gradient(90deg, #ff9966, #ffb399);
+         border-radius: 2px;
+         margin: 2px 12px;
+         opacity: 0.8;
+         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+         animation: pulse 1s ease-in-out infinite alternate;
+       }
+       
+       @keyframes pulse {
+         from { opacity: 0.6; }
+         to { opacity: 1; }
+       }
 
       /* Sonar bounce when item was moved */
       @keyframes sonar {
@@ -539,9 +561,28 @@
         70% { box-shadow: 0 0 0 18px rgba(255,153,102,0.0); }
         100% { box-shadow: 0 0 0 0 rgba(255,153,102,0); }
       }
-      .playlist-item.moved {
-        animation: sonar 700ms ease-out;
-      }
+       .playlist-item.moved {
+         animation: sonar 700ms ease-out;
+       }
+
+       /* Improve mobile touch targets */
+       @media (max-width: 768px) {
+         .drag-handle {
+           width: 24px;
+           height: 24px;
+           margin-right: 12px;
+         }
+         
+         .playlist-item {
+           padding: 16px 14px;
+           min-height: 56px;
+         }
+         
+         .drag-handle:active {
+           background: rgba(45, 90, 45, 0.1);
+           border-radius: 4px;
+         }
+       }
 
       .playlist-item a {
         color: #2d5a2d;
@@ -772,6 +813,17 @@
        let dragSrcIndex = null;
        let lastMovedKey = null;
        let currentPreviewKey = null; // currently previewed songKey
+       
+       // Mobile touch drag state
+       let touchDragState = {
+         isDragging: false,
+         startY: 0,
+         currentY: 0,
+         dragElement: null,
+         dragIndex: -1,
+         placeholder: null,
+         dropHint: null
+       };
 
       // Playlist state
       const PLAYLISTS_KEY = 'song_lab_playlists_v1';
@@ -1193,27 +1245,162 @@
 
           row.addEventListener('dragleave', (e) => { row.classList.remove('drag-over', 'drop-before', 'drop-after'); });
 
-          row.addEventListener('drop', (e) => {
-            e.preventDefault();
-            row.classList.remove('drag-over');
-            const from = dragSrcIndex !== null ? dragSrcIndex : parseInt((e.dataTransfer && e.dataTransfer.getData && e.dataTransfer.getData('text/plain')) || -1, 10);
-            if (from === -1) return;
-            const rect = row.getBoundingClientRect();
-            const midY = rect.top + rect.height / 2;
-            const insertBefore = (e.clientY < midY);
-            const pl = playlists[currentPlaylistId];
-            const moved = pl.items.splice(from, 1)[0];
-            let insertAt = idx;
-            // if inserting after the target, and source was before, adjust index
-            if (!insertBefore) insertAt = idx + 1;
-            if (from < insertAt) insertAt--; // account for removal shifting indexes
-            pl.items.splice(insertAt, 0, moved);
-            savePlaylists();
-            // remember key for visual feedback
-            lastMovedKey = moved.songKey || null;
-            renderCurrentPlaylist();
-            focusSearch();
-          });
+           row.addEventListener('drop', (e) => {
+             e.preventDefault();
+             row.classList.remove('drag-over');
+             const from = dragSrcIndex !== null ? dragSrcIndex : parseInt((e.dataTransfer && e.dataTransfer.getData && e.dataTransfer.getData('text/plain')) || -1, 10);
+             if (from === -1) return;
+             const rect = row.getBoundingClientRect();
+             const midY = rect.top + rect.height / 2;
+             const insertBefore = (e.clientY < midY);
+             const pl = playlists[currentPlaylistId];
+             const moved = pl.items.splice(from, 1)[0];
+             let insertAt = idx;
+             // if inserting after the target, and source was before, adjust index
+             if (!insertBefore) insertAt = idx + 1;
+             if (from < insertAt) insertAt--; // account for removal shifting indexes
+             pl.items.splice(insertAt, 0, moved);
+             savePlaylists();
+             // remember key for visual feedback
+             lastMovedKey = moved.songKey || null;
+             renderCurrentPlaylist();
+             // Don't focus search after drag operation
+           });
+
+           // Mobile touch drag events
+           handle.addEventListener('touchstart', (e) => {
+             e.preventDefault();
+             const touch = e.touches[0];
+             touchDragState.isDragging = true;
+             touchDragState.startY = touch.clientY;
+             touchDragState.currentY = touch.clientY;
+             touchDragState.dragElement = row;
+             touchDragState.dragIndex = idx;
+             row.classList.add('dragging');
+             
+             // Create placeholder
+             touchDragState.placeholder = row.cloneNode(true);
+             touchDragState.placeholder.style.opacity = '0.3';
+             touchDragState.placeholder.style.pointerEvents = 'none';
+             touchDragState.placeholder.classList.add('placeholder');
+           });
+
+           row.addEventListener('touchmove', (e) => {
+             if (!touchDragState.isDragging || touchDragState.dragElement !== row) return;
+             e.preventDefault();
+             
+             const touch = e.touches[0];
+             touchDragState.currentY = touch.clientY;
+             const deltaY = touchDragState.currentY - touchDragState.startY;
+             
+             // Move the dragged element
+             row.style.transform = `translateY(${deltaY}px)`;
+             row.style.zIndex = '1000';
+             
+             // Remove any existing drop hint
+             if (touchDragState.dropHint) {
+               touchDragState.dropHint.remove();
+               touchDragState.dropHint = null;
+             }
+             
+             // Find all playlist items (excluding the dragged one)
+             const allItems = Array.from(container.children).filter(item => 
+               item.classList.contains('playlist-item') && item !== row
+             );
+             
+             let targetItem = null;
+             let insertBefore = false;
+             
+             // Find which item we're dropping on/near
+             for (let i = 0; i < allItems.length; i++) {
+               const item = allItems[i];
+               const rect = item.getBoundingClientRect();
+               const midY = rect.top + rect.height / 2;
+               
+               if (touch.clientY <= rect.bottom) {
+                 targetItem = item;
+                 insertBefore = (touch.clientY < midY);
+                 break;
+               }
+             }
+             
+             // Create and position drop hint
+             touchDragState.dropHint = document.createElement('div');
+             touchDragState.dropHint.className = 'drop-hint';
+             
+             if (targetItem) {
+               if (insertBefore) {
+                 container.insertBefore(touchDragState.dropHint, targetItem);
+               } else {
+                 if (targetItem.nextSibling) {
+                   container.insertBefore(touchDragState.dropHint, targetItem.nextSibling);
+                 } else {
+                   container.appendChild(touchDragState.dropHint);
+                 }
+               }
+             } else if (allItems.length > 0) {
+               // Drop at the end
+               container.appendChild(touchDragState.dropHint);
+             }
+           });
+
+           row.addEventListener('touchend', (e) => {
+             if (!touchDragState.isDragging || touchDragState.dragElement !== row) return;
+             e.preventDefault();
+             
+             const touch = e.changedTouches[0];
+             const sourceIndex = touchDragState.dragIndex;
+             
+             // Reset visual state
+             row.style.transform = '';
+             row.style.zIndex = '';
+             row.classList.remove('dragging');
+             
+             // Remove drop hint and use its position to determine where to insert
+             let insertAtIndex = sourceIndex; // default to no change
+             
+             if (touchDragState.dropHint && touchDragState.dropHint.parentNode) {
+               // Find the position of the drop hint in the container
+               const hintIndex = Array.from(container.children).indexOf(touchDragState.dropHint);
+               
+               // Convert hint position to array index
+               const itemsBefore = Array.from(container.children)
+                 .slice(0, hintIndex)
+                 .filter(child => child.classList.contains('playlist-item')).length;
+               
+               insertAtIndex = itemsBefore;
+               
+               // Adjust for the source item being removed
+               if (sourceIndex < insertAtIndex) {
+                 insertAtIndex--;
+               }
+               
+               touchDragState.dropHint.remove();
+               touchDragState.dropHint = null;
+             }
+             
+             // Clear drop indicators
+             document.querySelectorAll('.playlist-item.drop-before, .playlist-item.drop-after').forEach(el => {
+               el.classList.remove('drop-before', 'drop-after');
+             });
+             
+             // Perform the move if the position actually changes
+             if (insertAtIndex !== sourceIndex && sourceIndex !== -1) {
+               const pl = playlists[currentPlaylistId];
+               const moved = pl.items.splice(sourceIndex, 1)[0];
+               pl.items.splice(Math.min(insertAtIndex, pl.items.length), 0, moved);
+               savePlaylists();
+               lastMovedKey = moved.songKey || null;
+               renderCurrentPlaylist();
+               // Don't focus search after drag operation
+             }
+             
+             // Reset touch drag state
+             touchDragState.isDragging = false;
+             touchDragState.dragElement = null;
+             touchDragState.dragIndex = -1;
+             touchDragState.placeholder = null;
+           });
         });
       }
 
@@ -1318,8 +1505,45 @@
          if (idx >= 0 && idx < pl.items.length - 1) showSongPreview(pl.items[idx + 1].songKey, true);
        }
 
-      // --- setup event listeners ---
-      function setupEventListeners() {
+       // Global touch event handler to prevent scrolling during drag
+       function setupGlobalTouchHandlers() {
+         document.addEventListener('touchmove', (e) => {
+           if (touchDragState.isDragging) {
+             e.preventDefault();
+           }
+         }, { passive: false });
+         
+         document.addEventListener('touchend', (e) => {
+           if (touchDragState.isDragging) {
+             // Reset any remaining drag state
+             const draggedElement = touchDragState.dragElement;
+             if (draggedElement) {
+               draggedElement.style.transform = '';
+               draggedElement.style.zIndex = '';
+               draggedElement.classList.remove('dragging');
+             }
+             
+             // Remove drop hint
+             if (touchDragState.dropHint) {
+               touchDragState.dropHint.remove();
+               touchDragState.dropHint = null;
+             }
+             
+             // Clear drop indicators
+             document.querySelectorAll('.playlist-item.drop-before, .playlist-item.drop-after').forEach(el => {
+               el.classList.remove('drop-before', 'drop-after');
+             });
+             
+             touchDragState.isDragging = false;
+             touchDragState.dragElement = null;
+             touchDragState.dragIndex = -1;
+             touchDragState.placeholder = null;
+           }
+         });
+       }
+
+       // --- setup event listeners ---
+       function setupEventListeners() {
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('searchClearBtn');
         const titleEl = document.getElementById('playlistTitle');
@@ -1433,6 +1657,7 @@
         await loadSongsData();
         loadPlaylists();
         setupEventListeners();
+        setupGlobalTouchHandlers();
         // autofocus attempts
         const input = document.getElementById('searchInput');
         if (input) { try { input.focus(); setTimeout(() => { try { input.focus(); input.select && input.select(); } catch (e) {} }, 50); } catch (e) {} }
