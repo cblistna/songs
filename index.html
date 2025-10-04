@@ -148,6 +148,7 @@
         min-height: 200px;
         box-shadow: 0 4px 16px rgba(45, 90, 45, 0.1);
         transition: all 0.3s ease;
+        position: relative;
       }
 
       .song-details:hover {
@@ -615,6 +616,49 @@
         cursor: not-allowed;
       }
 
+      /* Top navigation buttons */
+      .top-nav {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 4px;
+      }
+      
+      .top-nav button {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 2px solid #e0f0e0;
+        background: #f8fdf8;
+        color: #5a7a5a;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        padding: 0;
+      }
+      
+      .top-nav button:hover:not(:disabled) {
+        background: #2d5a2d;
+        color: #ffffff;
+        border-color: #2d5a2d;
+        transform: scale(1.05);
+      }
+      
+      .top-nav button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+      
+      .top-nav button svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+      }
+
     </style>
   </head>
   <body>
@@ -682,6 +726,18 @@
 
           <div class="right-panel">
             <div class="song-details">
+              <div class="top-nav">
+                <button id="prevInPlaylistTop" title="Předchozí v playlistu" aria-label="Předchozí položka">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button id="nextInPlaylistTop" title="Další v playlistu" aria-label="Další položka">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
               <h2 id="songDetailsTitle">Detail písně</h2>
               <div id="songDetailsContent" class="no-results">
                 Vyberte píseň z výsledků vyhledávání pro zobrazení detailů
@@ -891,7 +947,7 @@
         return out.trim();
       }
 
-      function showSongPreview(songKey) {
+      function showSongPreview(songKey, scrollToDetails = false) {
         currentPreviewKey = songKey;
         const data = songsData[songKey];
         const titleEl = document.getElementById('songDetailsTitle');
@@ -907,12 +963,23 @@
         contentEl.innerHTML = `<div class="song-lyrics">${formatSongContent(data)}</div>`;
         updatePreviewNavButtons();
         renderCurrentPlaylist();
-        // scroll selected playlist item into view
-        try {
-          const container = document.getElementById('playlistItems');
-          const selected = container && container.querySelector('.playlist-item.selected');
-          if (selected && selected.scrollIntoView) selected.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } catch (e) {}
+        
+        if (scrollToDetails) {
+          // scroll to song details section
+          try {
+            const songDetails = document.querySelector('.song-details');
+            if (songDetails && songDetails.scrollIntoView) {
+              songDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          } catch (e) {}
+        } else {
+          // scroll selected playlist item into view
+          try {
+            const container = document.getElementById('playlistItems');
+            const selected = container && container.querySelector('.playlist-item.selected');
+            if (selected && selected.scrollIntoView) selected.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } catch (e) {}
+        }
       }
 
       function clearSongPreview() {
@@ -1210,29 +1277,45 @@
        function updatePreviewNavButtons() {
          const prevBtn = document.getElementById('prevInPlaylist');
          const nextBtn = document.getElementById('nextInPlaylist');
-         if (!prevBtn || !nextBtn) return;
+         const prevTopBtn = document.getElementById('prevInPlaylistTop');
+         const nextTopBtn = document.getElementById('nextInPlaylistTop');
+         
+         const buttons = [prevBtn, nextBtn, prevTopBtn, nextTopBtn].filter(Boolean);
+         if (buttons.length === 0) return;
+         
          if (!currentPlaylistId || !playlists[currentPlaylistId] || !currentPreviewKey) {
-           prevBtn.disabled = true; nextBtn.disabled = true; return;
+           buttons.forEach(btn => btn.disabled = true);
+           return;
          }
+         
          const pl = playlists[currentPlaylistId];
          const idx = pl.items.findIndex(i => i.songKey === currentPreviewKey);
-         if (idx === -1) { prevBtn.disabled = true; nextBtn.disabled = true; return; }
-         prevBtn.disabled = (idx <= 0);
-         nextBtn.disabled = (idx >= pl.items.length - 1);
+         if (idx === -1) { 
+           buttons.forEach(btn => btn.disabled = true);
+           return; 
+         }
+         
+         const isPrevDisabled = (idx <= 0);
+         const isNextDisabled = (idx >= pl.items.length - 1);
+         
+         if (prevBtn) prevBtn.disabled = isPrevDisabled;
+         if (nextBtn) nextBtn.disabled = isNextDisabled;
+         if (prevTopBtn) prevTopBtn.disabled = isPrevDisabled;
+         if (nextTopBtn) nextTopBtn.disabled = isNextDisabled;
        }
 
        function prevInPlaylist() {
          if (!currentPlaylistId || !playlists[currentPlaylistId] || !currentPreviewKey) return;
          const pl = playlists[currentPlaylistId];
          const idx = pl.items.findIndex(i => i.songKey === currentPreviewKey);
-         if (idx > 0) showSongPreview(pl.items[idx - 1].songKey);
+         if (idx > 0) showSongPreview(pl.items[idx - 1].songKey, true);
        }
 
        function nextInPlaylist() {
          if (!currentPlaylistId || !playlists[currentPlaylistId] || !currentPreviewKey) return;
          const pl = playlists[currentPlaylistId];
          const idx = pl.items.findIndex(i => i.songKey === currentPreviewKey);
-         if (idx >= 0 && idx < pl.items.length - 1) showSongPreview(pl.items[idx + 1].songKey);
+         if (idx >= 0 && idx < pl.items.length - 1) showSongPreview(pl.items[idx + 1].songKey, true);
        }
 
       // --- setup event listeners ---
@@ -1243,9 +1326,11 @@
         const newBtn = document.getElementById('newPlaylistBtn');
         const delBtn = document.getElementById('deletePlaylistBtn');
         const clearPlBtn = document.getElementById('clearPlaylistBtn');
-        const ariaLive = document.getElementById('ariaLive');
-        const prevBtn = document.getElementById('prevInPlaylist');
-        const nextBtn = document.getElementById('nextInPlaylist');
+         const ariaLive = document.getElementById('ariaLive');
+         const prevBtn = document.getElementById('prevInPlaylist');
+         const nextBtn = document.getElementById('nextInPlaylist');
+         const prevTopBtn = document.getElementById('prevInPlaylistTop');
+         const nextTopBtn = document.getElementById('nextInPlaylistTop');
 
         // Search input handlers
         searchInput.addEventListener('input', handleSearch);
@@ -1253,9 +1338,11 @@
         clearBtn.addEventListener('click', clearSearch);
         document.addEventListener('click', (ev) => { if (!ev.target.closest('.search-container')) hideResults(); });
 
-        // Preview navigation
-        if (prevBtn) prevBtn.addEventListener('click', prevInPlaylist);
-        if (nextBtn) nextBtn.addEventListener('click', nextInPlaylist);
+         // Preview navigation
+         if (prevBtn) prevBtn.addEventListener('click', prevInPlaylist);
+         if (nextBtn) nextBtn.addEventListener('click', nextInPlaylist);
+         if (prevTopBtn) prevTopBtn.addEventListener('click', prevInPlaylist);
+         if (nextTopBtn) nextTopBtn.addEventListener('click', nextInPlaylist);
 
         // Playlist title editing
         if (titleEl) {
