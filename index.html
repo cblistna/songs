@@ -1264,7 +1264,7 @@
              // remember key for visual feedback
              lastMovedKey = moved.songKey || null;
              renderCurrentPlaylist();
-             focusSearch();
+             // Don't focus search after drag operation
            });
 
            // Mobile touch drag events
@@ -1356,35 +1356,25 @@
              row.style.zIndex = '';
              row.classList.remove('dragging');
              
-             // Find all playlist items (excluding the dragged one)
-             const allItems = Array.from(container.children).filter(item => 
-               item.classList.contains('playlist-item') && item !== row
-             );
+             // Remove drop hint and use its position to determine where to insert
+             let insertAtIndex = sourceIndex; // default to no change
              
-             let targetIndex = -1;
-             let insertBefore = false;
-             
-             // Find which item we're dropping on/near
-             for (let i = 0; i < allItems.length; i++) {
-               const item = allItems[i];
-               const rect = item.getBoundingClientRect();
-               const midY = rect.top + rect.height / 2;
+             if (touchDragState.dropHint && touchDragState.dropHint.parentNode) {
+               // Find the position of the drop hint in the container
+               const hintIndex = Array.from(container.children).indexOf(touchDragState.dropHint);
                
-               if (touch.clientY <= rect.bottom) {
-                 targetIndex = Array.from(container.children).indexOf(item);
-                 insertBefore = (touch.clientY < midY);
-                 break;
+               // Convert hint position to array index
+               const itemsBefore = Array.from(container.children)
+                 .slice(0, hintIndex)
+                 .filter(child => child.classList.contains('playlist-item')).length;
+               
+               insertAtIndex = itemsBefore;
+               
+               // Adjust for the source item being removed
+               if (sourceIndex < insertAtIndex) {
+                 insertAtIndex--;
                }
-             }
-             
-             // If we didn't find a target, drop at the end
-             if (targetIndex === -1 && allItems.length > 0) {
-               targetIndex = Array.from(container.children).indexOf(allItems[allItems.length - 1]);
-               insertBefore = false;
-             }
-             
-             // Remove drop hint
-             if (touchDragState.dropHint) {
+               
                touchDragState.dropHint.remove();
                touchDragState.dropHint = null;
              }
@@ -1394,30 +1384,15 @@
                el.classList.remove('drop-before', 'drop-after');
              });
              
-             // Perform the move if we have a valid target and it's different from source
-             if (targetIndex !== -1 && sourceIndex !== -1) {
-               let insertAt = targetIndex;
-               
-               // Adjust insertion point based on whether we're inserting before or after
-               if (!insertBefore) {
-                 insertAt = targetIndex + 1;
-               }
-               
-               // Adjust for the removal of the source item
-               if (sourceIndex < insertAt) {
-                 insertAt--;
-               }
-               
-               // Only move if the position actually changes
-               if (insertAt !== sourceIndex) {
-                 const pl = playlists[currentPlaylistId];
-                 const moved = pl.items.splice(sourceIndex, 1)[0];
-                 pl.items.splice(insertAt, 0, moved);
-                 savePlaylists();
-                 lastMovedKey = moved.songKey || null;
-                 renderCurrentPlaylist();
-                 focusSearch();
-               }
+             // Perform the move if the position actually changes
+             if (insertAtIndex !== sourceIndex && sourceIndex !== -1) {
+               const pl = playlists[currentPlaylistId];
+               const moved = pl.items.splice(sourceIndex, 1)[0];
+               pl.items.splice(Math.min(insertAtIndex, pl.items.length), 0, moved);
+               savePlaylists();
+               lastMovedKey = moved.songKey || null;
+               renderCurrentPlaylist();
+               // Don't focus search after drag operation
              }
              
              // Reset touch drag state
