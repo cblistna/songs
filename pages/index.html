@@ -994,6 +994,38 @@
       function formatSongContent(songData) {
         let out = '';
         if (!songData) return out;
+        
+        // Check if outline exists and is valid
+        if (songData.outline && Array.isArray(songData.outline) && songData.outline.length > 0) {
+          // Create a map of section IDs to sections for quick lookup
+          const sectionMap = {};
+          if (songData.sections && Array.isArray(songData.sections)) {
+            songData.sections.forEach(section => {
+              if (section.id) {
+                sectionMap[section.id] = section;
+              }
+            });
+          }
+          
+          // Validate outline - check if all IDs exist in sections
+          const isValidOutline = songData.outline.every(id => sectionMap[id]);
+          
+          if (isValidOutline) {
+            // Use outline to render sections in specified order
+            songData.outline.forEach((sectionId, oi) => {
+              const section = sectionMap[sectionId];
+              if (section && section.slides) {
+                section.slides.forEach((slide) => { 
+                  if (Array.isArray(slide)) slide.forEach(line => out += line + '\n'); 
+                });
+                if (oi < songData.outline.length - 1) out += '\n';
+              }
+            });
+            return out.trim();
+          }
+        }
+        
+        // Fallback to original behavior if no valid outline
         songData.sections && songData.sections.forEach((section, si) => {
           section.slides && section.slides.forEach((slide) => { if (Array.isArray(slide)) slide.forEach(line => out += line + '\n'); });
           if (si < songData.sections.length - 1) out += '\n';
