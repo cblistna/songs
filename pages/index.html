@@ -1618,16 +1618,28 @@
          if (prevTopBtn) prevTopBtn.addEventListener('click', prevInPlaylist);
          if (nextTopBtn) nextTopBtn.addEventListener('click', nextInPlaylist);
 
-        // Playlist title editing
-        if (titleEl) {
-          titleEl.addEventListener('blur', onPlaylistTitleEdit);
-          titleEl.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              titleEl.blur();
-            }
-          });
-        }
+         // Playlist title editing
+         if (titleEl) {
+           titleEl.addEventListener('blur', onPlaylistTitleEdit);
+           titleEl.addEventListener('focus', () => {
+             // Pre-select all text when focusing for editing
+             setTimeout(() => {
+               if (document.activeElement === titleEl) {
+                 const range = document.createRange();
+                 range.selectNodeContents(titleEl);
+                 const selection = window.getSelection();
+                 selection.removeAllRanges();
+                 selection.addRange(range);
+               }
+             }, 0);
+           });
+           titleEl.addEventListener('keydown', (e) => {
+             if (e.key === 'Enter') {
+               e.preventDefault();
+               titleEl.blur();
+             }
+           });
+         }
 
         // Playlist selection chevron
         const chevronBtn = document.getElementById('playlistChevron');
