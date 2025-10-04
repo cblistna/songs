@@ -581,6 +581,39 @@
         font-size: 16px;
       }
 
+      /* Highlight the currently previewed playlist item */
+      .playlist-item.selected {
+        background: linear-gradient(135deg, #ff9966, #ffb399);
+        color: white;
+      }
+      .playlist-item.selected a { color: inherit; }
+      .playlist-item.selected small { color: rgba(255, 255, 255, 0.8); }
+
+      /* Preview navigation buttons inside the song-details panel */
+      .preview-nav {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .preview-nav button {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 2px solid #e0f0e0;
+        background: #f8fdf8;
+        color: #5a7a5a;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+      }
+      .preview-nav button:hover:not(:disabled) {
+        background: #2d5a2d;
+        color: #ffffff;
+        border-color: #2d5a2d;
+      }
+      .preview-nav button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
 
     </style>
   </head>
@@ -653,6 +686,10 @@
               <div id="songDetailsContent" class="no-results">
                 Vyberte píseň z výsledků vyhledávání pro zobrazení detailů
               </div>
+              <div class="preview-nav">
+                <button id="prevInPlaylist" title="Předchozí v playlistu" aria-label="Předchozí položka">◀ Předchozí</button>
+                <button id="nextInPlaylist" title="Další v playlistu" aria-label="Další položka">Další ▶</button>
+              </div>
             </div>
           </div>
         </div>
@@ -676,8 +713,9 @@
       let searchTimeout = null;
       let selectedIndex = -1;
       let currentResults = [];
-      let dragSrcIndex = null;
-      let lastMovedKey = null;
+       let dragSrcIndex = null;
+       let lastMovedKey = null;
+       let currentPreviewKey = null; // currently previewed songKey
 
       // Playlist state
       const PLAYLISTS_KEY = 'song_lab_playlists_v1';
@@ -822,6 +860,13 @@
       function hideResults() { document.getElementById('searchResults').style.display = 'none'; selectedIndex = -1; currentResults = []; }
       function clearSearch() { const si = document.getElementById('searchInput'); si.value = ''; hideResults(); si.focus(); }
 
+      function focusSearch() {
+        try { 
+          const si = document.getElementById('searchInput'); 
+          if (si) { si.focus(); si.select && si.select(); } 
+        } catch (e) {}
+      }
+
       function onSearchResultClick(result) {
         // Add to playlist instead of clearing only
         addSongToCurrentPlaylist({ title: result.displayTitle, firstLine: result.firstLine || '', songKey: result.songKey });
@@ -847,19 +892,37 @@
       }
 
       function showSongPreview(songKey) {
+        currentPreviewKey = songKey;
         const data = songsData[songKey];
         const titleEl = document.getElementById('songDetailsTitle');
         const contentEl = document.getElementById('songDetailsContent');
-        if (!data) { titleEl.textContent = 'Detail písně'; contentEl.innerHTML = '<div class="no-results">Vyberte píseň z výsledků vyhledávání pro zobrazení detailů</div>'; return; }
+        if (!data) { 
+          titleEl.textContent = 'Detail písně'; 
+          contentEl.innerHTML = '<div class="no-results">Vyberte píseň z výsledků vyhledávání pro zobrazení detailů</div>'; 
+          updatePreviewNavButtons(); 
+          renderCurrentPlaylist(); 
+          return; 
+        }
         titleEl.textContent = cleanTitleForDisplay(songKey);
         contentEl.innerHTML = `<div class="song-lyrics">${formatSongContent(data)}</div>`;
+        updatePreviewNavButtons();
+        renderCurrentPlaylist();
+        // scroll selected playlist item into view
+        try {
+          const container = document.getElementById('playlistItems');
+          const selected = container && container.querySelector('.playlist-item.selected');
+          if (selected && selected.scrollIntoView) selected.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } catch (e) {}
       }
 
       function clearSongPreview() {
+        currentPreviewKey = null;
         const titleEl = document.getElementById('songDetailsTitle');
         const contentEl = document.getElementById('songDetailsContent');
         titleEl.textContent = 'Detail písně';
         contentEl.innerHTML = '<div class="no-results">Vyberte píseň z výsledků vyhledávání pro zobrazení detailů</div>';
+        updatePreviewNavButtons();
+        renderCurrentPlaylist();
       }
 
       // --- Playlist management (in-memory + localStorage) ---
@@ -894,6 +957,7 @@
           const ariaLive = document.getElementById('ariaLive');
           if (ariaLive) ariaLive.textContent = 'Vytvořen playlist ' + (playlists[id].name || '');
         } catch (e) {}
+        focusSearch();
         return id;
       }
 
@@ -914,6 +978,7 @@
              const ariaLive = document.getElementById('ariaLive');
              if (ariaLive) ariaLive.textContent = 'Playlist smazán: ' + deletedName;
            } catch (e) {}
+           focusSearch();
          });
        }
 
@@ -946,6 +1011,7 @@
             if (ariaLive) ariaLive.textContent = 'Playlist přejmenován na: ' + newName;
           } catch (e) {}
         }
+        focusSearch();
       }
 
       function showPlaylistDropdown() {
@@ -967,6 +1033,7 @@
               const ariaLive = document.getElementById('ariaLive');
               if (ariaLive) ariaLive.textContent = 'Přepnuto na playlist: ' + (playlists[id].name || 'Playlist');
             } catch (e) {}
+            focusSearch();
           });
           dropdown.appendChild(option);
         });
@@ -990,6 +1057,12 @@
         pl.items.forEach((it, idx) => {
           const row = document.createElement('div');
           row.className = 'playlist-item';
+          if (currentPreviewKey && it.songKey === currentPreviewKey) { 
+            row.classList.add('selected'); 
+            row.setAttribute('aria-current', 'true'); 
+          } else { 
+            row.removeAttribute('aria-current'); 
+          }
           row.setAttribute('role', 'listitem');
           row.draggable = true;
 
@@ -1072,6 +1145,7 @@
             // remember key for visual feedback
             lastMovedKey = moved.songKey || null;
             renderCurrentPlaylist();
+            focusSearch();
           });
         });
       }
@@ -1093,6 +1167,7 @@
             showSongPreview(item.songKey);
             // announce moved to end
             try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Položka přesunuta na konec playlistu'; } catch (e) {}
+            focusSearch();
             return;
           }
           // append new item to the end
@@ -1105,6 +1180,7 @@
           renderCurrentPlaylist();
           // announce addition
           try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Přidána položka: ' + (item.title || ''); } catch (e) {}
+          focusSearch();
       }
 
       function removeItemFromPlaylist(index) {
@@ -1114,6 +1190,7 @@
         savePlaylists();
         renderCurrentPlaylist();
         try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Položka odstraněna: ' + (removed ? (removed.title || '') : ''); } catch (e) {}
+        focusSearch();
       }
 
        function clearPlaylist() {
@@ -1125,7 +1202,37 @@
            renderCurrentPlaylist();
            clearSongPreview();
            try { const ariaLive = document.getElementById('ariaLive'); if (ariaLive) ariaLive.textContent = 'Playlist vyprázdněn'; } catch (e) {}
+           focusSearch();
          });
+       }
+
+       // --- preview navigation helpers ---
+       function updatePreviewNavButtons() {
+         const prevBtn = document.getElementById('prevInPlaylist');
+         const nextBtn = document.getElementById('nextInPlaylist');
+         if (!prevBtn || !nextBtn) return;
+         if (!currentPlaylistId || !playlists[currentPlaylistId] || !currentPreviewKey) {
+           prevBtn.disabled = true; nextBtn.disabled = true; return;
+         }
+         const pl = playlists[currentPlaylistId];
+         const idx = pl.items.findIndex(i => i.songKey === currentPreviewKey);
+         if (idx === -1) { prevBtn.disabled = true; nextBtn.disabled = true; return; }
+         prevBtn.disabled = (idx <= 0);
+         nextBtn.disabled = (idx >= pl.items.length - 1);
+       }
+
+       function prevInPlaylist() {
+         if (!currentPlaylistId || !playlists[currentPlaylistId] || !currentPreviewKey) return;
+         const pl = playlists[currentPlaylistId];
+         const idx = pl.items.findIndex(i => i.songKey === currentPreviewKey);
+         if (idx > 0) showSongPreview(pl.items[idx - 1].songKey);
+       }
+
+       function nextInPlaylist() {
+         if (!currentPlaylistId || !playlists[currentPlaylistId] || !currentPreviewKey) return;
+         const pl = playlists[currentPlaylistId];
+         const idx = pl.items.findIndex(i => i.songKey === currentPreviewKey);
+         if (idx >= 0 && idx < pl.items.length - 1) showSongPreview(pl.items[idx + 1].songKey);
        }
 
       // --- setup event listeners ---
@@ -1137,12 +1244,18 @@
         const delBtn = document.getElementById('deletePlaylistBtn');
         const clearPlBtn = document.getElementById('clearPlaylistBtn');
         const ariaLive = document.getElementById('ariaLive');
+        const prevBtn = document.getElementById('prevInPlaylist');
+        const nextBtn = document.getElementById('nextInPlaylist');
 
         // Search input handlers
         searchInput.addEventListener('input', handleSearch);
         searchInput.addEventListener('keydown', handleKeydown);
         clearBtn.addEventListener('click', clearSearch);
         document.addEventListener('click', (ev) => { if (!ev.target.closest('.search-container')) hideResults(); });
+
+        // Preview navigation
+        if (prevBtn) prevBtn.addEventListener('click', prevInPlaylist);
+        if (nextBtn) nextBtn.addEventListener('click', nextInPlaylist);
 
         // Playlist title editing
         if (titleEl) {
