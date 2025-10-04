@@ -536,8 +536,24 @@
         pointer-events: none;
         box-shadow: 0 2px 6px rgba(0,0,0,0.06);
       }
-      .playlist-item.drop-before::before { top: 0; transform: translateY(-50%); }
-      .playlist-item.drop-after::after { bottom: 0; transform: translateY(50%); }
+       .playlist-item.drop-before::before { top: 0; transform: translateY(-50%); }
+       .playlist-item.drop-after::after { bottom: 0; transform: translateY(50%); }
+
+       /* Drop hint placeholder */
+       .drop-hint {
+         height: 4px;
+         background: linear-gradient(90deg, #ff9966, #ffb399);
+         border-radius: 2px;
+         margin: 2px 12px;
+         opacity: 0.8;
+         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+         animation: pulse 1s ease-in-out infinite alternate;
+       }
+       
+       @keyframes pulse {
+         from { opacity: 0.6; }
+         to { opacity: 1; }
+       }
 
       /* Sonar bounce when item was moved */
       @keyframes sonar {
@@ -805,7 +821,8 @@
          currentY: 0,
          dragElement: null,
          dragIndex: -1,
-         placeholder: null
+         placeholder: null,
+         dropHint: null
        };
 
       // Playlist state
@@ -1280,25 +1297,50 @@
              row.style.transform = `translateY(${deltaY}px)`;
              row.style.zIndex = '1000';
              
-             // Find the element we're hovering over
-             const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-             const targetRow = elementBelow ? elementBelow.closest('.playlist-item') : null;
+             // Remove any existing drop hint
+             if (touchDragState.dropHint) {
+               touchDragState.dropHint.remove();
+               touchDragState.dropHint = null;
+             }
              
-             // Clear all drop indicators
-             document.querySelectorAll('.playlist-item.drop-before, .playlist-item.drop-after').forEach(el => {
-               el.classList.remove('drop-before', 'drop-after');
-             });
+             // Find all playlist items (excluding the dragged one)
+             const allItems = Array.from(container.children).filter(item => 
+               item.classList.contains('playlist-item') && item !== row
+             );
              
-             // Add drop indicator
-             if (targetRow && targetRow !== row && !targetRow.classList.contains('placeholder')) {
-               const rect = targetRow.getBoundingClientRect();
+             let targetItem = null;
+             let insertBefore = false;
+             
+             // Find which item we're dropping on/near
+             for (let i = 0; i < allItems.length; i++) {
+               const item = allItems[i];
+               const rect = item.getBoundingClientRect();
                const midY = rect.top + rect.height / 2;
-               const isBefore = (touch.clientY < midY);
-               if (isBefore) {
-                 targetRow.classList.add('drop-before');
-               } else {
-                 targetRow.classList.add('drop-after');
+               
+               if (touch.clientY <= rect.bottom) {
+                 targetItem = item;
+                 insertBefore = (touch.clientY < midY);
+                 break;
                }
+             }
+             
+             // Create and position drop hint
+             touchDragState.dropHint = document.createElement('div');
+             touchDragState.dropHint.className = 'drop-hint';
+             
+             if (targetItem) {
+               if (insertBefore) {
+                 container.insertBefore(touchDragState.dropHint, targetItem);
+               } else {
+                 if (targetItem.nextSibling) {
+                   container.insertBefore(touchDragState.dropHint, targetItem.nextSibling);
+                 } else {
+                   container.appendChild(touchDragState.dropHint);
+                 }
+               }
+             } else if (allItems.length > 0) {
+               // Drop at the end
+               container.appendChild(touchDragState.dropHint);
              }
            });
 
@@ -1307,40 +1349,74 @@
              e.preventDefault();
              
              const touch = e.changedTouches[0];
-             const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-             const targetRow = elementBelow ? elementBelow.closest('.playlist-item') : null;
+             const sourceIndex = touchDragState.dragIndex;
              
              // Reset visual state
              row.style.transform = '';
              row.style.zIndex = '';
              row.classList.remove('dragging');
              
+             // Find all playlist items (excluding the dragged one)
+             const allItems = Array.from(container.children).filter(item => 
+               item.classList.contains('playlist-item') && item !== row
+             );
+             
+             let targetIndex = -1;
+             let insertBefore = false;
+             
+             // Find which item we're dropping on/near
+             for (let i = 0; i < allItems.length; i++) {
+               const item = allItems[i];
+               const rect = item.getBoundingClientRect();
+               const midY = rect.top + rect.height / 2;
+               
+               if (touch.clientY <= rect.bottom) {
+                 targetIndex = Array.from(container.children).indexOf(item);
+                 insertBefore = (touch.clientY < midY);
+                 break;
+               }
+             }
+             
+             // If we didn't find a target, drop at the end
+             if (targetIndex === -1 && allItems.length > 0) {
+               targetIndex = Array.from(container.children).indexOf(allItems[allItems.length - 1]);
+               insertBefore = false;
+             }
+             
+             // Remove drop hint
+             if (touchDragState.dropHint) {
+               touchDragState.dropHint.remove();
+               touchDragState.dropHint = null;
+             }
+             
              // Clear drop indicators
              document.querySelectorAll('.playlist-item.drop-before, .playlist-item.drop-after').forEach(el => {
                el.classList.remove('drop-before', 'drop-after');
              });
              
-             // Perform the move if we have a valid target
-             if (targetRow && targetRow !== row && !targetRow.classList.contains('placeholder')) {
-               const targetIndex = Array.from(container.children).indexOf(targetRow);
-               const sourceIndex = touchDragState.dragIndex;
+             // Perform the move if we have a valid target and it's different from source
+             if (targetIndex !== -1 && sourceIndex !== -1) {
+               let insertAt = targetIndex;
                
-               if (targetIndex !== -1 && sourceIndex !== -1 && targetIndex !== sourceIndex) {
-                 const rect = targetRow.getBoundingClientRect();
-                 const midY = rect.top + rect.height / 2;
-                 const insertBefore = (touch.clientY < midY);
-                 
+               // Adjust insertion point based on whether we're inserting before or after
+               if (!insertBefore) {
+                 insertAt = targetIndex + 1;
+               }
+               
+               // Adjust for the removal of the source item
+               if (sourceIndex < insertAt) {
+                 insertAt--;
+               }
+               
+               // Only move if the position actually changes
+               if (insertAt !== sourceIndex) {
                  const pl = playlists[currentPlaylistId];
                  const moved = pl.items.splice(sourceIndex, 1)[0];
-                 let insertAt = targetIndex;
-                 
-                 if (!insertBefore) insertAt = targetIndex + 1;
-                 if (sourceIndex < insertAt) insertAt--;
-                 
                  pl.items.splice(insertAt, 0, moved);
                  savePlaylists();
                  lastMovedKey = moved.songKey || null;
                  renderCurrentPlaylist();
+                 focusSearch();
                }
              }
              
@@ -1470,6 +1546,12 @@
                draggedElement.style.transform = '';
                draggedElement.style.zIndex = '';
                draggedElement.classList.remove('dragging');
+             }
+             
+             // Remove drop hint
+             if (touchDragState.dropHint) {
+               touchDragState.dropHint.remove();
+               touchDragState.dropHint = null;
              }
              
              // Clear drop indicators
