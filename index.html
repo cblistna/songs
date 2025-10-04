@@ -969,6 +969,8 @@
       function clearSearch() { const si = document.getElementById('searchInput'); si.value = ''; hideResults(); si.focus(); }
 
       function focusSearch() {
+        // Don't focus search input during drag operations on mobile
+        if (touchDragState.isDragging) return;
         try { 
           const si = document.getElementById('searchInput'); 
           if (si) { si.focus(); si.select && si.select(); } 
@@ -1267,23 +1269,30 @@
              // Don't focus search after drag operation
            });
 
-           // Mobile touch drag events
-           handle.addEventListener('touchstart', (e) => {
-             e.preventDefault();
-             const touch = e.touches[0];
-             touchDragState.isDragging = true;
-             touchDragState.startY = touch.clientY;
-             touchDragState.currentY = touch.clientY;
-             touchDragState.dragElement = row;
-             touchDragState.dragIndex = idx;
-             row.classList.add('dragging');
-             
-             // Create placeholder
-             touchDragState.placeholder = row.cloneNode(true);
-             touchDragState.placeholder.style.opacity = '0.3';
-             touchDragState.placeholder.style.pointerEvents = 'none';
-             touchDragState.placeholder.classList.add('placeholder');
-           });
+            // Mobile touch drag events
+            handle.addEventListener('touchstart', (e) => {
+              e.preventDefault();
+              const touch = e.touches[0];
+              
+              // Blur search input to prevent keyboard from showing after drag
+              const searchInput = document.getElementById('searchInput');
+              if (searchInput) {
+                searchInput.blur();
+              }
+              
+              touchDragState.isDragging = true;
+              touchDragState.startY = touch.clientY;
+              touchDragState.currentY = touch.clientY;
+              touchDragState.dragElement = row;
+              touchDragState.dragIndex = idx;
+              row.classList.add('dragging');
+              
+              // Create placeholder
+              touchDragState.placeholder = row.cloneNode(true);
+              touchDragState.placeholder.style.opacity = '0.3';
+              touchDragState.placeholder.style.pointerEvents = 'none';
+              touchDragState.placeholder.classList.add('placeholder');
+            });
 
            row.addEventListener('touchmove', (e) => {
              if (!touchDragState.isDragging || touchDragState.dragElement !== row) return;
@@ -1384,22 +1393,22 @@
                el.classList.remove('drop-before', 'drop-after');
              });
              
-             // Perform the move if the position actually changes
-             if (insertAtIndex !== sourceIndex && sourceIndex !== -1) {
-               const pl = playlists[currentPlaylistId];
-               const moved = pl.items.splice(sourceIndex, 1)[0];
-               pl.items.splice(Math.min(insertAtIndex, pl.items.length), 0, moved);
-               savePlaylists();
-               lastMovedKey = moved.songKey || null;
-               renderCurrentPlaylist();
-               // Don't focus search after drag operation
-             }
-             
-             // Reset touch drag state
-             touchDragState.isDragging = false;
-             touchDragState.dragElement = null;
-             touchDragState.dragIndex = -1;
-             touchDragState.placeholder = null;
+              // Perform the move if the position actually changes
+              if (insertAtIndex !== sourceIndex && sourceIndex !== -1) {
+                const pl = playlists[currentPlaylistId];
+                const moved = pl.items.splice(sourceIndex, 1)[0];
+                pl.items.splice(Math.min(insertAtIndex, pl.items.length), 0, moved);
+                savePlaylists();
+                lastMovedKey = moved.songKey || null;
+                renderCurrentPlaylist();
+                // Don't focus search after drag operation
+              }
+              
+              // Reset touch drag state
+              touchDragState.isDragging = false;
+              touchDragState.dragElement = null;
+              touchDragState.dragIndex = -1;
+              touchDragState.placeholder = null;
            });
         });
       }
