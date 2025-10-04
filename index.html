@@ -1019,11 +1019,52 @@
         renderCurrentPlaylist();
         
         if (scrollToDetails) {
-          // scroll to song details section
+          // scroll to song details section and scroll content to top
           try {
             const songDetails = document.querySelector('.song-details');
-            if (songDetails && songDetails.scrollIntoView) {
-              songDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (songDetails) {
+              // On mobile, ensure there's enough space to scroll song details to viewport top
+              const isMobile = window.innerWidth <= 768;
+              if (isMobile) {
+                // Get the position of song details
+                const rect = songDetails.getBoundingClientRect();
+                const targetY = window.scrollY + rect.top;
+                
+                // Add temporary bottom padding to ensure we can scroll to target
+                const tempPadding = document.createElement('div');
+                tempPadding.style.height = window.innerHeight + 'px';
+                tempPadding.style.pointerEvents = 'none';
+                tempPadding.id = 'temp-scroll-padding';
+                document.body.appendChild(tempPadding);
+                
+                // Scroll to exact position
+                setTimeout(() => {
+                  window.scrollTo({ top: targetY, behavior: 'smooth' });
+                  
+                  // After scroll completes, remove padding but maintain position
+                  setTimeout(() => {
+                    if (tempPadding && tempPadding.parentNode) {
+                      // Instead of removing immediately, fade it out gradually
+                      tempPadding.style.transition = 'height 0.5s ease-out';
+                      tempPadding.style.height = '0px';
+                      
+                      // Remove after transition
+                      setTimeout(() => {
+                        if (tempPadding.parentNode) {
+                          tempPadding.remove();
+                        }
+                      }, 500);
+                    }
+                  }, 800);
+                }, 50);
+              } else {
+                songDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+            // Also scroll the content area to the top
+            const contentEl = document.getElementById('songDetailsContent');
+            if (contentEl) {
+              contentEl.scrollTop = 0;
             }
           } catch (e) {}
         } else {
@@ -1197,8 +1238,8 @@
           a.setAttribute('tabindex', '0');
           a.setAttribute('aria-label', (it.title || '') + (it.firstLine ? ' — ' + it.firstLine : ''));
           a.innerHTML = `<strong>${it.title}</strong>${it.firstLine ? '<small>' + it.firstLine + '</small>' : ''}`;
-          a.addEventListener('click', (ev) => { ev.preventDefault(); showSongPreview(it.songKey); });
-          a.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showSongPreview(it.songKey); } });
+          a.addEventListener('click', (ev) => { ev.preventDefault(); showSongPreview(it.songKey, true); });
+          a.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showSongPreview(it.songKey, true); } });
 
           const removeBtn = document.createElement('button');
           removeBtn.className = 'remove-item';
