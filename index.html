@@ -869,8 +869,14 @@
       
       /* Responsive adjustments */
       @media (max-width: 768px) {
+        .header {
+          position: relative;
+          padding-top: 50px; /* Add space for settings section */
+        }
+        
         .settings-section {
-          right: 60px;
+          right: 15px;
+          top: 15px;
           gap: 4px;
         }
         
@@ -883,6 +889,34 @@
         .settings-form {
           padding: 20px;
           margin: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header {
+          padding-top: 60px; /* More space on very small screens */
+        }
+        
+        .settings-section {
+          right: 10px;
+          top: 10px;
+          gap: 2px;
+        }
+        
+        .username-display {
+          font-size: 0.75rem;
+          padding: 2px 4px;
+          max-width: 60px;
+        }
+        
+        .settings-btn {
+          width: 24px;
+          height: 24px;
+        }
+        
+        .settings-btn svg {
+          width: 12px;
+          height: 12px;
         }
       }
 
