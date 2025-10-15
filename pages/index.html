@@ -450,7 +450,7 @@
         box-shadow: 0 2px 4px rgba(45, 90, 45, 0.2);
       }
 
-      /* Ensure SVG icons inherit the button color */
+       /* Ensure SVG icons inherit the button color */
       .playlist-btn svg {
         display: block;
         color: inherit;
@@ -463,6 +463,19 @@
       .playlist-btn svg rect {
         stroke: currentColor !important;
         fill: none !important;
+      }
+
+      /* Share button specific styling */
+      .playlist-btn.shared {
+        background: #ff9966;
+        color: #ffffff;
+        border-color: #ff9966;
+      }
+
+      .playlist-btn.shared:hover {
+        background: #e8855c;
+        border-color: #e8855c;
+        color: #ffffff;
       }
 
 
@@ -1033,6 +1046,15 @@
                   <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </button>
+              <button id="sharePlaylistBtn" class="playlist-btn" title="Sdílet playlist" aria-label="Sdílet playlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="currentColor" stroke-width="2"/>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </button>
               <button id="exportPlaylistBtn" class="playlist-btn" title="Exportovat playlist" aria-label="Exportovat playlist">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1141,7 +1163,9 @@
 
       // Playlist state
       const PLAYLISTS_KEY = 'song_lab_playlists_v1';
+      const SHARED_PLAYLISTS_KEY = 'song_lab_shared_playlists_v1';
       let playlists = {}; // id -> { id, name, items: [{title, firstLine, songKey}] }
+      let sharedPlaylists = {}; // id -> { sharedAt, sharedUrl }
       let currentPlaylistId = null;
 
       function removeAccents(str) {
@@ -1446,8 +1470,10 @@
         } else {
           currentPlaylistId = Object.keys(playlists)[0];
         }
+        loadSharedPlaylists();
         updatePlaylistTitle();
         renderCurrentPlaylist();
+        updateShareButton();
       }
 
       function savePlaylists() { try { localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists)); } catch (e) { console.error('Failed to save playlists', e); } }
@@ -1460,6 +1486,7 @@
         updatePlaylistTitle();
         renderCurrentPlaylist();
         clearSongPreview();
+        updateShareButton();
         // announce creation for screen readers
         try {
           const ariaLive = document.getElementById('ariaLive');
@@ -1476,11 +1503,12 @@
            const deletedName = playlists[currentPlaylistId] ? playlists[currentPlaylistId].name : '';
            delete playlists[currentPlaylistId];
            const keys = Object.keys(playlists);
-           currentPlaylistId = keys.length ? keys[0] : createNewPlaylist('Nový playlist');
-           savePlaylists();
-           updatePlaylistTitle();
-           renderCurrentPlaylist();
-           clearSongPreview();
+            currentPlaylistId = keys.length ? keys[0] : createNewPlaylist('Nový playlist');
+            savePlaylists();
+            updatePlaylistTitle();
+            renderCurrentPlaylist();
+            clearSongPreview();
+            updateShareButton();
            // announce deletion
            try {
              const ariaLive = document.getElementById('ariaLive');
@@ -1536,6 +1564,7 @@
             updatePlaylistTitle();
             renderCurrentPlaylist();
             clearSongPreview();
+            updateShareButton();
             hidePlaylistDropdown();
             try {
               const ariaLive = document.getElementById('ariaLive');
@@ -1942,17 +1971,148 @@
                    .replace(/'/g, '&#39;');
         }
         
-        function downloadTextFile(content, filename) {
-          const blob = new Blob([content], { type: 'text/xml;charset=utf-8' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = filename; // No .xml extension - use playlist name directly
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        }
+         function downloadTextFile(content, filename) {
+           const blob = new Blob([content], { type: 'text/xml;charset=utf-8' });
+           const url = URL.createObjectURL(blob);
+           const a = document.createElement('a');
+           a.href = url;
+           a.download = filename; // No .xml extension - use playlist name directly
+           document.body.appendChild(a);
+           a.click();
+           document.body.removeChild(a);
+           URL.revokeObjectURL(url);
+         }
+
+         // --- Shared playlists management ---
+         function loadSharedPlaylists() {
+           try {
+             const raw = localStorage.getItem(SHARED_PLAYLISTS_KEY);
+             sharedPlaylists = raw ? JSON.parse(raw) : {};
+           } catch (e) {
+             sharedPlaylists = {};
+           }
+         }
+
+         function saveSharedPlaylists() {
+           try {
+             localStorage.setItem(SHARED_PLAYLISTS_KEY, JSON.stringify(sharedPlaylists));
+           } catch (e) {
+             console.error('Failed to save shared playlists', e);
+           }
+         }
+
+         function getUsernameFromSettings() {
+           try {
+             const settings = JSON.parse(localStorage.getItem('song_lab_settings') || '{}');
+             return settings.username && settings.username.trim() ? settings.username.trim() : 'Anonym';
+           } catch (e) {
+             return 'Anonym';
+           }
+         }
+
+         function sharePlaylist(playlistId) {
+           if (!playlistId || !playlists[playlistId]) return;
+           
+           const playlistName = playlists[playlistId].name || 'Playlist';
+           const sharedBy = getUsernameFromSettings();
+           const shareId = `${playlistName} (${sharedBy})`;
+           
+           // Create share JSON structure
+           const sharedPlaylistJson = {
+             shareId: shareId,
+             name: playlistName,
+             sharedBy: sharedBy,
+             songs: playlists[playlistId].items || []
+           };
+           
+           // Add to shared playlists (keep existing structure for UI state)
+           sharedPlaylists[playlistId] = {
+             sharedAt: new Date().toISOString(),
+             shareId: shareId
+           };
+           
+           saveSharedPlaylists();
+           updateShareButton();
+           
+           // Console log shared playlist JSON
+           console.log('Shared playlist JSON:', sharedPlaylistJson);
+           
+           // Announce for screen readers
+           try {
+             const ariaLive = document.getElementById('ariaLive');
+             if (ariaLive) ariaLive.textContent = `Playlist "${playlistName}" byl sdílen`;
+           } catch (e) {}
+         }
+
+         function unsharePlaylist(playlistId) {
+           if (!playlistId || !sharedPlaylists[playlistId]) return;
+           
+           const shareId = sharedPlaylists[playlistId].shareId;
+           
+           // Remove from shared playlists
+           delete sharedPlaylists[playlistId];
+           saveSharedPlaylists();
+           updateShareButton();
+           
+           // Console log only shareId for unshare
+           console.log('Unshared playlist shareId:', shareId);
+           
+           // Announce for screen readers
+           try {
+             const ariaLive = document.getElementById('ariaLive');
+             if (ariaLive) ariaLive.textContent = `Sdílení playlistu "${playlistName}" bylo zrušeno`;
+           } catch (e) {}
+         }
+
+         function updateShareButton() {
+           const shareBtn = document.getElementById('sharePlaylistBtn');
+           if (!shareBtn) return;
+           
+           const isShared = currentPlaylistId && sharedPlaylists[currentPlaylistId];
+           
+           if (isShared) {
+             shareBtn.classList.add('shared');
+             shareBtn.title = 'Zrušit sdílení playlistu';
+             shareBtn.setAttribute('aria-label', 'Zrušit sdílení playlistu');
+             // Change icon to "unlink" icon for unshare
+             shareBtn.innerHTML = `
+               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                 <path d="M18.84 12.25l1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07a5.006 5.006 0 0 0-7.07-.12l-1.71 1.72" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                 <path d="M5.17 11.75l-1.72 1.71a5.004 5.004 0 0 0 .12 7.07a5.006 5.006 0 0 0 7.07.12l1.71-1.72" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                 <line x1="8" y1="2" x2="16" y2="10" stroke="currentColor" stroke-width="2"/>
+                 <line x1="16" y1="14" x2="8" y2="22" stroke="currentColor" stroke-width="2"/>
+               </svg>
+             `;
+           } else {
+             shareBtn.classList.remove('shared');
+             shareBtn.title = 'Sdílet playlist';
+             shareBtn.setAttribute('aria-label', 'Sdílet playlist');
+             // Use standard share icon with connected circles
+             shareBtn.innerHTML = `
+               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                 <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/>
+                 <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                 <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/>
+                 <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="currentColor" stroke-width="2"/>
+                 <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="currentColor" stroke-width="2"/>
+               </svg>
+             `;
+           }
+         }
+
+         function onShareButtonClick() {
+           if (!currentPlaylistId) return;
+           
+           const isShared = sharedPlaylists[currentPlaylistId];
+           
+           if (isShared) {
+             unsharePlaylist(currentPlaylistId);
+           } else {
+             sharePlaylist(currentPlaylistId);
+           }
+           
+           focusSearch();
+         }
 
         // Global touch event handler to prevent scrolling during drag
        function setupGlobalTouchHandlers() {
@@ -2068,8 +2228,11 @@
          delBtn.addEventListener('click', deleteCurrentPlaylist);
          clearPlBtn.addEventListener('click', clearPlaylist);
          
-         const exportBtn = document.getElementById('exportPlaylistBtn');
-         if (exportBtn) exportBtn.addEventListener('click', exportCurrentPlaylist);
+          const exportBtn = document.getElementById('exportPlaylistBtn');
+          if (exportBtn) exportBtn.addEventListener('click', exportCurrentPlaylist);
+          
+          const shareBtn = document.getElementById('sharePlaylistBtn');
+          if (shareBtn) shareBtn.addEventListener('click', onShareButtonClick);
 
         // focus shortcuts
         document.addEventListener('keydown', (e) => {
