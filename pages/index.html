@@ -712,23 +712,32 @@
       }
       
       .username-display {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        height: 40px;
+        padding: 7% 12px;
+        border-radius: 8px;
+        border: 2px solid #e0f0e0;
+        background: #f8fdf8;
         color: #5a7a5a;
         font-size: 0.9rem;
         font-weight: 600;
-        padding: 4px 8px;
-        border-radius: 4px;
-        background: rgba(248, 253, 248, 0.8);
-        border: 1px solid #e0f0e0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 120px;
+        transition: all 0.2s ease;
+        line-height: 1;
+        box-sizing: border-box;
+        flex-shrink: 0;
       }
       
       .settings-btn {
-        width: 28px;
-        height: 28px;
-        border-radius: 6px;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
         border: 2px solid #e0f0e0;
         background: #f8fdf8;
         color: #5a7a5a;
@@ -744,12 +753,23 @@
         background: #2d5a2d;
         color: #ffffff;
         border-color: #2d5a2d;
-        transform: scale(1.05);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(45, 90, 45, 0.2);
+      }
+      
+      .settings-btn:focus {
+        outline: 2px solid #ff9966;
+        outline-offset: 2px;
+      }
+      
+      .settings-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(45, 90, 45, 0.2);
       }
       
       .settings-btn svg {
-        width: 14px;
-        height: 14px;
+        width: 18px;
+        height: 18px;
         stroke: currentColor;
         fill: none;
       }
@@ -880,11 +900,12 @@
           gap: 4px;
         }
         
-        .username-display {
-          font-size: 0.8rem;
-          padding: 3px 6px;
-          max-width: 80px;
-        }
+         .username-display {
+           font-size: 0.8rem;
+           padding: 0 8px;
+           max-width: 80px;
+           height: 32px;
+         }
         
         .settings-form {
           padding: 20px;
@@ -903,21 +924,22 @@
           gap: 2px;
         }
         
-        .username-display {
-          font-size: 0.75rem;
-          padding: 2px 4px;
-          max-width: 60px;
-        }
-        
-        .settings-btn {
-          width: 24px;
-          height: 24px;
-        }
-        
-        .settings-btn svg {
-          width: 12px;
-          height: 12px;
-        }
+         .username-display {
+           font-size: 0.75rem;
+           padding: 0 6px;
+           max-width: 60px;
+           height: 28px;
+         }
+         
+         .settings-btn {
+           width: 28px;
+           height: 28px;
+         }
+         
+         .settings-btn svg {
+           width: 14px;
+           height: 14px;
+         }
       }
 
     </style>
