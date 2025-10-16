@@ -1168,6 +1168,13 @@
       let sharedPlaylists = {}; // id -> { sharedAt, sharedUrl }
       let currentPlaylistId = null;
 
+      // Remote config / shared playlists fetched from server
+      let remoteConfigOptions = [];
+      let remotePlaylistQuery = null;
+      let remotePlaylists = [];
+      let remotePlaylistsLoaded = false;
+      let remotePlaylistsError = null;
+
       function removeAccents(str) {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       }
@@ -1550,33 +1557,72 @@
         focusSearch();
       }
 
-      function showPlaylistDropdown() {
-        const dropdown = document.getElementById('playlistDropdown');
-        if (!dropdown) return;
-        
-        dropdown.innerHTML = '';
-        Object.keys(playlists).forEach(id => {
-          const option = document.createElement('div');
-          option.className = 'playlist-option' + (id === currentPlaylistId ? ' current' : '');
-          option.textContent = playlists[id].name || 'Playlist';
-          option.addEventListener('click', () => {
-            currentPlaylistId = id;
-            updatePlaylistTitle();
-            renderCurrentPlaylist();
-            clearSongPreview();
-            updateShareButton();
-            hidePlaylistDropdown();
-            try {
-              const ariaLive = document.getElementById('ariaLive');
-              if (ariaLive) ariaLive.textContent = 'Přepnuto na playlist: ' + (playlists[id].name || 'Playlist');
-            } catch (e) {}
-            focusSearch();
+        function showPlaylistDropdown() {
+          const dropdown = document.getElementById('playlistDropdown');
+          if (!dropdown) return;
+          
+          dropdown.innerHTML = '';
+
+          // Local playlists
+          Object.keys(playlists).forEach(id => {
+            const option = document.createElement('div');
+            option.className = 'playlist-option' + (id === currentPlaylistId ? ' current' : '');
+            option.textContent = playlists[id].name || 'Playlist';
+            option.addEventListener('click', () => {
+              currentPlaylistId = id;
+              updatePlaylistTitle();
+              renderCurrentPlaylist();
+              clearSongPreview();
+              updateShareButton();
+              hidePlaylistDropdown();
+              try {
+                const ariaLive = document.getElementById('ariaLive');
+                if (ariaLive) ariaLive.textContent = 'Přepnuto na playlist: ' + (playlists[id].name || 'Playlist');
+              } catch (e) {}
+              focusSearch();
+            });
+            dropdown.appendChild(option);
           });
-          dropdown.appendChild(option);
-        });
-        
-        dropdown.classList.add('show');
-      }
+
+          // Separator if we have remote playlists
+          if (remotePlaylists && remotePlaylists.length) {
+            const sep = document.createElement('div');
+            sep.className = 'playlist-option';
+            sep.style.cursor = 'default';
+            sep.style.fontWeight = '600';
+            sep.style.background = '#f8fdf8';
+            sep.textContent = '— Sdílené playlisty —';
+            dropdown.appendChild(sep);
+
+            remotePlaylists.forEach((rp) => {
+              const label = (rp.playlistId || rp.name || 'Sdílený playlist');
+              const opt = document.createElement('div');
+              opt.className = 'playlist-option';
+              opt.textContent = label;
+              opt.title = label;
+              opt.addEventListener('click', () => {
+                hidePlaylistDropdown();
+                importRemotePlaylist(rp);
+              });
+              dropdown.appendChild(opt);
+            });
+          } else if (remotePlaylistsLoaded && remotePlaylistsError) {
+            const err = document.createElement('div');
+            err.className = 'playlist-option';
+            err.style.cursor = 'default';
+            err.style.color = '#b45309';
+            err.textContent = 'Chyba sdílených playlistů: ' + remotePlaylistsError;
+            dropdown.appendChild(err);
+          } else if (!remotePlaylistsLoaded) {
+            const loading = document.createElement('div');
+            loading.className = 'playlist-option';
+            loading.style.cursor = 'default';
+            loading.textContent = 'Načítání sdílených playlistů…';
+            dropdown.appendChild(loading);
+          }
+          
+          dropdown.classList.add('show');
+        }
 
       function hidePlaylistDropdown() {
         const dropdown = document.getElementById('playlistDropdown');
@@ -2272,29 +2318,102 @@
           }
         }
 
-        // Fetch additional configuration JSON from the URL stored in settings
+        // Fetch remote config, then fetch shared playlists using playlistQuery
         function fetchRemoteConfig() {
           try {
             const settings = JSON.parse(localStorage.getItem('song_lab_settings') || '{}');
-            const url = settings.serverUrl && settings.serverUrl.trim();
-            if (!url) {
-              console.log('No serverUrl in settings, skipping remote config fetch');
-              return;
-            }
+            const baseUrl = settings.serverUrl && settings.serverUrl.trim();
 
-            // Perform fetch and log the parsed JSON result
-            fetch(url, { cache: 'no-store' })
+            remoteConfigOptions = [];
+            remotePlaylistQuery = null;
+            remotePlaylists = [];
+            remotePlaylistsLoaded = false;
+            remotePlaylistsError = null;
+
+            if (!baseUrl) return;
+
+            fetch(baseUrl, { cache: 'no-store' })
               .then(async (res) => {
-                if (!res.ok) throw new Error('Network response was not ok: ' + res.status);
+                if (!res.ok) throw new Error('Remote config HTTP ' + res.status);
                 const json = await res.json();
-                console.log('Remote configuration loaded from', url, json);
+                remoteConfigOptions = Array.isArray(json) ? json : [];
+                const opt = remoteConfigOptions.find(o => o && (o.option === 'playlistQuery' || o.option === 'playlisQuery'));
+                if (opt && opt.value) {
+                  remotePlaylistQuery = String(opt.value);
+                  const playlistsUrl = appendQueryString(baseUrl, remotePlaylistQuery);
+                  return fetch(playlistsUrl, { cache: 'no-store' });
+                }
+                return null;
+              })
+              .then(async (res) => {
+                if (!res) { remotePlaylistsLoaded = true; return; }
+                if (!res.ok) throw new Error('Playlists HTTP ' + res.status);
+                const arr = await res.json();
+                remotePlaylists = normalizeRemotePlaylists(arr);
+                remotePlaylistsLoaded = true;
               })
               .catch((err) => {
-                console.error('Failed to fetch remote config from ' + url, err);
+                console.error('Failed to fetch remote config/playlists', err);
+                remotePlaylistsError = (err && err.message) ? err.message : String(err);
+                remotePlaylistsLoaded = true;
               });
           } catch (e) {
             console.error('Failed to initiate remote config fetch', e);
           }
+        }
+
+        function appendQueryString(baseUrl, queryString) {
+          try {
+            const u = new URL(baseUrl);
+            const extra = new URLSearchParams(queryString);
+            extra.forEach((v, k) => u.searchParams.set(k, v));
+            return u.toString();
+          } catch (e) {
+            return baseUrl + (baseUrl.includes('?') ? '&' : '?') + queryString;
+          }
+        }
+
+        function normalizeRemotePlaylists(arr) {
+          if (!Array.isArray(arr)) return [];
+          return arr.map((entry) => {
+            const pid = entry && (entry.playlistId || entry.id || '');
+            let payload = entry && entry.value;
+            if (payload && typeof payload === 'string') {
+              try { payload = JSON.parse(payload); } catch (_) { payload = {}; }
+            }
+            if (!payload || typeof payload !== 'object') payload = {};
+            const songs = Array.isArray(payload.songs) ? payload.songs : [];
+            const items = songs.map((songKey) => {
+              const data = songsData[songKey];
+              const title = data ? cleanTitleForDisplay(songKey) : songKey;
+              const firstLine = data ? getFirstLine(data) : '';
+              return { title, firstLine, songKey };
+            });
+            return {
+              playlistId: pid || payload.playlistId || payload.name || '',
+              name: payload.name || pid || 'Sdílený playlist',
+              sharedBy: payload.sharedBy || '',
+              items
+            };
+          }).filter(p => p && (p.playlistId || p.name));
+        }
+
+        function importRemotePlaylist(rp) {
+          const name = rp && (rp.name || rp.playlistId) || 'Sdílený playlist';
+          const newId = createNewPlaylist(name);
+          const pl = playlists[newId];
+          pl.items = Array.isArray(rp.items) ? rp.items.slice(0, 200) : [];
+          savePlaylists();
+          currentPlaylistId = newId;
+          updatePlaylistTitle();
+          renderCurrentPlaylist();
+          clearSongPreview();
+          updateShareButton();
+          try {
+            const ariaLive = document.getElementById('ariaLive');
+            if (ariaLive) ariaLive.textContent = 'Stažen sdílený playlist: ' + name;
+          } catch (e) {}
+          focusSearch();
         }
 
        function saveSettings() {
@@ -2327,6 +2446,9 @@
              const ariaLive = document.getElementById('ariaLive');
              if (ariaLive) ariaLive.textContent = 'Nastavení uloženo';
            } catch (e) {}
+
+           // Re-fetch remote config/playlists if server URL changed
+           fetchRemoteConfig();
            
          } catch (e) {
            console.error('Failed to save settings', e);
