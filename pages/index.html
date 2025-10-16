@@ -2672,6 +2672,7 @@
           return;
         }
         const playlistsUrl = appendQueryString(baseUrl, remotePlaylistQuery);
+        const urlWithAction = appendQueryString(playlistsUrl, "action=share");
 
         // Prepare payload in the same format as downloaded entries
         const songKeys = (playlists[playlistId].items || [])
@@ -2684,9 +2685,9 @@
           songs: songKeys,
         };
 
-        console.log("Sharing playlist to", playlistsUrl, "with item:", payload);
+        console.log("Sharing playlist to", urlWithAction, "with item:", payload);
 
-        fetch(playlistsUrl, {
+        fetch(urlWithAction, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify(payload),
@@ -2700,7 +2701,7 @@
           // Mark as shared locally on success
           sharedPlaylists[playlistId] = {
             sharedAt: new Date().toISOString(),
-            shareId: playlistName,
+            shareId: payload.playlistId,
           };
           saveSharedPlaylists();
           updateShareButton();
@@ -2717,25 +2718,58 @@
       function unsharePlaylist(playlistId) {
         if (!playlistId || !sharedPlaylists[playlistId]) return;
 
-        const shareId = sharedPlaylists[playlistId].shareId;
+        const settings = JSON.parse(
+          localStorage.getItem("song_lab_settings") || "{}"
+        );
+        const baseUrl = settings.serverUrl && settings.serverUrl.trim();
         const playlistName = playlists[playlistId]
           ? playlists[playlistId].name || "Playlist"
           : "Playlist";
+        const shareId = sharedPlaylists[playlistId].shareId || playlistName;
 
-        // Remove from shared playlists
-        delete sharedPlaylists[playlistId];
-        saveSharedPlaylists();
-        updateShareButton();
+        if (!baseUrl || !remotePlaylistQuery) {
+          console.warn(
+            "Missing config for unsharing: serverUrl or playlistQuery"
+          );
+          // still remove local state
+          delete sharedPlaylists[playlistId];
+          saveSharedPlaylists();
+          updateShareButton();
+          return;
+        }
+        const playlistsUrl = appendQueryString(baseUrl, remotePlaylistQuery);
+        const urlWithAction = appendQueryString(playlistsUrl, "action=unshare");
 
-        // Console log only shareId for unshare
-        console.log("Unshared playlist shareId:", shareId);
+        const payload = { playlistId: shareId };
 
-        // Announce for screen readers
-        try {
-          const ariaLive = document.getElementById("ariaLive");
-          if (ariaLive)
-            ariaLive.textContent = `Sdílení playlistu "${playlistName}" bylo zrušeno`;
-        } catch (e) {}
+        fetch(urlWithAction, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(payload),
+        })
+          .then(async (res) => {
+            if (!res.ok) {
+              const text = await res.text().catch(() => "");
+              throw new Error(
+                "Unshare HTTP " + res.status + (text ? ": " + text : "")
+              );
+            }
+          })
+          .catch((err) => {
+            console.warn("Unshare request failed:", err);
+          })
+          .finally(() => {
+            // Remove from shared playlists locally regardless
+            delete sharedPlaylists[playlistId];
+            saveSharedPlaylists();
+            updateShareButton();
+            console.log("Unshared playlist shareId:", shareId);
+            try {
+              const ariaLive = document.getElementById("ariaLive");
+              if (ariaLive)
+                ariaLive.textContent = `Sdílení playlistu "${playlistName}" bylo zrušeno`;
+            } catch (e) {}
+          });
       }
 
       function updateShareButton() {
