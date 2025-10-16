@@ -2250,27 +2250,52 @@
        }
 
        // Settings functionality
-       function loadSettings() {
-         try {
-           const settings = JSON.parse(localStorage.getItem('song_lab_settings') || '{}');
-           const usernameInput = document.getElementById('usernameInput');
-           const serverUrlInput = document.getElementById('serverUrlInput');
-           const usernameDisplay = document.getElementById('usernameDisplay');
-           
-           if (usernameInput && settings.username) {
-             usernameInput.value = settings.username;
-           }
-           if (serverUrlInput && settings.serverUrl) {
-             serverUrlInput.value = settings.serverUrl;
-           }
-           if (usernameDisplay && settings.username) {
-             usernameDisplay.textContent = settings.username;
-             usernameDisplay.style.display = 'block';
-           }
-         } catch (e) {
-           console.error('Failed to load settings', e);
-         }
-       }
+        function loadSettings() {
+          try {
+            const settings = JSON.parse(localStorage.getItem('song_lab_settings') || '{}');
+            const usernameInput = document.getElementById('usernameInput');
+            const serverUrlInput = document.getElementById('serverUrlInput');
+            const usernameDisplay = document.getElementById('usernameDisplay');
+            
+            if (usernameInput && settings.username) {
+              usernameInput.value = settings.username;
+            }
+            if (serverUrlInput && settings.serverUrl) {
+              serverUrlInput.value = settings.serverUrl;
+            }
+            if (usernameDisplay && settings.username) {
+              usernameDisplay.textContent = settings.username;
+              usernameDisplay.style.display = 'block';
+            }
+          } catch (e) {
+            console.error('Failed to load settings', e);
+          }
+        }
+
+        // Fetch additional configuration JSON from the URL stored in settings
+        function fetchRemoteConfig() {
+          try {
+            const settings = JSON.parse(localStorage.getItem('song_lab_settings') || '{}');
+            const url = settings.serverUrl && settings.serverUrl.trim();
+            if (!url) {
+              console.log('No serverUrl in settings, skipping remote config fetch');
+              return;
+            }
+
+            // Perform fetch and log the parsed JSON result
+            fetch(url, { cache: 'no-store' })
+              .then(async (res) => {
+                if (!res.ok) throw new Error('Network response was not ok: ' + res.status);
+                const json = await res.json();
+                console.log('Remote configuration loaded from', url, json);
+              })
+              .catch((err) => {
+                console.error('Failed to fetch remote config from ' + url, err);
+              });
+          } catch (e) {
+            console.error('Failed to initiate remote config fetch', e);
+          }
+        }
 
        function saveSettings() {
          try {
@@ -2427,16 +2452,18 @@
        }
 
        document.addEventListener('DOMContentLoaded', async () => {
-        await loadSongsData();
-        loadPlaylists();
-        setupEventListeners();
-         loadSettings();
-         setupSettingsEventListeners();
-        setupGlobalTouchHandlers();
-        // autofocus attempts
-        const input = document.getElementById('searchInput');
-        if (input) { try { input.focus(); setTimeout(() => { try { input.focus(); input.select && input.select(); } catch (e) {} }, 50); } catch (e) {} }
-      });
+         await loadSongsData();
+         loadPlaylists();
+         setupEventListeners();
+          loadSettings();
+          // Fetch remote configuration using stored settings.serverUrl
+          fetchRemoteConfig();
+          setupSettingsEventListeners();
+         setupGlobalTouchHandlers();
+         // autofocus attempts
+         const input = document.getElementById('searchInput');
+         if (input) { try { input.focus(); setTimeout(() => { try { input.focus(); input.select && input.select(); } catch (e) {} }, 50); } catch (e) {} }
+       });
     </script>
   </body>
 </html>
