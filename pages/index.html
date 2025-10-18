@@ -2129,6 +2129,15 @@
         container.setAttribute("role", "list");
         if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
         const pl = playlists[currentPlaylistId];
+
+        // Auto-select first song if nothing is currently selected
+        if (!currentPreviewKey && pl.items.length > 0) {
+          const firstSong = pl.items[0];
+          if (firstSong && firstSong.songKey) {
+            showSongPreview(firstSong.songKey);
+          }
+        }
+
         pl.items.forEach((it, idx) => {
           const row = document.createElement("div");
           row.className = "playlist-item";
