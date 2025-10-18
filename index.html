@@ -3336,15 +3336,42 @@
             }
 
             function importRemotePlaylist(rp) {
-                const name =
+                const baseName =
                     (rp && (rp.name || rp.playlistId)) || "Sdílený playlist";
-                const newId = createNewPlaylist(name);
-                const pl = playlists[newId];
-                pl.items = Array.isArray(rp.items)
-                    ? rp.items.slice(0, 200)
-                    : [];
+                const sharedBy = rp && rp.sharedBy ? rp.sharedBy : "";
+                // Create the full name with sharedBy (same format as shared playlists)
+                const name = sharedBy ? `${baseName} (${sharedBy})` : baseName;
+
+                // Check if a playlist with this name already exists
+                let existingId = null;
+                for (const id in playlists) {
+                    if (playlists[id].name === name) {
+                        existingId = id;
+                        break;
+                    }
+                }
+
+                let playlistId;
+                if (existingId) {
+                    // Overwrite existing playlist
+                    playlistId = existingId;
+                    playlists[playlistId].items = Array.isArray(rp.items)
+                        ? rp.items.slice(0, 200)
+                        : [];
+                } else {
+                    // Create new playlist
+                    playlistId = "pl_" + Date.now();
+                    playlists[playlistId] = {
+                        id: playlistId,
+                        name: name,
+                        items: Array.isArray(rp.items)
+                            ? rp.items.slice(0, 200)
+                            : [],
+                    };
+                }
+
                 savePlaylists();
-                currentPlaylistId = newId;
+                currentPlaylistId = playlistId;
                 updatePlaylistTitle();
                 renderCurrentPlaylist();
                 clearSongPreview();
@@ -3352,8 +3379,9 @@
                 try {
                     const ariaLive = document.getElementById("ariaLive");
                     if (ariaLive)
-                        ariaLive.textContent =
-                            "Stažen sdílený playlist: " + name;
+                        ariaLive.textContent = existingId
+                            ? "Přepsán playlist: " + name
+                            : "Stažen sdílený playlist: " + name;
                 } catch (e) {}
                 focusSearch();
             }
