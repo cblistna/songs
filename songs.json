@@ -22095,7 +22095,7 @@
           [
             "Jsi slávy Král,",
             "před Tebou můžu stát",
-            "a díky vzdát.  3x"
+            "a díky vzdát."
           ],
           [
             "Ó, Pane svatý,",
@@ -22104,7 +22104,7 @@
         ]
       },
       {
-        "id": "V2",
+        "id": "C",
         "slides": [
           [
             "Miluji Tě vroucí láskou,",
@@ -22114,7 +22114,10 @@
         ]
       }
     ],
-    "outline": [],
+    "outline": [
+      "V1",
+      "C"
+    ],
     "tags": []
   },
   "Oblečiem si chválu": {
