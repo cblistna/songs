@@ -658,69 +658,6 @@
     "outline": [],
     "tags": []
   },
-  "Dávám Ti své srdce": {
-    "title": "Dávám Ti své srdce",
-    "file": "Davam Ti sve srdce.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Tady jsem, abych činil Tvoji vůli.",
-            "Tady jsem, abych dával lásku,",
-            "kterou od tebe mám.",
-            "Tady jsem."
-          ],
-          [
-            "Pane můj, tady jsem."
-          ]
-        ]
-      },
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "Celé srdce své Ti dávám,",
-            "všechno co mám, je Tvé.",
-            "Celé srdce své Ti dávám,",
-            "jsi Pánem mým."
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Tady jsem, abych činil Tvoji vůli.",
-            "Tady jsem, aby viděl svět,",
-            "že ty jsi živý Bůh.",
-            "Tady jsem."
-          ],
-          [
-            "Pane můj, tady jsem."
-          ]
-        ]
-      },
-      {
-        "id": "C2",
-        "slides": [
-          [
-            "Celé srdce své Ti dávám,",
-            "všechno co mám, je Tvé.",
-            "Celé srdce své Ti dávám,",
-            "Pane můj."
-          ]
-        ]
-      }
-    ],
-    "outline": [
-      "V1",
-      "C1",
-      "V2",
-      "C2"
-    ],
-    "tags": []
-  },
   "Tylko On": {
     "title": "Tylko On",
     "file": "Tylko On.xml",
@@ -17247,6 +17184,69 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Dávám Ti své srdce": {
+    "title": "Dávám Ti své srdce",
+    "file": "Davam Ti sve srdce.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Tady jsem, abych činil Tvoji vůli.",
+            "Tady jsem, abych dával lásku,",
+            "kterou od tebe mám.",
+            "Tady jsem."
+          ],
+          [
+            "Pane můj, tady jsem."
+          ]
+        ]
+      },
+      {
+        "id": "C1",
+        "slides": [
+          [
+            "Celé srdce své Ti dávám,",
+            "všechno co mám, je Tvé.",
+            "Celé srdce své Ti dávám,",
+            "jsi Pánem mým."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Tady jsem, abych činil Tvoji vůli.",
+            "Tady jsem, aby viděl svět,",
+            "že ty jsi živý Bůh.",
+            "Tady jsem."
+          ],
+          [
+            "Pane můj, tady jsem."
+          ]
+        ]
+      },
+      {
+        "id": "C2",
+        "slides": [
+          [
+            "Celé srdce své Ti dávám,",
+            "všechno co mám, je Tvé.",
+            "Celé srdce své Ti dávám,",
+            "Pane můj."
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "C1",
+      "V2",
+      "C2"
+    ],
     "tags": []
   },
   "Panu At Zni": {
