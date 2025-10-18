@@ -173,9 +173,36 @@
         font-style: normal;
         line-height: 1.6;
         color: #2d5a2d;
-        white-space: pre-line;
         padding: 20px 0;
         background: transparent;
+      }
+
+      .song-section {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5em;
+        position: relative;
+      }
+
+      .song-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .section-lyrics {
+        flex: 1;
+        white-space: pre-line;
+      }
+
+      .section-name {
+        color: #8fb48f;
+        font-size: 0.75em;
+        font-weight: 500;
+        margin-left: 20px;
+        flex-shrink: 0;
+        opacity: 0.6;
+        text-align: right;
+        min-width: 40px;
+        line-height: 1.2;
       }
 
       .song-content.no-results {
@@ -216,6 +243,12 @@
         .song-content {
           font-size: clamp(1.1rem, 2.2vw, 1.3rem);
         }
+
+        .section-name {
+          font-size: 0.7em;
+          margin-left: 15px;
+          min-width: 35px;
+        }
       }
 
       @media (max-width: 480px) {
@@ -237,6 +270,22 @@
 
         .song-content {
           font-size: clamp(1rem, 2vw, 1.2rem);
+        }
+
+        .song-section {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+
+        .section-name {
+          font-size: 0.65em;
+          margin-left: 10px;
+          margin-bottom: 0;
+          margin-top: 0;
+          align-self: flex-start;
+          order: 0;
+          position: relative;
+          top: 0;
         }
 
         #songDetailsTitle {
@@ -1812,28 +1861,40 @@
             songData.outline.forEach((sectionId, oi) => {
               const section = sectionMap[sectionId];
               if (section && section.slides) {
+                let sectionText = "";
                 section.slides.forEach((slide) => {
                   if (Array.isArray(slide))
-                    slide.forEach((line) => (out += line + "\n"));
+                    slide.forEach((line) => (sectionText += line + "\n"));
                 });
-                if (oi < songData.outline.length - 1) out += "\n";
+
+                out += `<div class="song-section">
+                  <div class="section-lyrics">${sectionText.trim()}</div>
+                  <div class="section-name">${section.id}</div>
+                </div>`;
               }
             });
-            return out.trim();
+            return out;
           }
         }
 
         // Fallback to original behavior if no valid outline
-        songData.sections &&
+        if (songData.sections && Array.isArray(songData.sections)) {
           songData.sections.forEach((section, si) => {
-            section.slides &&
+            if (section.slides) {
+              let sectionText = "";
               section.slides.forEach((slide) => {
                 if (Array.isArray(slide))
-                  slide.forEach((line) => (out += line + "\n"));
+                  slide.forEach((line) => (sectionText += line + "\n"));
               });
-            if (si < songData.sections.length - 1) out += "\n";
+
+              out += `<div class="song-section">
+                <div class="section-lyrics">${sectionText.trim()}</div>
+                <div class="section-name">${section.id || ""}</div>
+              </div>`;
+            }
           });
-        return out.trim();
+        }
+        return out;
       }
 
       function showSongPreview(
