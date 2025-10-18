@@ -1912,14 +1912,13 @@
             "Vyberte píseň z výsledků vyhledávání pro zobrazení detailů";
           contentEl.className = "song-content no-results";
           updatePreviewNavButtons();
-          renderCurrentPlaylist();
           return;
         }
         titleEl.textContent = cleanTitleForDisplay(songKey);
         contentEl.innerHTML = formatSongContent(data);
         contentEl.className = "song-content";
         updatePreviewNavButtons();
-        renderCurrentPlaylist();
+        updatePlaylistSelection();
 
         if (scrollToDetails) {
           // scroll to song details section and scroll content to top
@@ -2000,7 +1999,7 @@
           "Vyberte píseň z výsledků vyhledávání pro zobrazení detailů";
         contentEl.className = "song-content no-results";
         updatePreviewNavButtons();
-        renderCurrentPlaylist();
+        updatePlaylistSelection();
       }
 
       // --- Playlist management (in-memory + localStorage) ---
@@ -2042,8 +2041,8 @@
         savePlaylists();
         currentPlaylistId = id;
         updatePlaylistTitle();
-        renderCurrentPlaylist();
         clearSongPreview();
+        renderCurrentPlaylist();
         updateShareButton();
         // announce creation for screen readers
         try {
@@ -2070,8 +2069,8 @@
             : createNewPlaylist("Nový playlist");
           savePlaylists();
           updatePlaylistTitle();
-          renderCurrentPlaylist();
           clearSongPreview();
+          renderCurrentPlaylist();
           updateShareButton();
           // announce deletion
           try {
@@ -2132,8 +2131,8 @@
           option.addEventListener("click", () => {
             currentPlaylistId = id;
             updatePlaylistTitle();
-            renderCurrentPlaylist();
             clearSongPreview();
+            renderCurrentPlaylist();
             updateShareButton();
             hidePlaylistDropdown();
             try {
@@ -2193,6 +2192,32 @@
         if (dropdown) {
           dropdown.classList.remove("show");
         }
+      }
+
+      function updatePlaylistSelection() {
+        const container = document.getElementById("playlistItems");
+        if (!container) return;
+
+        const items = container.querySelectorAll(".playlist-item");
+        if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
+
+        const pl = playlists[currentPlaylistId];
+
+        items.forEach((item, idx) => {
+          if (idx < pl.items.length) {
+            const playlistItem = pl.items[idx];
+            if (
+              currentPreviewKey &&
+              playlistItem.songKey === currentPreviewKey
+            ) {
+              item.classList.add("selected");
+              item.setAttribute("aria-current", "true");
+            } else {
+              item.classList.remove("selected");
+              item.removeAttribute("aria-current");
+            }
+          }
+        });
       }
 
       function renderCurrentPlaylist() {
@@ -2586,8 +2611,8 @@
           if (!ok) return;
           playlists[currentPlaylistId].items = [];
           savePlaylists();
-          renderCurrentPlaylist();
           clearSongPreview();
+          renderCurrentPlaylist();
           try {
             const ariaLive = document.getElementById("ariaLive");
             if (ariaLive) ariaLive.textContent = "Playlist vyprázdněn";
@@ -3305,8 +3330,8 @@
         savePlaylists();
         currentPlaylistId = playlistId;
         updatePlaylistTitle();
-        renderCurrentPlaylist();
         clearSongPreview();
+        renderCurrentPlaylist();
         updateShareButton();
         try {
           const ariaLive = document.getElementById("ariaLive");
