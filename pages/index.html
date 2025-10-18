@@ -2041,8 +2041,8 @@
         savePlaylists();
         currentPlaylistId = id;
         updatePlaylistTitle();
-        renderCurrentPlaylist();
         clearSongPreview();
+        renderCurrentPlaylist();
         updateShareButton();
         // announce creation for screen readers
         try {
@@ -2069,8 +2069,8 @@
             : createNewPlaylist("Nový playlist");
           savePlaylists();
           updatePlaylistTitle();
-          renderCurrentPlaylist();
           clearSongPreview();
+          renderCurrentPlaylist();
           updateShareButton();
           // announce deletion
           try {
@@ -2131,8 +2131,8 @@
           option.addEventListener("click", () => {
             currentPlaylistId = id;
             updatePlaylistTitle();
-            renderCurrentPlaylist();
             clearSongPreview();
+            renderCurrentPlaylist();
             updateShareButton();
             hidePlaylistDropdown();
             try {
@@ -2611,8 +2611,8 @@
           if (!ok) return;
           playlists[currentPlaylistId].items = [];
           savePlaylists();
-          renderCurrentPlaylist();
           clearSongPreview();
+          renderCurrentPlaylist();
           try {
             const ariaLive = document.getElementById("ariaLive");
             if (ariaLive) ariaLive.textContent = "Playlist vyprázdněn";
@@ -3330,8 +3330,8 @@
         savePlaylists();
         currentPlaylistId = playlistId;
         updatePlaylistTitle();
-        renderCurrentPlaylist();
         clearSongPreview();
+        renderCurrentPlaylist();
         updateShareButton();
         try {
           const ariaLive = document.getElementById("ariaLive");
