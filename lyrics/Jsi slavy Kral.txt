@@ -1,14 +1,15 @@
 Jsi slávy Král
+V1 C
 
 :V1
 Jsi slávy Král,
 před Tebou můžu stát
-a díky vzdát.  3x
+a díky vzdát.
 
 Ó, Pane svatý,
 přijď sem mezi nás.
 
-:V2
+:C
 Miluji Tě vroucí láskou,
 ó, Pane svatý,
 přijď sem mezi nás.
