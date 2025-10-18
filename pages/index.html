@@ -3263,6 +3263,16 @@
                             const arr = await res.json();
                             remotePlaylists = normalizeRemotePlaylists(arr);
                             remotePlaylistsLoaded = true;
+
+                            // If playlist dropdown is currently open, refresh it with new data
+                            const dropdown =
+                                document.getElementById("playlistDropdown");
+                            if (
+                                dropdown &&
+                                dropdown.classList.contains("show")
+                            ) {
+                                showPlaylistDropdown();
+                            }
                         })
                         .catch((err) => {
                             console.error(
@@ -3272,6 +3282,16 @@
                             remotePlaylistsError =
                                 err && err.message ? err.message : String(err);
                             remotePlaylistsLoaded = true;
+
+                            // If playlist dropdown is currently open, refresh it to show error
+                            const dropdown =
+                                document.getElementById("playlistDropdown");
+                            if (
+                                dropdown &&
+                                dropdown.classList.contains("show")
+                            ) {
+                                showPlaylistDropdown();
+                            }
                         });
                 } catch (e) {
                     console.error(
