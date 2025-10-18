@@ -1760,16 +1760,23 @@
 
       function onSearchResultClick(result) {
         // Add to playlist instead of clearing only
-        addSongToCurrentPlaylist({
-          title: result.displayTitle,
-          firstLine: result.firstLine || "",
-          songKey: result.songKey,
-        });
-        // show preview for that song
-        showSongPreview(result.songKey);
+        addSongToCurrentPlaylist(
+          {
+            title: result.displayTitle,
+            firstLine: result.firstLine || "",
+            songKey: result.songKey,
+          },
+          true,
+        ); // fromSearch = true
+        // show preview for that song WITHOUT scrolling and keep search focused
+        showSongPreview(result.songKey, false, false);
         hideResults();
         const si = document.getElementById("searchInput");
         si.value = "";
+        // Keep search input focused after DOM updates
+        setTimeout(() => {
+          if (si) si.focus();
+        }, 50);
       }
 
       function selectSong(result) {
@@ -1829,7 +1836,11 @@
         return out.trim();
       }
 
-      function showSongPreview(songKey, scrollToDetails = false) {
+      function showSongPreview(
+        songKey,
+        scrollToDetails = false,
+        scrollToPlaylist = true,
+      ) {
         currentPreviewKey = songKey;
         const data = songsData[songKey];
         const titleEl = document.getElementById("songDetailsTitle");
@@ -1904,8 +1915,8 @@
               contentEl.scrollTop = 0;
             }
           } catch (e) {}
-        } else {
-          // scroll selected playlist item into view
+        } else if (scrollToPlaylist) {
+          // scroll selected playlist item into view only if requested
           try {
             const container = document.getElementById("playlistItems");
             const selected =
@@ -2450,7 +2461,7 @@
         });
       }
 
-      function addSongToCurrentPlaylist(item) {
+      function addSongToCurrentPlaylist(item, fromSearch = false) {
         if (!currentPlaylistId || !playlists[currentPlaylistId]) return;
         // dedupe by songKey: if exists, move it to the end and show preview
         const pl = playlists[currentPlaylistId];
