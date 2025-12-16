@@ -3895,88 +3895,6 @@
     "outline": [],
     "tags": []
   },
-  "Twa Moc": {
-    "title": "Twa Moc",
-    "file": "Twa Moc.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "W obecności Twej cuda stają się",
-            "I na ziemi napełniają plany Twe",
-            "w swoim czasie Bóg",
-            "posyła slowo swe."
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "I uzdrawia co w jego woli jest",
-            "do wyschniętej rzeki wracasz życie jej",
-            "by objawić miłosierdzie swe."
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Ciągle nowe rzeczy czynisz",
-            "teraz pośród nas",
-            "dlatego ma sens",
-            "w bliskości Twej żyć."
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Bo każdy dzień cuda stają się",
-            "dlatego warto szukać",
-            "Ciebie każdy dzień",
-            "bo jest nadzieja."
-          ]
-        ]
-      },
-      {
-        "id": "V5",
-        "slides": [
-          [
-            "W nim nadzieja jest",
-            "że także w Twoim życiu",
-            "może cud stać się."
-          ]
-        ]
-      },
-      {
-        "id": "V6",
-        "slides": [
-          [
-            "Niechaj zstąpi Twa moc",
-            "co uzdrawia nas",
-            "niechaj zstąpi Twa moc",
-            "co wyzwala nas."
-          ]
-        ]
-      },
-      {
-        "id": "V7",
-        "slides": [
-          [
-            "W prawdzie Twojej i mocy Ducha",
-            "przyjdz miedzy nas",
-            "i objaw co czynisz pośród nas."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Modlitby": {
     "title": "Modlitby",
     "file": "Modlitby.xml",
@@ -3997,18 +3915,17 @@
     "outline": [],
     "tags": []
   },
-  "Nasz Bog": {
-    "title": "Nasz Bog",
+  "Nasz Bóg": {
+    "title": "Nasz Bóg",
     "file": "Nasz Bog.xml",
     "sections": [
       {
         "id": "V1",
         "slides": [
           [
-            "Nasz Bóg jest potężny w mocy swej",
-            "króluje nad nami dziś",
-            "z nieba rządzi w mocy,",
-            "miłości, mądrości swej"
+            "Wodę zamieniłeś w wino,",
+            "ślepi przy Tobie znów widzą",
+            "Któż jest jak Ty, tylko Ty"
           ]
         ]
       },
@@ -4016,15 +3933,48 @@
         "id": "V2",
         "slides": [
           [
-            "Náš Pán, On je králů král",
-            "Jeho trůn bude navěky stát",
-            "On má všechnu vládu a moc",
-            "Náš Pán, On je králů král"
+            "Blaskiem rozświetlasz w ciemności,",
+            "człowiek powstaje z marności",
+            "Któż jest jak Ty, tylko Ty"
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "Nasz Bóg jest wielki,",
+            "nasz Bóg jest silny",
+            "Boże nikt inny nie równa się z Tobą"
+          ],
+          [
+            "Nasz Bóg uzdrawia,",
+            "jest wszechmogący,",
+            "nasz Bóg, nasz Bóg"
+          ]
+        ]
+      },
+      {
+        "id": "B",
+        "slides": [
+          [
+            "Jeśli nasz Bóg jest przy nas,",
+            "już nic nas nie zatrzyma",
+            "Jeśli nasz Bóg jest z nami,",
+            "któż jest przeciwko nam"
           ]
         ]
       }
     ],
-    "outline": [],
+    "outline": [
+      "V1",
+      "V2",
+      "C",
+      "V1",
+      "V2",
+      "C",
+      "B"
+    ],
     "tags": []
   },
   "Smím stát": {
@@ -5924,71 +5874,6 @@
     "outline": [],
     "tags": []
   },
-  "Otče náš nebeský": {
-    "title": "Otče náš nebeský",
-    "file": "Otce nas nebesky.xml",
-    "sections": [
-      {
-        "id": "C",
-        "slides": [
-          [
-            "Otče náš nebeský, posvěť se jméno tvé,",
-            "přijď tvoje království, buď vůle tvá."
-          ]
-        ]
-      },
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Tam, kde tvůj lid se probouzí,",
-            "tam, kde roste tvůj chrám,",
-            "v srdcích všech dětí tvých",
-            "ať vítězí vůle tvá.",
-            "ať vítězí vůle tvá!"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Tam, kde Duch svatý přichází,",
-            "dary své rozdává,",
-            "jaká je teď vůle tvá?",
-            "Co dal jsem ti, předávej dál,",
-            "co dal jsem ti, předávej dál!"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Někdy mne zkoušky tak svírají,",
-            "padám a prohrávám,",
-            "řekni, jak vůle tvá zní?",
-            "Bojuj až do vítězství,",
-            "bojuj až do vítězství!"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Pane, můj bratr mne nemá rád,",
-            "za zády mne pomlouvá,",
-            "toužím teď vůli tvou znát.",
-            "Odpusť mu tak, jako já,",
-            "odpusť mu tak, jako já!"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Ty Jsi Má Skála": {
     "title": "Ty Jsi Má Skála",
     "file": "Ty Jsi Ma Skala.xml",
@@ -6731,7 +6616,82 @@
   "Twa moc": {
     "title": "Twa moc",
     "file": "Twa moc.xml",
-    "sections": [],
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "W obecności Twej cuda stają się",
+            "I na ziemi napełniają plany Twe",
+            "w swoim czasie Bóg",
+            "posyła slowo swe."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "I uzdrawia co w jego woli jest",
+            "do wyschniętej rzeki wracasz życie jej",
+            "by objawić miłosierdzie swe."
+          ]
+        ]
+      },
+      {
+        "id": "V3",
+        "slides": [
+          [
+            "Ciągle nowe rzeczy czynisz",
+            "teraz pośród nas",
+            "dlatego ma sens",
+            "w bliskości Twej żyć."
+          ]
+        ]
+      },
+      {
+        "id": "V4",
+        "slides": [
+          [
+            "Bo każdy dzień cuda stają się",
+            "dlatego warto szukać",
+            "Ciebie każdy dzień",
+            "bo jest nadzieja."
+          ]
+        ]
+      },
+      {
+        "id": "V5",
+        "slides": [
+          [
+            "W nim nadzieja jest",
+            "że także w Twoim życiu",
+            "może cud stać się."
+          ]
+        ]
+      },
+      {
+        "id": "V6",
+        "slides": [
+          [
+            "Niechaj zstąpi Twa moc",
+            "co uzdrawia nas",
+            "niechaj zstąpi Twa moc",
+            "co wyzwala nas."
+          ]
+        ]
+      },
+      {
+        "id": "V7",
+        "slides": [
+          [
+            "W prawdzie Twojej i mocy Ducha",
+            "przyjdz miedzy nas",
+            "i objaw co czynisz pośród nas."
+          ]
+        ]
+      }
+    ],
     "outline": [],
     "tags": []
   },
@@ -7764,14 +7724,26 @@
         "slides": [
           [
             "/:Ó Pane, otevři mé rty, :/ 3x",
-            "ať má ústa zvěstují Tvou chválu.:/",
+            "ať má ústa zvěstují Tvou chválu."
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
             "/: Jsi velký a mocný Bůh,",
-            "jen Tobě patří naše chvála.:/ 4x"
+            "jen tobě patří naše chvála.",
+            "Jsi velký a mocný Bůh,",
+            "jen tobě patří chvála. :/"
           ]
         ]
       }
     ],
-    "outline": [],
+    "outline": [
+      "V1",
+      "C"
+    ],
     "tags": []
   },
   "Chvalu Vzdejte": {
@@ -10437,47 +10409,6 @@
     "outline": [],
     "tags": []
   },
-  "Panu At Zni": {
-    "title": "Panu At Zni",
-    "file": "Panu At Zni.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Pánu ať zní píseň chval,",
-            "Pánu ať tady zní – Sláva!",
-            "Jméno má vyvýšené,",
-            "jen On na věky vládne."
-          ]
-        ]
-      },
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "Králů Král,",
-            "Pánů Pán,",
-            "|: Haleluja, haleluja! :|"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Jako Jeho vojsko budeme stát,",
-            "Pánu ať tady zní – Sláva!",
-            "Dej svou moc,",
-            "Pane požehnej nám,",
-            "kéž naše země Tvou slávu zná."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Hosanna": {
     "title": "Hosanna",
     "file": "Hosanna.xml",
@@ -11817,52 +11748,6 @@
     "outline": [],
     "tags": []
   },
-  "NASZ  BÓG": {
-    "title": "NASZ  BÓG",
-    "file": "NASZ  BOG.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "NASZ  BÓG"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Wodę zamieniłeś w wino, ślepi  przy Tobie znów widzą",
-            "Któż jest jak Ty, tylko Ty",
-            "Blaskiem  rozświetlasz w ciemności, człowiek  powstaje  z  marności",
-            "Któż jest jak Ty, tylko Ty"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Ref. Nasz  Bóg  jest wielki, nasz Bóg jest silny",
-            "Boże  nikt  inny  nie równa się z Tobą",
-            "Nasz Bóg  uzdrawia, jest wszechmogący  nasz Bóg, nasz Bóg"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Jeśli nasz Bóg jest przy nas, już  nic nas nie zatrzyma",
-            "Jeśli nasz Bóg jest z  nami, któż jest przeciwko nam"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Ať Tvá Živá Voda": {
     "title": "Ať Tvá Živá Voda",
     "file": "At Tva Ziva Voda.xml",
@@ -11946,74 +11831,6 @@
       "V2",
       "C"
     ],
-    "tags": []
-  },
-  "TICHÁ NOC": {
-    "title": "TICHÁ NOC",
-    "file": "TICHA NOC.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "TICHÁ NOC"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Cicha noc! W górze skrzy",
-            "Mnóstwo gwiazd, wszystko śpi:",
-            "Lecz z ócz Marii odszedl dziś sen:",
-            "W świętej ciszy Wiecznego to Syn",
-            "Leźy na lonie jej!",
-            "Leźy na lonie jej?"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "święte noc! Dobrą wieść",
-            "Aniol sam śpieszy nieść",
-            "V pierw pasterzom, co strzegą swych stad,",
-            "że Zbawiciel już przyszedl na świat,",
-            "Krórym jest Chrystus Pan",
-            "Którym je Chrystus Pan"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Tichá noc, svatá noc",
-            "jala lid v  blahý klid.",
-            "Dvé jen srdci tu v  Betlémě bdí,",
-            "hvězdy při svitu u jeslí dlí,",
-            "v  nichž malé děťátko spí,",
-            "v  nichž malé děťátko spí."
-          ]
-        ]
-      },
-      {
-        "id": "V5",
-        "slides": [
-          [
-            "Tichá noc, svatá noc!",
-            "Co anděl vyprávěl,",
-            "přišel s  jasnosti v  pastýřův stan,",
-            "zní již z  výsosti, z  všech země stran:",
-            "Vám je dnes spasitel dán",
-            "přišel Kristus Pán"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
     "tags": []
   },
   "LEN TEBE, A NIE NÁM": {
@@ -14013,48 +13830,6 @@
     "outline": [],
     "tags": []
   },
-  "Po Tobě, Králi Toužím": {
-    "title": "Po Tobě, Králi Toužím",
-    "file": "Po Tobe Krali Touzim.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "Po Tobě, Králi toužím,",
-            "čest, slávu vzdám.",
-            "Celým srdcem chválím",
-            "jméno Tvé."
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "Ze vší síly zpívám",
-            "a vzdávám dík,",
-            "před Tebou se skláním,",
-            "Pane můj."
-          ]
-        ]
-      },
-      {
-        "id": "V1C",
-        "slides": [
-          [
-            "Dávám Ti srdce své i duši svou,",
-            "chci jen pro Tebe žít.",
-            "S každým nadechnutím,",
-            "s každým procitnutím",
-            "chci jen Tvou cestou jít."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Wykrzykujcie Na Cześć Pana Wszystkie Ziemie": {
     "title": "Wykrzykujcie Na Cześć Pana Wszystkie Ziemie",
     "file": "Wykrzykujcie Na Czesc Pana Wszystkie Ziemie.xml",
@@ -15350,7 +15125,7 @@
         "slides": [
           [
             "Pánu ať zní píseň chval,",
-            "Pánu ať tady zní: „Slá-va!“",
+            "Pánu ať tady zní: „Sláva!“",
             "Jméno má vyvýšené,",
             "jen on na věky vládne."
           ]
@@ -22185,6 +21960,48 @@
     "outline": [],
     "tags": []
   },
+  "Po Tobě, Králi toužím": {
+    "title": "Po Tobě, Králi toužím",
+    "file": "Po Tobe Krali touzim.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Po Tobě, Králi toužím,",
+            "čest, slávu vzdám.",
+            "Celým srdcem chválím",
+            "jméno Tvé."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Ze vší síly zpívám",
+            "a vzdávám dík,",
+            "před Tebou se skláním,",
+            "Pane můj."
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "Dávám Ti srdce své i duši svou,",
+            "chci jen pro Tebe žít.",
+            "S každým nadechnutím,",
+            "s každým procitnutím",
+            "chci jen Tvou cestou jít."
+          ]
+        ]
+      }
+    ],
+    "outline": [],
+    "tags": []
+  },
   "Ty Nie Zawiedziesz Mnie": {
     "title": "Ty Nie Zawiedziesz Mnie",
     "file": "Ty Nie Zawiedziesz Mnie.xml",
@@ -23693,37 +23510,6 @@
     "outline": [],
     "tags": []
   },
-  "sd": {
-    "title": "sd",
-    "file": "sd.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "/: On je silný Boh Izraelov, :/",
-            "Jeho slávny hlas",
-            "bude počuť každý z nás,",
-            "On je silný Boh Izraelov!"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Slepým sa oči otvoria,",
-            "hluchí budú počuť Jeho hlas,",
-            "chromí budú stáť,",
-            "s radosťou tancovať,",
-            "nemí budú spievať."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Pozvedni Výš Korouhev  Chvály": {
     "title": "Pozvedni Výš Korouhev  Chvály",
     "file": "Pozvedni Vys Korouhev  Chvaly.xml",
@@ -24470,44 +24256,6 @@
             "od miłości Twej!",
             "Dusza moja z radością",
             "wielbi Cię."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "Otevři Mé Srdce Víc": {
-    "title": "Otevři Mé Srdce Víc",
-    "file": "Otevri Me Srdce Vic.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "Otevři mé srdce víc!",
-            "Vidět Tě toužím."
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "Ty jsi Pán vyvýšený,",
-            "obklopený září a slávou,",
-            "vylej svou lásku a moc,",
-            "voláme Svatý, Svatý, Svatý."
-          ]
-        ]
-      },
-      {
-        "id": "V1C",
-        "slides": [
-          [
-            "Svatý, Svatý, Svatý.",
-            "Svatý, Svatý, Svatý,",
-            "vidět Tě toužím."
           ]
         ]
       }
@@ -26154,36 +25902,6 @@
     ],
     "tags": []
   },
-  "Po tobě králi toužím": {
-    "title": "Po tobě králi toužím",
-    "file": "Po tobe krali touzim.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "Tobě Králi toužím čest, slávu vzdát,",
-            "celým srdcem chválím jméno Tvé,",
-            "ze vší síly zpívám a vzdávám dík,",
-            "před Tebou se skláním Pane můj"
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "Dávám Ti srdce své a duši svou,",
-            "chci jen pro Tebe žít,",
-            "s každým nadechnutím,",
-            "s každým procitnutím chci jen Tvou cestou jít."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Pojd'te Ke Mně Všichni": {
     "title": "Pojd'te Ke Mně Všichni",
     "file": "Pojdte Ke Mne Vsichni.xml",
@@ -26433,51 +26151,6 @@
             "a svou spásu, vždyť Beránek je Král,",
             "vítěz vítězů, a ty s ním můžeš žít,",
             "nádherně, věčně žít."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "SLÁVNY BOH": {
-    "title": "SLÁVNY BOH",
-    "file": "SLAVNY BOH.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "SLÁVNY BOH"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "/: Slávny Boh, všemocný, majestát Ti patrí… :/"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "S  vďakou dvíham ruky k  nebesiam,",
-            "K  Tebe, Pane moj, naveky som Tvoj.",
-            "Z  hľbky srdca Tebe vyznávám, celý život svoj Ti dávám.",
-            "Všetko, čo viem, všetko, čo chcem, je Teba len.",
-            "Všetko, čo mám, Tebe odovzdám."
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "/: Všetko, čo chcem, je Teba len!!! :/",
-            "Všetko, čo chcem, je Teba len, v  srdci mi vládni!!!"
           ]
         ]
       }
@@ -27340,37 +27013,6 @@
             "Błogosławcie Pana wszyscy jego ludzie",
             "Błogosławcie Pana wszystkie jego dzieła,",
             "błogosławcie Go"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "O, Pane, Otevri Me Rty": {
-    "title": "O, Pane, Otevri Me Rty",
-    "file": "O Pane Otevri Me Rty.xml",
-    "sections": [
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "|: Ó, Pane, otevři mé rty,",
-            "ó, Pane, otevři mé rty,",
-            "ó, Pane, otevři mé rty,",
-            "ať má ústa zvěstují",
-            "tvou chválu. :|"
-          ]
-        ]
-      },
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "|: Jsi velký a mocný Bůh,",
-            "jen tobě patří naše chvála.",
-            "Jsi velký a mocný Bůh,",
-            "jen tobě patří chvála. :|"
           ]
         ]
       }
@@ -29403,45 +29045,6 @@
             "Przez moc Baranka krwi,biorę wszystko co mam w Nim",
             "Zwycięstwo Twe,ogłaszamy dziś",
             "Bo w Nim zwycięstwo swe mam"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "tf": {
-    "title": "tf",
-    "file": "tf.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "W CIENIU TWOICH RĄK"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "W cieniu Twoich rąk, ukryj proszę mnie",
-            "Gdy boję się, gdy wokół mrok",
-            "Bądź światłem, bądź nadzieji dniem",
-            "Wszystkim o czym śnię, głosem w sercu mym",
-            "Jak ręka która trzyma mnie",
-            "Nad brzegiem nocy,brzegiem dni",
-            "Bądź jak skrzydła dwa, kiedy braknie sił"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Chwyć mnie i nieś, niech niebo bliżej będzie",
-            "Tak bardzo chcę, w ramionach skryć się Twych"
           ]
         ]
       }
