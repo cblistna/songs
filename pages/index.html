@@ -3555,9 +3555,17 @@
         const jsonString = JSON.stringify(config);
         const base64 = btoa(unescape(encodeURIComponent(jsonString)));
 
-        // Build URL from current page location
-        const baseUrl =
-          window.location.origin + window.location.pathname.replace(/\/$/, "");
+        // Build URL from current page location - ensure we use explicit index.html
+        // to avoid redirect issues that can strip query params
+        let baseUrl = window.location.origin + window.location.pathname;
+        
+        // If pathname ends with / or doesn't have .html, append index.html
+        if (baseUrl.endsWith("/")) {
+          baseUrl += "index.html";
+        } else if (!baseUrl.endsWith(".html")) {
+          baseUrl += "/index.html";
+        }
+        
         return baseUrl + "?config=" + encodeURIComponent(base64);
       }
 
@@ -3679,31 +3687,38 @@
 
       function applyConfigFromUrl() {
         const configObj = getConfigFromUrlParam();
-        if (!configObj) return;
-
+        
+        if (!configObj) {
+          console.log("Config from URL: nothing to apply");
+          return { applied: false };
+        }
+        
         const { valid, errors, sanitized } = validateConfig(configObj);
 
         if (!valid) {
+          console.warn("Config from URL: validation failed -", errors.join("; "));
           announceMessage("Chyba konfigurace: " + errors.join("; "));
           cleanConfigFromUrl();
-          return;
+          return { applied: false };
         }
 
         // Apply valid config to localStorage
         try {
-          // Merge with existing settings (in case config only has some keys)
           const existingSettings = JSON.parse(
             localStorage.getItem("song_lab_settings") || "{}"
           );
           const newSettings = { ...existingSettings, ...sanitized };
           localStorage.setItem("song_lab_settings", JSON.stringify(newSettings));
-
+          
+          console.log("Config from URL: applied", newSettings);
           announceMessage("Konfigurace úspěšně načtena z URL");
           cleanConfigFromUrl();
+          return { applied: true, settings: newSettings };
         } catch (e) {
-          console.error("Failed to apply config:", e);
+          console.error("Config from URL: storage error -", e);
           announceMessage("Chyba při ukládání konfigurace");
           cleanConfigFromUrl();
+          return { applied: false };
         }
       }
 
@@ -3861,16 +3876,66 @@
       }
 
       document.addEventListener("DOMContentLoaded", async () => {
-        await loadSongsData();
-        loadPlaylists();
-        setupEventListeners();
-        // Apply config from URL before loading settings (so URL config takes precedence)
-        applyConfigFromUrl();
-        loadSettings();
-        // Fetch shared playlists using stored settings.serverUrl
-        fetchRemoteConfig();
-        setupSettingsEventListeners();
-        setupGlobalTouchHandlers();
+        // Load song data first (needed for everything)
+        try {
+          await loadSongsData();
+          console.log("Songs data loaded successfully");
+        } catch (e) {
+          console.error("Failed to load songs data:", e);
+        }
+
+        // Set up event handlers
+        try {
+          setupEventListeners();
+          console.log("Event listeners setup successfully");
+        } catch (e) {
+          console.error("Failed to setup event listeners:", e);
+        }
+
+        try {
+          setupSettingsEventListeners();
+          console.log("Settings event listeners setup successfully");
+        } catch (e) {
+          console.error("Failed to setup settings event listeners:", e);
+        }
+
+        try {
+          setupGlobalTouchHandlers();
+          console.log("Global touch handlers setup successfully");
+        } catch (e) {
+          console.error("Failed to setup global touch handlers:", e);
+        }
+
+        // 1. First apply config from URL query param (saves to localStorage)
+        try {
+          applyConfigFromUrl();
+        } catch (e) {
+          console.error("Failed to apply config from URL:", e);
+        }
+
+        // 2. Then load settings from localStorage into UI
+        try {
+          loadSettings();
+          console.log("Settings loaded successfully");
+        } catch (e) {
+          console.error("Failed to load settings:", e);
+        }
+
+        // 3. Load local playlists from localStorage
+        try {
+          loadPlaylists();
+          console.log("Playlists loaded successfully");
+        } catch (e) {
+          console.error("Failed to load playlists:", e);
+        }
+
+        // 4. Finally fetch remote/shared playlists using the (potentially new) serverUrl
+        try {
+          fetchRemoteConfig();
+          console.log("Remote config fetch initiated successfully");
+        } catch (e) {
+          console.error("Failed to fetch remote config:", e);
+        }
         // autofocus attempts
         const input = document.getElementById("searchInput");
         if (input) {
