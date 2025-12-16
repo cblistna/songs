@@ -1,7 +1,12 @@
 Ó Páne otevři mé rty
+V1 C
 
 :V1
 /:Ó Pane, otevři mé rty, :/ 3x
-ať má ústa zvěstují Tvou chválu.:/
+ať má ústa zvěstují Tvou chválu.
+
+:C
 /: Jsi velký a mocný Bůh,
-jen Tobě patří naše chvála.:/ 4x
+jen tobě patří naše chvála.
+Jsi velký a mocný Bůh,
+jen tobě patří chvála. :/
