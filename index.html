@@ -1074,6 +1074,76 @@
           height: 12px;
         }
       }
+
+      /* Config share buttons in settings dialog */
+      .form-buttons-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 24px;
+      }
+
+      .config-share-buttons {
+        display: flex;
+        gap: 8px;
+        margin-right: auto;
+      }
+
+      .config-share-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        border: 2px solid #e0f0e0;
+        background: #f8fdf8;
+        color: #5a7a5a;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0;
+      }
+
+      .config-share-btn:hover {
+        background: #2d5a2d;
+        border-color: #2d5a2d;
+        color: #ffffff;
+      }
+
+      .config-share-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .config-share-btn svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+
+      /* Checkmark feedback animation */
+      .feedback-check svg {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .feedback-check::after {
+        content: "✓";
+        font-size: 16px;
+        font-weight: 600;
+        color: #4ade80;
+        animation: checkFadeIn 0.2s ease-out;
+      }
+
+      @keyframes checkFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1481,7 +1551,90 @@
               placeholder="https://example.com/config"
             />
           </div>
-          <div class="form-buttons">
+          <div class="form-buttons-row">
+            <div class="config-share-buttons">
+              <button
+                type="button"
+                id="shareConfigBtn"
+                class="config-share-btn"
+                title="Sdílet nastavení"
+                aria-label="Sdílet nastavení"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="18"
+                    cy="5"
+                    r="3"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <circle
+                    cx="6"
+                    cy="12"
+                    r="3"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <circle
+                    cx="18"
+                    cy="19"
+                    r="3"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="8.59"
+                    y1="13.51"
+                    x2="15.42"
+                    y2="17.49"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="15.41"
+                    y1="6.51"
+                    x2="8.59"
+                    y2="10.49"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                id="copyConfigBtn"
+                class="config-share-btn"
+                title="Kopírovat URL nastavení"
+                aria-label="Kopírovat URL nastavení"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <rect
+                    x="9"
+                    y="9"
+                    width="13"
+                    height="13"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
             <button type="button" id="cancelSettingsBtn" class="form-btn">
               Zrušit
             </button>
@@ -3381,6 +3534,237 @@
         }
       }
 
+      // --- Config URL sharing functionality ---
+
+      // Configuration validation schema for extensibility
+      const CONFIG_SCHEMA = {
+        username: {
+          validate: (v) =>
+            typeof v === "string" && v.trim().length > 0 && v.length <= 30,
+          errorMessage: "neplatné uživatelské jméno",
+        },
+        serverUrl: {
+          validate: (v) => {
+            if (typeof v !== "string") return false;
+            if (v.trim() === "") return true; // empty is valid (no URL)
+            try {
+              new URL(v);
+              return true;
+            } catch {
+              return false;
+            }
+          },
+          errorMessage: "neplatná URL serveru",
+        },
+      };
+
+      function announceMessage(message) {
+        try {
+          const ariaLive = document.getElementById("ariaLive");
+          if (ariaLive) ariaLive.textContent = message;
+        } catch (e) {}
+      }
+
+      function showFeedbackCheck(element, duration = 2000) {
+        if (!element) return;
+        element.classList.add("feedback-check");
+        setTimeout(() => {
+          element.classList.remove("feedback-check");
+        }, duration);
+      }
+
+      function generateConfigUrl() {
+        // Read current values from form inputs (includes unsaved changes)
+        const usernameInput = document.getElementById("usernameInput");
+        const serverUrlInput = document.getElementById("serverUrlInput");
+
+        const config = {
+          username: usernameInput ? usernameInput.value.trim() : "",
+          serverUrl: serverUrlInput ? serverUrlInput.value.trim() : "",
+        };
+
+        // Encode config as base64
+        const jsonString = JSON.stringify(config);
+        const base64 = btoa(unescape(encodeURIComponent(jsonString)));
+
+        // Build URL from current page location - ensure we use explicit index.html
+        // to avoid redirect issues that can strip query params
+        let baseUrl = window.location.origin + window.location.pathname;
+        
+        // If pathname ends with / or doesn't have .html, append index.html
+        if (baseUrl.endsWith("/")) {
+          baseUrl += "index.html";
+        } else if (!baseUrl.endsWith(".html")) {
+          baseUrl += "/index.html";
+        }
+        
+        return baseUrl + "?config=" + encodeURIComponent(base64);
+      }
+
+      async function shareConfigUrl() {
+        try {
+          const url = generateConfigUrl();
+
+          if (navigator.share) {
+            await navigator.share({
+              title: "Nastavení aplikace",
+              url: url,
+            });
+            announceMessage("Nastavení sdíleno");
+            showFeedbackCheck(document.getElementById("shareConfigBtn"));
+          } else {
+            // Fallback to clipboard if Web Share API not available
+            await copyToClipboard(url);
+            announceMessage("URL nastavení zkopírováno do schránky");
+            showFeedbackCheck(document.getElementById("shareConfigBtn"));
+          }
+        } catch (err) {
+          // User cancelled share or error occurred
+          if (err.name !== "AbortError") {
+            console.error("Share failed:", err);
+            announceMessage("Sdílení se nezdařilo");
+          }
+        }
+      }
+
+      async function copyToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-9999px";
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand("copy");
+          } catch (e) {
+            throw new Error("Copy failed");
+          } finally {
+            document.body.removeChild(textArea);
+          }
+        }
+      }
+
+      async function copyConfigUrl() {
+        try {
+          const url = generateConfigUrl();
+          await copyToClipboard(url);
+          announceMessage("URL nastavení zkopírováno do schránky");
+          showFeedbackCheck(document.getElementById("copyConfigBtn"));
+        } catch (err) {
+          console.error("Copy failed:", err);
+          announceMessage("Kopírování se nezdařilo");
+        }
+      }
+
+      function getConfigFromUrlParam() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const configParam = params.get("config");
+          if (!configParam) return null;
+
+          // Decode base64
+          const decoded = decodeURIComponent(configParam);
+          const jsonString = decodeURIComponent(escape(atob(decoded)));
+          return JSON.parse(jsonString);
+        } catch (err) {
+          console.error("Failed to parse config from URL:", err);
+          return null;
+        }
+      }
+
+      function validateConfig(configObj) {
+        const errors = [];
+        const sanitized = {};
+        const knownKeys = Object.keys(CONFIG_SCHEMA);
+
+        if (!configObj || typeof configObj !== "object") {
+          return { valid: false, errors: ["neplatný formát konfigurace"], sanitized: {} };
+        }
+
+        // Check for unknown keys
+        const unknownKeys = Object.keys(configObj).filter(
+          (k) => !knownKeys.includes(k)
+        );
+        if (unknownKeys.length > 0) {
+          errors.push("neznámé klíče: " + unknownKeys.join(", "));
+        }
+
+        // Validate known keys
+        for (const key of knownKeys) {
+          if (key in configObj) {
+            const value = configObj[key];
+            const schema = CONFIG_SCHEMA[key];
+            if (!schema.validate(value)) {
+              errors.push(schema.errorMessage + " (" + key + ")");
+            } else {
+              sanitized[key] = value;
+            }
+          }
+        }
+
+        // All-or-nothing: if any errors, reject everything
+        if (errors.length > 0) {
+          return { valid: false, errors, sanitized: {} };
+        }
+
+        return { valid: true, errors: [], sanitized };
+      }
+
+      function cleanConfigFromUrl() {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("config");
+          history.replaceState(null, "", url.toString());
+        } catch (e) {
+          console.error("Failed to clean URL:", e);
+        }
+      }
+
+      function applyConfigFromUrl() {
+        const configObj = getConfigFromUrlParam();
+        
+        if (!configObj) {
+          console.log("Config from URL: nothing to apply");
+          return { applied: false };
+        }
+        
+        const { valid, errors, sanitized } = validateConfig(configObj);
+
+        if (!valid) {
+          console.warn("Config from URL: validation failed -", errors.join("; "));
+          announceMessage("Chyba konfigurace: " + errors.join("; "));
+          cleanConfigFromUrl();
+          return { applied: false };
+        }
+
+        // Apply valid config to localStorage
+        try {
+          const existingSettings = JSON.parse(
+            localStorage.getItem("song_lab_settings") || "{}"
+          );
+          const newSettings = { ...existingSettings, ...sanitized };
+          localStorage.setItem("song_lab_settings", JSON.stringify(newSettings));
+          
+          console.log("Config from URL: applied", newSettings);
+          announceMessage("Konfigurace úspěšně načtena z URL");
+          cleanConfigFromUrl();
+          
+          // Show checkmark on settings button
+          showFeedbackCheck(document.getElementById("settingsBtn"));
+          
+          return { applied: true, settings: newSettings };
+        } catch (e) {
+          console.error("Config from URL: storage error -", e);
+          announceMessage("Chyba při ukládání konfigurace");
+          cleanConfigFromUrl();
+          return { applied: false };
+        }
+      }
+
       function openSettingsModal() {
         const overlay = document.getElementById("settingsOverlay");
         if (overlay) {
@@ -3415,6 +3799,8 @@
         const settingsForm = document.getElementById("settingsForm");
         const cancelBtn = document.getElementById("cancelSettingsBtn");
         const saveBtn = document.getElementById("saveSettingsBtn");
+        const shareConfigBtn = document.getElementById("shareConfigBtn");
+        const copyConfigBtn = document.getElementById("copyConfigBtn");
 
         // Open settings modal
         if (settingsBtn) {
@@ -3453,6 +3839,21 @@
           saveBtn.addEventListener("click", (e) => {
             e.preventDefault();
             saveSettings();
+          });
+        }
+
+        // Config share buttons
+        if (shareConfigBtn) {
+          shareConfigBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            shareConfigUrl();
+          });
+        }
+
+        if (copyConfigBtn) {
+          copyConfigBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            copyConfigUrl();
           });
         }
 
@@ -3518,14 +3919,66 @@
       }
 
       document.addEventListener("DOMContentLoaded", async () => {
-        await loadSongsData();
-        loadPlaylists();
-        setupEventListeners();
-        loadSettings();
-        // Fetch shared playlists using stored settings.serverUrl
-        fetchRemoteConfig();
-        setupSettingsEventListeners();
-        setupGlobalTouchHandlers();
+        // Load song data first (needed for everything)
+        try {
+          await loadSongsData();
+          console.log("Songs data loaded successfully");
+        } catch (e) {
+          console.error("Failed to load songs data:", e);
+        }
+
+        // Set up event handlers
+        try {
+          setupEventListeners();
+          console.log("Event listeners setup successfully");
+        } catch (e) {
+          console.error("Failed to setup event listeners:", e);
+        }
+
+        try {
+          setupSettingsEventListeners();
+          console.log("Settings event listeners setup successfully");
+        } catch (e) {
+          console.error("Failed to setup settings event listeners:", e);
+        }
+
+        try {
+          setupGlobalTouchHandlers();
+          console.log("Global touch handlers setup successfully");
+        } catch (e) {
+          console.error("Failed to setup global touch handlers:", e);
+        }
+
+        // 1. First apply config from URL query param (saves to localStorage)
+        try {
+          applyConfigFromUrl();
+        } catch (e) {
+          console.error("Failed to apply config from URL:", e);
+        }
+
+        // 2. Then load settings from localStorage into UI
+        try {
+          loadSettings();
+          console.log("Settings loaded successfully");
+        } catch (e) {
+          console.error("Failed to load settings:", e);
+        }
+
+        // 3. Load local playlists from localStorage
+        try {
+          loadPlaylists();
+          console.log("Playlists loaded successfully");
+        } catch (e) {
+          console.error("Failed to load playlists:", e);
+        }
+
+        // 4. Finally fetch remote/shared playlists using the (potentially new) serverUrl
+        try {
+          fetchRemoteConfig();
+          console.log("Remote config fetch initiated successfully");
+        } catch (e) {
+          console.error("Failed to fetch remote config:", e);
+        }
         // autofocus attempts
         const input = document.getElementById("searchInput");
         if (input) {
