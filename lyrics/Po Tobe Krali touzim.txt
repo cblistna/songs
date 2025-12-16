@@ -1,18 +1,18 @@
-Po Tobě, Králi Toužím
+Po Tobě, Králi toužím
 
-:V1A
+:V1
 Po Tobě, Králi toužím,
 čest, slávu vzdám.
 Celým srdcem chválím
 jméno Tvé.
 
-:V1B
+:V2
 Ze vší síly zpívám
 a vzdávám dík,
 před Tebou se skláním,
 Pane můj.
 
-:V1C
+:C
 Dávám Ti srdce své i duši svou,
 chci jen pro Tebe žít.
 S každým nadechnutím,
