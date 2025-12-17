@@ -404,38 +404,6 @@
     "outline": [],
     "tags": []
   },
-  "Toužíme Být Tvým Domem Chvály": {
-    "title": "Toužíme Být Tvým Domem Chvály",
-    "file": "Touzime Byt Tvym Domem Chvaly.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "Toužíme být Tvým domem chvály,",
-            "toužíme znát, znát srdce Tvé,",
-            "toužíme jít po Tvých nádvořích,",
-            "až před Tvůj trůn a vzývat",
-            "Králi jméno Tvé",
-            "svaté a nádherné."
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "Jako dům modlitby a chvály,",
-            "jako dům modlitby a chvály,",
-            "chceme stát, chceme stát.",
-            "Tebe uctívat."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Śpiewajmy Alleluja": {
     "title": "Śpiewajmy Alleluja",
     "file": "Spiewajmy Alleluja.xml",
@@ -2244,25 +2212,6 @@
       "V3",
       "C"
     ],
-    "tags": []
-  },
-  "Ježíši, Můj Pane": {
-    "title": "Ježíši, Můj Pane",
-    "file": "Jezisi Muj Pane.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Ježíši, můj Pane, Ty jsi králů Král,",
-            "Tys za mne život svůj dal.",
-            "Velebíme Tvoje svaté jméno,",
-            "Ty jsi Bůh náš a Pán."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
     "tags": []
   },
   "Smělou Důvěru Mám": {
@@ -4330,7 +4279,10 @@
         "id": "V1",
         "slides": [
           [
-            "Radost Pánova"
+            "Radost Pánova je našou silou",
+            "Radost Pánova je našou silou",
+            "Radost Pánova je našou silou",
+            "Radujme sa všeci v ňom"
           ]
         ]
       },
@@ -4338,24 +4290,15 @@
         "id": "V2",
         "slides": [
           [
-            "Radost Pánova je našou silou",
-            "Radost Pánova je našou silou",
-            "Radost Pánova je našou silou",
-            "Radujme sa všeci v ňom"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
             "Tleskajme rukami",
             "Chvalme ho žalmami",
             "Hrajme mu húslami",
-            "Chvalme ho bubnami",
+            "Chvalme ho bubnami"
+          ],
+          [
             "Tancujme před Pánom",
             "Chvalme ho cimbálom",
-            "Radujme sa všeci v ňom"
+            "Radujme sa všeci v ňom"
           ]
         ]
       }
@@ -8843,64 +8786,6 @@
     "outline": [],
     "tags": []
   },
-  "Přichází král": {
-    "title": "Přichází král",
-    "file": "Prichazi kral.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Přichází král ve slávě,",
-            "V ohnivých oblacích,",
-            "Světem otřásá, světem otřásá.",
-            "Svou láskou a svou spásou",
-            "Umyl každý náš hřích,",
-            "Tak zpíváme, tak zpíváme."
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Hosanna, hosanna,",
-            "Hosanna, mému Králi.",
-            "Hosanna, hosanna,",
-            "Hosanna mému Králi."
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Přichází Boží národ,",
-            "Na svoje místo usedá,",
-            "S důvěrou, s důvěrou",
-            "V modlitbách a v hledání",
-            "Naděje se probouzí,",
-            "Tak zpíváme, tak zpíváme"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Změň mé srdce, ať je tvé,",
-            "Otevři oči mé, ať tě uvidím.",
-            "Ukaž mi tu lásku tvou, tak krásnou.",
-            "Změň mé srdce, ať je tvé,",
-            "Pro království tvé chci být na věky vším.",
-            "Vždyť potom půjdu za tebou do věčnosti."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Ať požehnán je Bůh": {
     "title": "Ať požehnán je Bůh",
     "file": "At pozehnan je Buh.xml",
@@ -13104,38 +12989,6 @@
     "outline": [],
     "tags": []
   },
-  "Toužíme Být": {
-    "title": "Toužíme Být",
-    "file": "Touzime Byt.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "Toužíme být Tvým domem chvály,",
-            "toužíme znát, znát srdce Tvé,",
-            "toužíme jít po Tvých nádvořích,",
-            "až před Tvůj trůn a vzývat",
-            "Králi jméno Tvé",
-            "svaté a nádherné."
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "Jako dům modlitby a chvály,",
-            "jako dům modlitby a chvály,",
-            "chceme stát, chceme stát.",
-            "Tebe uctívat."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "SKÚSTĚ A PRESVEČŤE SA": {
     "title": "SKÚSTĚ A PRESVEČŤE SA",
     "file": "SKUSTE A PRESVECTE SA.xml",
@@ -15922,38 +15775,6 @@
     "outline": [],
     "tags": []
   },
-  "Pojď": {
-    "title": "Pojď",
-    "file": "Pojd.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Pojď, teď je ten čas Jej chválit,",
-            "pojď, své srdce můžeš Králi dát.",
-            "Pojď, teď je ten čas Jej chválit.",
-            "Pojď, před Pánem svým",
-            "teď můžeš stát, tak pojď."
-          ]
-        ]
-      },
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "Jednou každý jazyk vyzná,",
-            "že jsi Pán.",
-            "Každý jednou se pokloní.",
-            "Navždy slavný poklad zůstává,",
-            "nám, kdo Tě milují."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Niech Twej Twarzy": {
     "title": "Niech Twej Twarzy",
     "file": "Niech Twej Twarzy.xml",
@@ -17145,6 +16966,33 @@
     "outline": [],
     "tags": []
   },
+  "Ježíši, můj Pane": {
+    "title": "Ježíši, můj Pane",
+    "file": "Jezisi muj Pane.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Ježíši, můj Pane,",
+            "Ty jsi králů Král,",
+            "Tys za mne život svůj dal."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Velebíme Tvoje svaté jméno,",
+            "Ty jsi Bůh náš a Pán."
+          ]
+        ]
+      }
+    ],
+    "outline": [],
+    "tags": []
+  },
   "Na Tomto Místě": {
     "title": "Na Tomto Místě",
     "file": "Na Tomto Miste.xml",
@@ -17411,64 +17259,6 @@
           [
             "Požehnání a sláva patří Tobě,",
             "síla, moc, moudrost je Tvá."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "Přichází král ve slávě": {
-    "title": "Přichází král ve slávě",
-    "file": "Prichazi kral ve slave.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Přichází král ve slávě,",
-            "V ohnivých oblacích,",
-            "Světem otřásá, světem otřásá.",
-            "Svou láskou a svou spásou",
-            "Umyl každý náš hřích,",
-            "Tak zpíváme, tak zpíváme."
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Hosanna, hosanna,",
-            "Hosanna, mému Králi.",
-            "Hosanna, hosanna,",
-            "Hosanna mému Králi."
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Přichází Boží národ,",
-            "Na svoje místo usedá,",
-            "S důvěrou, s důvěrou",
-            "V modlitbách a v hledání",
-            "Naděje se probouzí,",
-            "Tak zpíváme, tak zpíváme"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Změň mé srdce, ať je tvé,",
-            "Otevři oči mé, ať tě uvidím.",
-            "Ukaž mi tu lásku tvou, tak krásnou.",
-            "Změň mé srdce, ať je tvé,",
-            "Pro království tvé chci být na věky vším.",
-            "Vždyť potom půjdu za tebou do věčnosti."
           ]
         ]
       }
@@ -18881,6 +18671,54 @@
             "Čekal až do šedin",
             "A nás dnes v  Betlémě čeká",
             "Ježíš sám Boží Syn."
+          ]
+        ]
+      }
+    ],
+    "outline": [],
+    "tags": []
+  },
+  "Każdy dzień upewnia mnie": {
+    "title": "Każdy dzień upewnia mnie",
+    "file": "Kazdy dzien upewnia mnie.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Każdy dzień upewnie mnie,",
+            "Pan w miłości wierny jest",
+            "Któżby inny mógł jak On,",
+            "wybaczać co dzień"
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Boże wiem jak ranię Cię,",
+            "często słabnę,gubię sens",
+            "Jednak Ty podnosisz mnie",
+            "i nadzieję dajesz mi"
+          ]
+        ]
+      },
+      {
+        "id": "V3",
+        "slides": [
+          [
+            "Nikt nie odbierze mi tego, co mam w Tobie",
+            "Nikt nie odbierze mi tego, co mam w Tobie"
+          ]
+        ]
+      },
+      {
+        "id": "V4",
+        "slides": [
+          [
+            "Pełnię miłości, pełnię radości,",
+            "pełnie wolności mam w Tobie"
           ]
         ]
       }
@@ -21408,50 +21246,6 @@
     "outline": [],
     "tags": []
   },
-  "fwf": {
-    "title": "fwf",
-    "file": "fwf.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Kříž"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Vyznávám teď Tvůj kříž",
-            "Tvé království moc a slávu",
-            "Není nikdo jako Ty"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Vyhlašují teď že Ty jsi vítěz"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Tvojí krví jsme očištění",
-            "Tys zvítězil nad ďáblovou mocí",
-            "Tvými ranami jsme uzdravení"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Ziemia": {
     "title": "Ziemia",
     "file": "Ziemia.xml",
@@ -21577,56 +21371,6 @@
       "V5",
       "C"
     ],
-    "tags": []
-  },
-  "Każdy Dzień Upewnia Mnie": {
-    "title": "Każdy Dzień Upewnia Mnie",
-    "file": "Kazdy Dzien Upewnia Mnie.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "Każdy dzień upewnia mnie",
-            "pan w miłości wierny jest.",
-            "tóż by inny mógł jak on",
-            "wybaczać co dzień."
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "Boże wiem jak ranię cię",
-            "często słabnę gubię sens.",
-            "Jednak ty podnosisz mnie",
-            "i nadzieję dajesz mi."
-          ]
-        ]
-      },
-      {
-        "id": "V1C",
-        "slides": [
-          [
-            "Nikt nie odbierze mi tego, co mam w tobie",
-            "nikt nie odbierze mi tego, co mam w tobie."
-          ]
-        ]
-      },
-      {
-        "id": "V1D",
-        "slides": [
-          [
-            "Pełnię miłości.",
-            "Pełnię wolności.",
-            "Pełnię radości.",
-            "Mam w tobie."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
     "tags": []
   },
   "Můj Bůh": {
@@ -23123,96 +22867,6 @@
     "outline": [],
     "tags": []
   },
-  "Prístav": {
-    "title": "Prístav",
-    "file": "Pristav.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Je to tak vzácne, že uprostred búrky",
-            "Ty povieš len slovo a utichnu vlny",
-            "klesnú a stratia sa v hlbinách mora",
-            "a niet takej búrky čo mȏže ťa zdolať."
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Vedieš má k tichým a priezračným vodám tým,",
-            "ktoré mnohí túžili spoznať",
-            "dȏvera v Teba stráži mȏj spánok",
-            "a chráni mi srdce a myseľ už zrána."
-          ]
-        ]
-      },
-      {
-        "id": "P1",
-        "slides": [
-          [
-            "Lebo viem, že si stále so mnou viem,",
-            "že si pri mne stále viem, že si blízko."
-          ]
-        ]
-      },
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "Ty si mȏj prístav, Ty si mȏj prístav",
-            "na tomto mieste som spoznal pravý pokoj",
-            "v bezvetrí a tichu vȏkol."
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Uprostred sveta čo naplňa chaos,",
-            "Ty vnášaš svoj poriadok, pokoj a radosť.",
-            "Je to tak vzácne, že v najťažších časoch,",
-            "kotva mojej duše vydrží nápor."
-          ]
-        ]
-      },
-      {
-        "id": "P2",
-        "slides": [
-          [
-            "A ja viem, že si stále so mnou viem,",
-            "že si při mne stále viem, že si blízko."
-          ]
-        ]
-      },
-      {
-        "id": "C2",
-        "slides": [
-          [
-            "Ty si mȏj prístav, Ty si mȏj prístav",
-            "stále ten istý hlas ma dvíha z mora",
-            "starosti a nepokoja."
-          ]
-        ]
-      }
-    ],
-    "outline": [
-      "V1",
-      "V2",
-      "P1",
-      "C1",
-      "V3",
-      "P2",
-      "C1",
-      "C2",
-      "C1",
-      "C2"
-    ],
-    "tags": []
-  },
   "Nic mne neoddělí": {
     "title": "Nic mne neoddělí",
     "alt": "Your love never fails",
@@ -23697,6 +23351,96 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Prístav": {
+    "title": "Prístav",
+    "file": "Pristav.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Je to tak vzácne, že uprostred búrky",
+            "Ty povieš len slovo a utichnu vlny",
+            "klesnú a stratia sa v hlbinách mora",
+            "a niet takej búrky čo mȏže ťa zdolať."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Vedieš má k tichým a priezračným vodám tým,",
+            "ktoré mnohí túžili spoznať",
+            "dȏvera v Teba stráži mȏj spánok",
+            "a chráni mi srdce a myseľ už zrána."
+          ]
+        ]
+      },
+      {
+        "id": "P1",
+        "slides": [
+          [
+            "Lebo viem, že si stále so mnou viem,",
+            "že si pri mne stále viem, že si blízko."
+          ]
+        ]
+      },
+      {
+        "id": "C1",
+        "slides": [
+          [
+            "Ty si mȏj prístav, Ty si mȏj prístav",
+            "na tomto mieste som spoznal pravý pokoj",
+            "v bezvetrí a tichu vȏkol."
+          ]
+        ]
+      },
+      {
+        "id": "V3",
+        "slides": [
+          [
+            "Uprostred sveta čo naplňa chaos,",
+            "Ty vnášaš svoj poriadok, pokoj a radosť.",
+            "Je to tak vzácne, že v najťažších časoch,",
+            "kotva mojej duše vydrží nápor."
+          ]
+        ]
+      },
+      {
+        "id": "P2",
+        "slides": [
+          [
+            "A ja viem, že si stále so mnou viem,",
+            "že si při mne stále viem, že si blízko."
+          ]
+        ]
+      },
+      {
+        "id": "C2",
+        "slides": [
+          [
+            "Ty si mȏj prístav, Ty si mȏj prístav",
+            "stále ten istý hlas ma dvíha z mora",
+            "starosti a nepokoja."
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "V2",
+      "P1",
+      "C1",
+      "V3",
+      "P2",
+      "C1",
+      "C2",
+      "C1",
+      "C2"
+    ],
     "tags": []
   },
   "Meno Ježiš": {
@@ -25637,87 +25381,6 @@
     "outline": [],
     "tags": []
   },
-  "ervg": {
-    "title": "ervg",
-    "file": "ervg.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Powróćmy dziś do Pana"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Powróćmy dziś do Pana",
-            "Całym sercem",
-            "Przylgnijmy znów do Niego",
-            "Ze wszystkich sił",
-            "Powróćmy dziś do Pana",
-            "Z całej duszy"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Prostujmy nasze ścieżki",
-            "Odrzućmy wszelki grzech",
-            "Bo On obiecał że nas przyjmie",
-            "Gdy szczerze szukać go będziemy"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Bo On nas zranił On uzdrowi",
-            "Odrzucił i na nowo przyjmie",
-            "Jak deszcz wiosenny do nas przyjdzie",
-            "I już na zawsze będzie z nami"
-          ]
-        ]
-      },
-      {
-        "id": "V5",
-        "slides": [
-          [
-            "Przyjdzie jak deszcz wiosenny deszcz"
-          ]
-        ]
-      },
-      {
-        "id": "V6",
-        "slides": [
-          [
-            "Nowe przymierze zawrze z nami",
-            "Na sercach prawa swe wypisze",
-            "I nikt nie powie poznaj Pana",
-            "Bo wszyscy już go znać będziemy"
-          ]
-        ]
-      },
-      {
-        "id": "V7",
-        "slides": [
-          [
-            "Gdyż On chce zebrać swoje dzieci",
-            "Chce wszystkim łaskę dać na nowo",
-            "Chce byśmy znali Jego drogi",
-            "W jedności trwali zawsze z Nim"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Já Toužím": {
     "title": "Já Toužím",
     "file": "Ja Touzim.xml",
@@ -26486,31 +26149,6 @@
             "veď mě dál, dobrý Otče můj,",
             "veď mě dál",
             "a nauč mě žít z milosti Tvé."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "ježíši, můj Pane": {
-    "title": "ježíši, můj Pane",
-    "file": "jezisi muj Pane.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Ježíši, můj Pane, Ty jsi Králů Král,",
-            "Tys za mne život svůj dal."
-          ]
-        ]
-      },
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "Velebíme, tvoje svaté jméno, ty jsi Bůh náš a Pán."
           ]
         ]
       }
@@ -28025,6 +27663,64 @@
     "outline": [],
     "tags": []
   },
+  "Přichází Král ve slávě": {
+    "title": "Přichází Král ve slávě",
+    "file": "Prichazi Kral ve slave.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Přichází Král ve slávě,",
+            "V ohnivých oblacích,",
+            "Světem otřásá, světem otřásá.",
+            "Svou láskou a svou spásou",
+            "Umyl každý náš hřích,",
+            "Tak zpíváme, tak zpíváme."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Hosanna, hosanna,",
+            "Hosanna, mému Králi.",
+            "Hosanna, hosanna,",
+            "Hosanna mému Králi."
+          ]
+        ]
+      },
+      {
+        "id": "V3",
+        "slides": [
+          [
+            "Přichází Boží národ,",
+            "Na svoje místo usedá,",
+            "S důvěrou, s důvěrou",
+            "V modlitbách a v hledání",
+            "Naděje se probouzí,",
+            "Tak zpíváme, tak zpíváme"
+          ]
+        ]
+      },
+      {
+        "id": "V4",
+        "slides": [
+          [
+            "Změň mé srdce, ať je tvé,",
+            "Otevři oči mé, ať tě uvidím.",
+            "Ukaž mi tu lásku tvou, tak krásnou.",
+            "Změň mé srdce, ať je tvé,",
+            "Pro království tvé chci být na věky vším.",
+            "Vždyť potom půjdu za tebou do věčnosti."
+          ]
+        ]
+      }
+    ],
+    "outline": [],
+    "tags": []
+  },
   "Každý den": {
     "title": "Každý den",
     "file": "Kazdy den.xml",
@@ -28114,47 +27810,6 @@
             "ten boj však vedu",
             "proti mocnostem,",
             "které ovládají tento věk tmy. :|"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "Radost": {
-    "title": "Radost",
-    "file": "Radost.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Radost Pánova"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Radosť Pánova je našou silou",
-            "Radosť Pánova je našou silou",
-            "Radosť Pánova je našou silou",
-            "Radujme sa všeci v ňom"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Tleskajme rukami",
-            "Chvalme ho žalmami",
-            "Hrajme mu húslami",
-            "Chvalme ho bubnami",
-            "Tancujme před Pánom",
-            "Chvalme ho cimbálom",
-            "Radujme sa všeci v ňom"
           ]
         ]
       }
@@ -31169,42 +30824,6 @@
     "outline": [],
     "tags": []
   },
-  "Każdy dzień upewnie mnie": {
-    "title": "Każdy dzień upewnie mnie",
-    "file": "Kazdy dzien upewnie mnie.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Każdy dzień upewnie mnie,Pan w miłości wierny jest",
-            "Któżby inny mógł jak On,wybaczać co dzień",
-            "Boże wiem jak ranię Cię,często słabnę,gubię sens",
-            "Jednak Ty podnosisz mnie i nadzieję dajesz mi"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Nikt nie odbierze mi tego co mam w Tobie"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Pełnię miłości,pełnię radości,pełnie wolności",
-            "mam w Tobie"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "O cho cho": {
     "title": "O cho cho",
     "file": "O cho cho.xml",
@@ -32023,63 +31642,6 @@
     "outline": [],
     "tags": []
   },
-  "Muzyki Dzwięk": {
-    "title": "Muzyki Dzwięk",
-    "file": "Muzyki Dzwiek.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Gdy muzyki dzwięk gdzieś",
-            "odchodzi w dal,",
-            "Jestem znowu tu.",
-            "Tęsknię za tym by coś cennego dać,",
-            "Coś co dotknie Cię."
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Chcę przynieść więcej niż",
-            "pieśń kilka nutek i słów,",
-            "To nie jest to czego chcesz,",
-            "Ty patrzysz głębiej niż skąd",
-            "pochodzi ten dzwięk,",
-            "Zaglądasz do naszych serc."
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Powracam znowu do głębi chwały",
-            "i wszystko co mam",
-            "dla Ciebie jest Jezu mój.",
-            "Za winy moje przepraszam Panie",
-            "i wszystko co mam",
-            "dla Ciebie jest Jezu mój."
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Niewyrazi nikt jak cenny jesteś Ty",
-            "Całej ziemi król,",
-            "Nie ma wa mnie nic, wszystko dajesz Ty",
-            "każdy oddech mój."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Vyvysujte": {
     "title": "Vyvysujte",
     "file": "Vyvysujte.xml",
@@ -32438,6 +32000,38 @@
     "outline": [],
     "tags": []
   },
+  "Toužíme být Tvým domem chvály": {
+    "title": "Toužíme být Tvým domem chvály",
+    "file": "Touzime byt Tvym domem chvaly.xml",
+    "sections": [
+      {
+        "id": "V1A",
+        "slides": [
+          [
+            "Toužíme být Tvým domem chvály,",
+            "toužíme znát, znát srdce Tvé,",
+            "toužíme jít po Tvých nádvořích,",
+            "až před Tvůj trůn a vzývat",
+            "Králi jméno Tvé",
+            "svaté a nádherné."
+          ]
+        ]
+      },
+      {
+        "id": "V1B",
+        "slides": [
+          [
+            "Jako dům modlitby a chvály,",
+            "jako dům modlitby a chvály,",
+            "chceme stát, chceme stát.",
+            "Tebe uctívat."
+          ]
+        ]
+      }
+    ],
+    "outline": [],
+    "tags": []
+  },
   "Jedna malá kapka": {
     "title": "Jedna malá kapka",
     "file": "Jedna mala kapka.xml",
@@ -32720,34 +32314,6 @@
     ],
     "tags": []
   },
-  "Tva Krev": {
-    "title": "Tva Krev",
-    "file": "Tva Krev.xml",
-    "sections": [
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "|: Pane můj, tys můj Spasitel,",
-            "přítel můj, Pán a Bůh. :|"
-          ]
-        ]
-      },
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "|: Svatá a mocná tvá krev,",
-            "svatá, omývá každý náš hřích. :|",
-            "|: Tvá krev i mě omývá,",
-            "tvá krev prolitá. :|"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Lidský Rozum": {
     "title": "Lidský Rozum",
     "file": "Lidsky Rozum.xml",
@@ -32952,53 +32518,6 @@
             "Ducha synovství mi dal.",
             "Ten Duch volá Abba",
             "a na Boha vždy spoléhá."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "Je nádherné být v chrámu Tvém": {
-    "title": "Je nádherné být v chrámu Tvém",
-    "file": "Je nadherne byt v chramu Tvem.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Je nádherné být v chrámu Tvém, mocný můj Králi.",
-            "Je touhou mou Tě více znát a ctít.",
-            "Zde přítomná je láska Tvá, pokoj Tvůj cítím.",
-            "Ve stínu křídel Tvých smím úkryt mít."
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "S Tebou je lepší jeden den, s Tebou je lepší krátky čas, s Tebou je lepší jeden den, než jinde tisíc."
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Chci slávu Tvou a krásu znát, mocný můj Králi.",
-            "Chci být jen tam, kde Tvůj Duch místo má."
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Duše i tělo mé po tobě žízeň má.",
-            "Svým Duchem naplň život můj.",
-            "Vidím a prožívám, skláníš se ke mě sám.",
-            "Chci blízko Tebe být. Chci blízko Tebe být."
           ]
         ]
       }
@@ -34404,49 +33923,6 @@
             "Nieś swój krzyż, idąc do nieba bram powiedz światu, co Jezus Ci dał",
             "-",
             "Nes svůj kříž, jdouc do nebeských bran, řekni světu co Ti Ježíš dal"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "Każdy dzień upewnie": {
-    "title": "Każdy dzień upewnie",
-    "file": "Kazdy dzien upewnie.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Każdy dzień upewnie mnie,Pan w miłości wierny jest",
-            "Któżby inny mógł jak On,wybaczać co dzień"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Boże wiem jak ranię Cię,często słabnę,gubię sens",
-            "Jednak Ty podnosisz mnie i nadzieję dajesz mi"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": []
-      },
-      {
-        "id": ":Nikt nie odbierze mi tego co mam w Tobie:",
-        "slides": []
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Pełnię miłości,pełnię radości,pełnie wolności",
-            "mam w Tobie"
           ]
         ]
       }
