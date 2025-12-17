@@ -12336,80 +12336,6 @@
     ],
     "tags": []
   },
-  "Cicha noc": {
-    "title": "Cicha noc",
-    "file": "Cicha noc.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Cicha noc! W górze skrzy",
-            "Mnóstwo gwiazd, wszystko śpi;"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Lecz z ócz Marii odszedł dziś sen:",
-            "W święte; ciszy Wiecznego to Syn"
-          ]
-        ]
-      },
-      {
-        "id": "Leży na łonie jej!:",
-        "slides": []
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Święta noc! Dobrą wieść",
-            "Anioł sam śpieszy nieść"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "Wpierw pasterzom, co strzegą swych stad,",
-            "Ze Zbawiciel już przyszedł na świat,"
-          ]
-        ]
-      },
-      {
-        "id": ":Którym jest Chrystus Pan:",
-        "slides": []
-      },
-      {
-        "id": "C",
-        "slides": [
-          [
-            "Cicha noc! Święta noc!",
-            "Chryste, Twej łaski moc"
-          ]
-        ]
-      },
-      {
-        "id": "C",
-        "slides": [
-          [
-            "Śmierć zwycięża, moc grzechu i cień;",
-            "Więc zabłysnął zbawienia już dzień"
-          ]
-        ]
-      },
-      {
-        "id": ":Nam w narodzeniu Twym.:",
-        "slides": []
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Hodina, Minuta": {
     "title": "Hodina, Minuta",
     "file": "Hodina Minuta.xml",
@@ -12700,6 +12626,92 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Dziękuję Ci": {
+    "title": "Dziękuję Ci",
+    "file": "Dziekuje Ci.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Błądziłem przez ciemną noc",
+            "Me życie przykrywał mrok",
+            "Przygniatał mnie",
+            "Zmęczenia cień"
+          ],
+          [
+            "Walczyłem ze wszystkich sił",
+            "Lecz nie dało to nic",
+            "Co miałem robić i dokąd iść",
+            "I wtedy gdy zgubiłem się",
+            "Spotkałem kogoś kto szukał mnie",
+            "Powiedział mi że już nie jestem sam"
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "Podniosłeś mnie",
+            "Wskazałeś cel",
+            "I dzisiaj stoję na skale Twej",
+            "Dziękuję Panie",
+            "Dziękuję Zbawco"
+          ],
+          [
+            "Dałeś mi imię Twe",
+            "Zmieniłeś mnie",
+            "Moje serce Twoje jest",
+            "Dziękuję Panie",
+            "Dziękuję Zbawco",
+            "Dziękuję Ci"
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Jak mógłbym nie wierzyć Ci",
+            "Gdy wierny wciąż jesteś mi",
+            "Ty wątpliwości",
+            "Obracasz w pył",
+            "Co było skończyło się"
+          ],
+          [
+            "Zabrałeś mój żal i gniew",
+            "Zostawiam przeszłość nie patrzę wstecz",
+            "Podnoszę wzrok podnoszę głos",
+            "Wdzięczności Tobie zaśpiewam pieśń",
+            "Bo pewność mam że w niebie jest mój dom"
+          ]
+        ]
+      },
+      {
+        "id": "B",
+        "slides": [
+          [
+            "Piekło nie trzyma mnie",
+            "Wolność mam",
+            "Grzech już nie trzyma mnie",
+            "Wolność mam",
+            "Strach już nie trzyma mnie",
+            "Wolność mam",
+            "Wolność mam"
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "C",
+      "V2",
+      "C",
+      "B"
+    ],
     "tags": []
   },
   "Chci oslavovat svého Pána": {
@@ -23235,47 +23247,6 @@
     "outline": [],
     "tags": []
   },
-  "Cicha noc II": {
-    "title": "Cicha noc II",
-    "file": "Cicha noc II.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Cicha noc! W górze skrzy Mnóstwo gwiazd, wszystko śpi;",
-            "Lecz z ócz Marii odszedł dziś sen:",
-            "W świętej ciszy Wiecznego to Syn",
-            "/: Leży na łonie jej! :/"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Święta noc! Dobrą wieść Anioł sam śpieszy nieść",
-            "Wpierw pasterzom, co strzegą swych stad,",
-            "Że Zbawiciel już przyszedł na świat,",
-            "/: Którym jest Chrystus Pan :/"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "Cicha noc! Święta noc! Chryste,",
-            "Twej łaski moc Śmierć zwycięża, moc grzechu i cień;",
-            "Więc zabłysnął zbawienia już dzień",
-            "/: Nam w narodzeniu Twym. :/"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Pojď teď je ten čas": {
     "title": "Pojď teď je ten čas",
     "file": "Pojd ted je ten cas.xml",
@@ -24111,6 +24082,60 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Cicha noc": {
+    "title": "Cicha noc",
+    "file": "Cicha noc.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Cicha noc! W górze skrzy",
+            "Mnóstwo gwiazd, wszystko śpi;"
+          ],
+          [
+            "Lecz z ócz Marii odszedł dziś sen:",
+            "W święte; ciszy Wiecznego to Syn",
+            "/: Leży na łonie jej! :/"
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Święta noc! Dobrą wieść",
+            "Anioł sam śpieszy nieść"
+          ],
+          [
+            "Wpierw pasterzom, co strzegą swych stad,",
+            "Ze Zbawiciel już przyszedł na świat,",
+            "/: Którym jest Chrystus Pan. :/"
+          ]
+        ]
+      },
+      {
+        "id": "V3",
+        "slides": [
+          [
+            "Cicha noc! Święta noc!",
+            "Chryste, Twej łaski moc"
+          ],
+          [
+            "Śmierć zwycięża, moc grzechu i cień;",
+            "Więc zabłysnął zbawienia już dzień",
+            "/: Nam w narodzeniu Twym. :/"
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "V2",
+      "V3"
+    ],
     "tags": []
   },
   "A Ty Mě Máš Rád": {
@@ -33850,6 +33875,68 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Čas radosti veselosti": {
+    "title": "Čas radosti veselosti",
+    "file": "Cas radosti veselosti.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Čas radosti veselosti,",
+            "světu nastal nyní,",
+            "neb Bůh věčný,",
+            "nekonečný narodil se z Panny."
+          ],
+          [
+            "V městečku Betlémě,",
+            "v jesličkách na slámě",
+            "leží malé pacholátko na zimě,",
+            "leží malé pacholátko na zimě."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Co jsme všichni lidé hříšní",
+            "radostně čekali,",
+            "To andělé dnes vesele",
+            "nám jsou zvěstovali."
+          ],
+          [
+            "A protož plesejme,",
+            "všichni se radujme,",
+            "pacholátku, nemluvňátku zpívejme,",
+            "pacholátku, nemluvňátku zpívejme."
+          ]
+        ]
+      },
+      {
+        "id": "V3",
+        "slides": [
+          [
+            "Spasiteli, kvítku milý,",
+            "Pane náš Ježíši,",
+            "z čisté Panny narozený,",
+            "poklade nejdražší!"
+          ],
+          [
+            "Králi náš, Pane náš,",
+            "skloň se k nám jako Pán,",
+            "dej milosti, tvé radosti dojít nám,",
+            "dej milosti, tvé radosti dojít nám."
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "V2"
+    ],
     "tags": []
   },
   "O przyjdz do tronu": {
