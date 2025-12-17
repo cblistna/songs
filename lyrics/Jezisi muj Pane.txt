@@ -1,7 +1,10 @@
-Ježíši, Můj Pane
+Ježíši, můj Pane
 
 :V1
-Ježíši, můj Pane, Ty jsi králů Král,
+Ježíši, můj Pane,
+Ty jsi králů Král,
 Tys za mne život svůj dal.
+
+:V2
 Velebíme Tvoje svaté jméno,
 Ty jsi Bůh náš a Pán.
