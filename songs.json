@@ -28569,6 +28569,80 @@
     "outline": [],
     "tags": []
   },
+  "Svatý, svatý": {
+    "title": "Svatý, svatý",
+    "file": "Svaty svaty.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Tisíce Tvých dětí se ke Tvé chvále sklání.",
+            "Věčná píseň Beránkovi zní.",
+            "Ti, kteří předešli nás i ti, kdo uvěří,",
+            "jejich píseň Beránkovi zní."
+          ]
+        ]
+      },
+      {
+        "id": "P",
+        "slides": [
+          [
+            "Ježíš, Jeho jméno moc má,",
+            "On je Pán nejvyšší, stojí nade vším!",
+            "Má trůn, všechny vlády jednou",
+            "pokloní se před Ním, stojí nade vším!"
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "Andělů hlas zní: Svatý!",
+            "Každý tvor vyzná: Svatý!",
+            "Jsi vyvýšený, Svatý Pán!",
+            "Na věky vládni nám!"
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Odpustil ti hříchy, ze smrti tě vykoupil.",
+            "Beránkovi zpívej píseň chval!",
+            "Teď poznáš Jeho jméno, Tvým krokům volnost dal!",
+            "Beránkovi zpívej píseň chval!",
+            "Zpívej píseň navěky, Amen!!!"
+          ]
+        ]
+      },
+      {
+        "id": "C2",
+        "slides": [
+          [
+            "Hlas Tvé církve zní: Svatý!",
+            "Králi králů zní: Svatý!",
+            "Věčně zůstáváš: Svatý Pán!",
+            "Na věky vládni nám!"
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "P",
+      "C",
+      "V2",
+      "C",
+      "C2",
+      "P",
+      "C",
+      "C2"
+    ],
+    "tags": []
+  },
   "Vítáme tě mezi námi Pane": {
     "title": "Vítáme tě mezi námi Pane",
     "file": "Vitame te mezi nami Pane.xml",
@@ -31350,6 +31424,43 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Hle, andělé zpívají": {
+    "title": "Hle, andělé zpívají",
+    "file": "Hle andele zpivaji.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Hle, andělé zpívají,",
+            "slávu Králi vzdávají.",
+            "Mír a pokoj na zemi,",
+            "Bůh je k lidem snížený."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Národy se zdvíhají,",
+            "triumf nebes vítají.",
+            "Celý vesmír jeden ples:",
+            "„Kristus Pán je zrozen dnes!“"
+          ],
+          [
+            "Hle, andělé zpívají,",
+            "slávu Králi vzdávají."
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "V2"
+    ],
     "tags": []
   },
   "Jezus, najwyższe imię": {
