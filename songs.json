@@ -3636,54 +3636,6 @@
     "outline": [],
     "tags": []
   },
-  "Svatý": {
-    "title": "Svatý",
-    "file": "Svaty.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Tvá láska nádherná",
-            "Dál ve mně zůstává",
-            "Veď mě dál,  já tvář Tvou toužím znát"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Tvé světlo zářivé",
-            "Svítí na cesty mé",
-            "S Tebu dál,  já půjdu k výšinám"
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "/: DO MÝCH ÚST VLOŽ PÍSEŇ",
-            "CHVAL PÍSEŇ LÁSKY TVÉ",
-            "AT NA SVĚT ZNOVU PADNE BÁZEŇ TVÁ :/"
-          ]
-        ]
-      },
-      {
-        "id": "V4",
-        "slides": [
-          [
-            "SVATÝ, SVATÝ JE NÁŠ PÁN",
-            "SVATÝ, SVATÝ JE NÁŠ PÁN",
-            "SVATÝ, SVATÝ JE NÁŠ PÁN- NÁŠ KRÁL"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Jsi tak nádherný": {
     "title": "Jsi tak nádherný",
     "file": "Jsi tak nadherny.xml",
@@ -27465,6 +27417,54 @@
           ],
           [
             "přicházej k nám"
+          ]
+        ]
+      }
+    ],
+    "outline": [],
+    "tags": []
+  },
+  "Svatý": {
+    "title": "Svatý",
+    "file": "Svaty.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Tvá láska nádherná",
+            "Dál ve mně zůstává",
+            "Veď mě dál,  já tvář Tvou toužím znát"
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Tvé světlo zářivé",
+            "Svítí na cesty mé",
+            "S Tebu dál,  já půjdu k výšinám"
+          ]
+        ]
+      },
+      {
+        "id": "V3",
+        "slides": [
+          [
+            "/: DO MÝCH ÚST VLOŽ PÍSEŇ",
+            "CHVAL PÍSEŇ LÁSKY TVÉ",
+            "AT NA SVĚT ZNOVU PADNE BÁZEŇ TVÁ :/"
+          ]
+        ]
+      },
+      {
+        "id": "V4",
+        "slides": [
+          [
+            "SVATÝ, SVATÝ JE NÁŠ PÁN",
+            "SVATÝ, SVATÝ JE NÁŠ PÁN",
+            "SVATÝ, SVATÝ JE NÁŠ PÁN- NÁŠ KRÁL"
           ]
         ]
       }
