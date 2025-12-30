@@ -10246,6 +10246,56 @@
     "outline": [],
     "tags": []
   },
+  "Radostí jsi mou": {
+    "title": "Radostí jsi mou",
+    "file": "Radosti jsi mou.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Chválím slávu Tvou, můj Králi,",
+            "toužím s Tebou kráčet dál.",
+            "Léčíš vždy slovem svým mé rány,",
+            "blízkost Tvá mi dává pevně stát."
+          ],
+          [
+            "S Tebou zůstat smím,",
+            "jen Ty jsi Pánem mým."
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "Ty jsi můj štít, můj Král,",
+            "moje píseň, co tak krásně zní,",
+            "můj úkryt, má skála.",
+            "V mé nouzi přicházíš, jsi spása má."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Já vím, můžu žít z Tvé lásky,",
+            "chráníš mocí svou mé pády.",
+            "Radostí jsi mou,",
+            "zpívám chválu svou."
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "C",
+      "V2",
+      "C"
+    ],
+    "tags": []
+  },
   "Hosanna": {
     "title": "Hosanna",
     "file": "Hosanna.xml",
