@@ -1797,6 +1797,42 @@
     "outline": [],
     "tags": []
   },
+  "Hallelu et ha Mashiach": {
+    "title": "Hallelu et ha Mashiach",
+    "file": "Hallelu et ha Mashiach.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Chválíme Mesiáše 3x",
+            "Přijď Mesiáši, přijď"
+          ],
+          [
+            "Hallelu et ha Mashiach 3x",
+            "Bo Mashiach, bo",
+            "Halleluja"
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Chválíme Ježíše 3x",
+            "Přijď Ježíši, přijď"
+          ],
+          [
+            "Hallelu et Yeshua 3x",
+            "Bo Yeshua, bo",
+            "Halleluja"
+          ]
+        ]
+      }
+    ],
+    "outline": [],
+    "tags": []
+  },
   "Město": {
     "title": "Město",
     "file": "Mesto.xml",
@@ -18637,6 +18673,37 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Zboř každou hráz": {
+    "title": "Zboř každou hráz",
+    "file": "Zbor kazdou hraz.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Zboř každou hráz, co ďábel v nás postavil,",
+            "chceme Tě chválit s jednotou.",
+            "Odřízni z nás teď pýchu a souzení",
+            "a zasviť nám svou pokorou."
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "/: Dal jsi nám svou vůli znát,",
+            "jako církev být tvojí rodinou. :/"
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "C"
+    ],
     "tags": []
   },
   "Zástupy kol jeslí": {
