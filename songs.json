@@ -13863,6 +13863,51 @@
     "outline": [],
     "tags": []
   },
+  "Když Bůh je s nám": {
+    "title": "Když Bůh je s nám",
+    "file": "Kdyz Buh je s nam.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Když Bůh je s námi,",
+            "kdo je proti nám?"
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Sňal pouta hříchu, smrti zlomil zbraň.",
+            "Otevřel bránu, pozval nás dál."
+          ],
+          [
+            "Sňal pouta hříchu, smrti zlomil zbraň.",
+            "Otevřel bránu dokořán."
+          ]
+        ]
+      },
+      {
+        "id": "B",
+        "slides": [
+          [
+            "S námi je Bůh, Immanuel.",
+            "S námi je Bůh, Immanuel."
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "V2",
+      "B",
+      "V2",
+      "B"
+    ],
+    "tags": []
+  },
   "Keď pride": {
     "title": "Keď pride",
     "file": "Ked pride.xml",
@@ -16327,43 +16372,6 @@
     "outline": [],
     "tags": []
   },
-  "Když Bůh je s nám": {
-    "title": "Když Bůh je s nám",
-    "file": "Kdyz Buh je s nam.xml",
-    "sections": [
-      {
-        "id": "V1",
-        "slides": [
-          [
-            "Když Bůh je s námi,",
-            "kdo je proti nám?"
-          ]
-        ]
-      },
-      {
-        "id": "V2",
-        "slides": [
-          [
-            "Sňal pouta hříchu, smrti zlomil zbraň.",
-            "Otevřel bránu, pozval nás dál.",
-            "Sňal pouta hříchu, smrti zlomil zbraň.",
-            "Otevřel bránu dokořán."
-          ]
-        ]
-      },
-      {
-        "id": "V3",
-        "slides": [
-          [
-            "S námi je Bůh, Immanuel.",
-            "S námi je Bůh, Immanuel."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
   "Oddaję Ci Całą Chwałę i Cześć": {
     "title": "Oddaję Ci Całą Chwałę i Cześć",
     "file": "Oddaje Ci Cala Chwale i Czesc.xml",
@@ -17734,6 +17742,89 @@
       }
     ],
     "outline": [],
+    "tags": []
+  },
+  "Král lásky": {
+    "title": "Král lásky",
+    "file": "Kral lasky.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Král lásky je mým pastýřem,",
+            "mne dobrou cestou vodí.",
+            "Já nestrádám, když Jeho jsem,",
+            "vždyť On sám se mnou chodí,",
+            "vždyť On sám se mnou chodí."
+          ],
+          [
+            "Tam k živým vodám proudícím,",
+            "mou lačnou duší brává.",
+            "A na pastvách tak vonících,",
+            "mi pokrm z nebes dává."
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "Neochvějný, žití mého Pán,",
+            "nekonečný, miluje duši mou!",
+            "Na vrcholech hor i v temném údolí,",
+            "mým pastýřem je lásky Král,",
+            "mým pastýřem je lásky Král."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Sám ztracený jsem bloudil tmou,",
+            "On našel mne a k tomu,",
+            "paží obemknul mne svou,",
+            "a radostně vzal domů."
+          ],
+          [
+            "Z šeré smrti nemám strach,",
+            "když stojíš po mém boku.",
+            "Tvá hůl mě těší v roklinách,",
+            "kříž září do mých kroků."
+          ]
+        ]
+      },
+      {
+        "id": "B1",
+        "slides": [
+          [
+            "Oooo, Haleluja, haleluja! (2x)"
+          ]
+        ]
+      },
+      {
+        "id": "B2",
+        "slides": [
+          [
+            "A přede všechnu délku dnů,",
+            "chci stále zpívat Tobě,",
+            "svému pastýři dobrému,",
+            "na věky ve Tvém domě,",
+            "na věky ve Tvém domě."
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "C",
+      "V2",
+      "C",
+      "B1",
+      "C",
+      "B2"
+    ],
     "tags": []
   },
   "Wołam Cię": {
