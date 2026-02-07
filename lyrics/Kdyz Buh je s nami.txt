@@ -1,4 +1,5 @@
 Když Bůh je s nám
+V1 V2 B V2 B
 
 :V1
 Když Bůh je s námi,
@@ -7,9 +8,10 @@ kdo je proti nám?
 :V2
 Sňal pouta hříchu, smrti zlomil zbraň.
 Otevřel bránu, pozval nás dál.
+
 Sňal pouta hříchu, smrti zlomil zbraň.
 Otevřel bránu dokořán.
 
-:V3
+:B
 S námi je Bůh, Immanuel.
 S námi je Bůh, Immanuel.
