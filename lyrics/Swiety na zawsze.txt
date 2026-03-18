@@ -1,5 +1,5 @@
 Święty na zawsze
-V1 B B C V2 C C1 B B C
+V1 B C C V2 C C1 B C C
 
 :V1
 Kolejne pokolenia od wieków wielbią Ciebie
@@ -36,4 +36,3 @@ Jeśli dał ci wolność i nosisz jego imię
 To nasz Krolów Krol, Święty
 Już do końca dni, Święty,
 Święty na zawsze
-
