@@ -17650,8 +17650,8 @@
     "outline": [],
     "tags": []
   },
-  "Keayal taarog | Jako jelen": {
-    "title": "Keayal taarog | Jako jelen",
+  "Keayal taarog - Jako jelen": {
+    "title": "Keayal taarog - Jako jelen",
     "file": "Keayal taarog  Jako jelen.xml",
     "sections": [
       {
@@ -17673,7 +17673,10 @@
         ]
       }
     ],
-    "outline": [],
+    "outline": [
+      "V1",
+      "V2"
+    ],
     "tags": []
   },
   "Pred Tvoju tvár, môj Ježiš": {
