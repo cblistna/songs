@@ -10047,6 +10047,62 @@
     "outline": [],
     "tags": []
   },
+  "Před Tebou smím pokleknout": {
+    "title": "Před Tebou smím pokleknout",
+    "file": "Pred Tebou smim pokleknout.xml",
+    "sections": [
+      {
+        "id": "V1",
+        "slides": [
+          [
+            "Před Tebou smím pokleknout,",
+            "vyznat Ti lásku, Pane můj,",
+            "jsi pro mě nejvzácnější."
+          ],
+          [
+            "Teď srdce své otvírám",
+            "a prosím vejdi jako Král."
+          ]
+        ]
+      },
+      {
+        "id": "C",
+        "slides": [
+          [
+            "Byl jsem stvořen,",
+            "abych Tebe uctíval,",
+            "abych přebýval",
+            "ve světle Tvé záře."
+          ],
+          [
+            "Navěky chci vyvyšovat jméno Tvé,",
+            "je tak nádherné blízko Ti být."
+          ]
+        ]
+      },
+      {
+        "id": "V2",
+        "slides": [
+          [
+            "Před Tebou smím pokleknout",
+            "a vzdát Ti slávu, Pane můj,",
+            "Tvé jméno nejkrásnější."
+          ],
+          [
+            "Teď srdcem svým vyznávám:",
+            "Ježíši, Ty jsi Králů Král!"
+          ]
+        ]
+      }
+    ],
+    "outline": [
+      "V1",
+      "C",
+      "V2",
+      "C"
+    ],
+    "tags": []
+  },
   "Nekonečný Boh": {
     "title": "Nekonečný Boh",
     "file": "Nekonecny Boh.xml",
@@ -11251,55 +11307,6 @@
             "Nikt nie zatrzyma Ciebie, Panie",
             "Nikt nie zatrzyma Ciebie, Panie",
             "Nikt nie zatrzyma Ciebie, Panie"
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "Pred Tebou Smim Pokleknout": {
-    "title": "Pred Tebou Smim Pokleknout",
-    "file": "Pred Tebou Smim Pokleknout.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "1. Před Tebou smím pokleknout,",
-            "vyznat Ti lásku, Pane můj,",
-            "jsi pro mě nejvzácnější.",
-            "Teď srdce své otvírám a prosím,",
-            "vejdi jako Král."
-          ]
-        ]
-      },
-      {
-        "id": "C1",
-        "slides": [
-          [
-            "|: Byl jsem stvořen,",
-            "abych Tebe uctíval,",
-            "abych přebýval",
-            "ve světle Tvé tváře."
-          ],
-          [
-            "Na věky chci vyvyšovat",
-            "jméno Tvé,",
-            "je tak nádherné",
-            "blízko Ti být. :|"
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "2. Před Tebou smím pokleknout",
-            "a vzdát Ti slávu, Pane můj,",
-            "Tvé jméno nejkrásnější",
-            "teď srdcem svým vyznávám:",
-            "Ježíši, Ty jsi králů Král!"
           ]
         ]
       }
@@ -17777,51 +17784,6 @@
           [
             "Haleluja, ó haleluja,",
             "haleluja, chvalme jej."
-          ]
-        ]
-      }
-    ],
-    "outline": [],
-    "tags": []
-  },
-  "Před Tebou Smím Pokleknout": {
-    "title": "Před Tebou Smím Pokleknout",
-    "file": "Pred Tebou Smim Pokleknout.xml",
-    "sections": [
-      {
-        "id": "V1A",
-        "slides": [
-          [
-            "Před Tebou smím pokleknout,",
-            "vyznat Ti lásku, Pane můj,",
-            "jsi pro mě nejvzácnější.",
-            "Teď srdce své otvírám",
-            "a prosím vejdi jako Král."
-          ]
-        ]
-      },
-      {
-        "id": "V1B",
-        "slides": [
-          [
-            "Byl jsem stvořen,",
-            "abych Tebe uctíval,",
-            "abych přebýval",
-            "ve světle Tvé záře.",
-            "Navěky chci vyvyšovat jméno Tvé,",
-            "je tak nádherné blízko Ti být."
-          ]
-        ]
-      },
-      {
-        "id": "V1C",
-        "slides": [
-          [
-            "Před Tebou smím pokleknout",
-            "a vzdát Ti slávu, Pane můj,",
-            "Tvé jméno nejkrásnější.",
-            "Teď srdcem svým vyznávám:",
-            "Ježíši, Ty jsi Králů Král!"
           ]
         ]
       }
