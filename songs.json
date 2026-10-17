@@ -26680,7 +26680,7 @@
             "Jeden má pihy, druhý uši lítací,",
             "ale všichni máme rádi legraci.",
             "Eva jíst nechce, Dan má pořád hlad,",
-            "ale nejvíc nás baví spolu si hrát.Raz, dva, tři a…"
+            "ale nejvíc nás baví spolu si hrát."
           ]
         ]
       },
@@ -26691,7 +26691,7 @@
             "Honza má svaly, Ádě to moc sluší,",
             "ale nejlepší pocit je skočit do kaluží.",
             "Jeden má psa, druhý má krajtu,",
-            "ale všichni máme rádi, mámu i tátu.Raz, dva, tři a…"
+            "ale všichni máme rádi, mámu i tátu."
           ]
         ]
       },
@@ -26700,9 +26700,14 @@
         "slides": [
           [
             "To jsem já a to jsi ty, jeden je z hor a druhý z roviny,",
-            "to jsem já a to jsi ty, patříme spolu do Boží rodiny.",
+            "to jsem já a to jsi ty, patříme spolu do Boží rodiny."
+          ],
+          [
             "To jsem já a to jsi ty, jeden je z hor a druhý z roviny,",
-            "to jsem já a to jsi ty, patříme spolu do Boží rodiny.Parapa, parapam, parapapam, pam,"
+            "to jsem já a to jsi ty, patříme spolu do Boží rodiny."
+          ],
+          [
+            "Parapa, parapam, parapapam, pam,"
           ]
         ]
       },
@@ -26717,7 +26722,14 @@
         ]
       }
     ],
-    "outline": [],
+    "outline": [
+      "B",
+      "C",
+      "V1",
+      "C",
+      "V2",
+      "C"
+    ],
     "tags": []
   },
   "Tohle je láska Tvá": {
